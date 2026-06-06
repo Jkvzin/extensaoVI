@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Interativo - Modo X1</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">🚀 Matemática CAIC</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="videos.html">Vídeos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="multiplayer.html" class="active">X1</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Overlay de Configuração -->
+        <div class="mp-overlay" id="mpOverlay">
+            <div class="mp-overlay-card">
+                <h1>⚔️ Modo X1 — Desafio Multiplayer</h1>
+                <p>Dois jogadores no mesmo teclado! Tela dividida, mesma pergunta. Quem acerta primeiro, pontua.</p>
+
+                <div class="mp-setup">
+                    <div class="mp-setup-player mp-setup-p1">
+                        <label for="mpNome1">🔴 Jogador 1</label>
+                        <input type="text" id="mpNome1" placeholder="Nome do Jogador 1" maxlength="20">
+                        <div class="mp-setup-keys">
+                            <span class="mp-key-big mp-key-p1-bg">A</span>
+                            <span class="mp-key-big mp-key-p1-bg">S</span>
+                            <span class="mp-key-big mp-key-p1-bg">D</span>
+                            <span class="mp-key-big mp-key-p1-bg">W</span>
+                        </div>
+                        <p>Use <strong>A, S, D, W</strong> para as opções A, B, C, D</p>
+                    </div>
+
+                    <div class="mp-setup-vs">VS</div>
+
+                    <div class="mp-setup-player mp-setup-p2">
+                        <label for="mpNome2">🔵 Jogador 2</label>
+                        <input type="text" id="mpNome2" placeholder="Nome do Jogador 2" maxlength="20">
+                        <div class="mp-setup-keys">
+                            <span class="mp-key-big mp-key-p2-bg">←</span>
+                            <span class="mp-key-big mp-key-p2-bg">↓</span>
+                            <span class="mp-key-big mp-key-p2-bg">→</span>
+                            <span class="mp-key-big mp-key-p2-bg">↑</span>
+                        </div>
+                        <p>Use as <strong>setas do teclado</strong> para as opções A, B, C, D</p>
+                    </div>
+                </div>
+
+                <button class="next-btn" id="mpStartBtn" style="font-size:1.4rem; padding:20px 48px; margin-top:20px;">
+                    🎮 COMEÇAR!
+                </button>
+            </div>
+        </div>
+
+        <!-- Área do Quiz Split-Screen -->
+        <div id="mpQuizArea" style="display:none;">
+
+            <!-- PLACAR SUPERIOR -->
+            <div class="mp-top-bar">
+                <div class="mp-top-score mp-top-p1">
+                    <span class="mp-top-score-num" id="mpScore1">0</span>
+                    <span class="mp-top-score-label" id="mpDisplayName1">Jogador 1</span>
+                </div>
+
+                <div class="mp-top-center">
+                    <div class="mp-round" id="mpRound">Pergunta 1 de X</div>
+                    <div class="mp-feedback-central" id="mpFeedbackCentral"></div>
+                </div>
+
+                <div class="mp-top-score mp-top-p2">
+                    <span class="mp-top-score-num" id="mpScore2">0</span>
+                    <span class="mp-top-score-label" id="mpDisplayName2">Jogador 2</span>
+                </div>
+            </div>
+
+            <!-- PERGUNTA COMPARTILHADA -->
+            <div class="mp-pergunta-central" id="mpPerguntaCentral">
+                Carregando pergunta...
+            </div>
+
+            <!-- TELA DIVIDIDA -->
+            <div class="mp-split-screen">
+                <!-- JOGADOR 1 — VERMELHO -->
+                <div class="mp-split-panel mp-split-p1" id="mpPanel1">
+                    <div class="mp-panel-header">
+                        <span>🔴</span>
+                        <span class="mp-panel-name" id="mpDisplayName1b">Jogador 1</span>
+                    </div>
+                    <div class="mp-who-indicator" id="mpWho1" style="display:none;"></div>
+                    <div class="mp-split-opcoes" id="mpOpcoes1">
+                        <!-- Gerado dinamicamente -->
+                    </div>
+                </div>
+
+                <!-- DIVISOR CENTRAL -->
+                <div class="mp-split-divider">
+                    <span>⚡</span>
+                </div>
+
+                <!-- JOGADOR 2 — AZUL -->
+                <div class="mp-split-panel mp-split-p2" id="mpPanel2">
+                    <div class="mp-panel-header">
+                        <span>🔵</span>
+                        <span class="mp-panel-name" id="mpDisplayName2b">Jogador 2</span>
+                    </div>
+                    <div class="mp-who-indicator" id="mpWho2" style="display:none;"></div>
+                    <div class="mp-split-opcoes" id="mpOpcoes2">
+                        <!-- Gerado dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTÃO PRÓXIMA -->
+            <button class="next-btn" id="mpNextBtn" style="display:none; max-width:300px; margin:30px auto;">
+                Próxima Pergunta ➔
+            </button>
+        </div>
+
+        <!-- Tela de Resultado -->
+        <div id="mpResultado" style="display:none;">
+            <!-- Preenchido via JS -->
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
