@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Interativo - Jogos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">🚀 Matemática CAIC</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="jogos.html" class="active">Jogos</a></li>
+                <li><a href="videos.html">Vídeos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Hub de Jogos Matemáticos 🎮</h1>
+        <p>Escolha um dos jogos criados pela nossa equipe. Divirta-se enquanto aprende!</p>
+
+        <!-- Onde os jogos serão renderizados dinamicamente pelo JavaScript -->
+        <div class="grid-container" id="jogosContainer">
+            <!-- Cards gerados via js/jogos.js usando dados do js/data.js -->
+        </div>
+    </main>
+
+    <!-- Importa os dados primeiro, depois a lógica -->
+    <script src="js/data.js"></script>
+    <script src="js/jogos.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

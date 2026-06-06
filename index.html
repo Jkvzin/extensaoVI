@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Interativo de Matemática - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">🚀 Matemática CAIC</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Início</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="videos.html">Vídeos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Bem-vindo ao Portal de Matemática! 🎉</h1>
+        <p>Aprender matemática nunca foi tão divertido. Escolha uma das atividades no menu acima para começar a sua aventura espacial pelos números!</p>
+
+        <!-- Feedback Module -->
+        <div class="feedback-module" id="feedbackModule">
+            <h2>Gostou da nossa plataforma?</h2>
+            <p>Clique em um rostinho para nos contar como você se sente!</p>
+            <div class="emojis">
+                <button class="emoji-btn" onclick="registerFeedback('feliz')">😃</button>
+                <button class="emoji-btn" onclick="registerFeedback('normal')">😐</button>
+                <button class="emoji-btn" onclick="registerFeedback('triste')">😢</button>
+            </div>
+            <p id="feedbackMessage" style="margin-top: 20px; font-weight: bold; color: var(--success-color); display: none;">Obrigado por nos avaliar! 🌟</p>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
