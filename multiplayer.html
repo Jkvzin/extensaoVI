@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Interativo - Multiplayer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">🚀 Matemática CAIC</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="videos.html">Vídeos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="multiplayer.html" class="active">X1</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Overlay de Instruções -->
+        <div class="mp-overlay" id="mpOverlay">
+            <div class="mp-overlay-card">
+                <h1>⚔️ Modo X1 — Desafio Multiplayer</h1>
+                <p>Dois jogadores no mesmo teclado! Quem responde certo primeiro, ganha o ponto.</p>
+
+                <div class="mp-instructions">
+                    <div class="mp-player-instructions mp-p1-instructions">
+                        <h3>🔴 Jogador 1</h3>
+                        <div class="mp-key-row">
+                            <span class="mp-key-big mp-key-p1-bg">A</span>
+                            <span class="mp-key-big mp-key-p1-bg">S</span>
+                            <span class="mp-key-big mp-key-p1-bg">D</span>
+                        </div>
+                        <p>Use as teclas <strong>A, S, D</strong><br>para escolher as opções A, B, C</p>
+                    </div>
+
+                    <div class="mp-vs">VS</div>
+
+                    <div class="mp-player-instructions mp-p2-instructions">
+                        <h3>🔵 Jogador 2</h3>
+                        <div class="mp-key-row">
+                            <span class="mp-key-big mp-key-p2-bg">←</span>
+                            <span class="mp-key-big mp-key-p2-bg">↓</span>
+                            <span class="mp-key-big mp-key-p2-bg">→</span>
+                        </div>
+                        <p>Use as <strong>setas do teclado</strong><br>para escolher as opções A, B, C</p>
+                    </div>
+                </div>
+
+                <button class="next-btn" id="mpStartBtn" style="font-size:1.4rem; padding:20px 48px;">
+                    🎮 COMEÇAR!
+                </button>
+            </div>
+        </div>
+
+        <!-- Área do Quiz Multiplayer -->
+        <div id="mpQuizArea">
+            <!-- Painéis dos Jogadores -->
+            <div class="mp-panels">
+                <div class="mp-panel mp-panel-p1" id="mpPanel1">
+                    <div class="mp-player-name">🔴 Jogador 1</div>
+                    <div class="mp-player-score" id="mpScore1">0</div>
+                    <div class="mp-player-keys">Teclas: <strong>A S D</strong></div>
+                </div>
+
+                <div class="mp-panel mp-panel-p2" id="mpPanel2">
+                    <div class="mp-player-name">🔵 Jogador 2</div>
+                    <div class="mp-player-score" id="mpScore2">0</div>
+                    <div class="mp-player-keys">Teclas: <strong>← ↓ →</strong></div>
+                </div>
+            </div>
+
+            <!-- Pergunta -->
+            <div class="mp-question-area">
+                <div id="mpProgresso">Pergunta 1 de X</div>
+                <div class="mp-pergunta" id="mpPergunta">Carregando...</div>
+
+                <!-- Opções com indicadores de tecla -->
+                <div class="mp-opcoes" id="mpOpcoes">
+                    <!-- Gerado dinamicamente -->
+                </div>
+
+                <!-- Feedback da rodada -->
+                <div class="mp-feedback" id="mpFeedback"></div>
+
+                <!-- Botão Próxima -->
+                <button class="next-btn" id="mpNextBtn" style="display:none; max-width:300px; margin:20px auto;">
+                    Próxima Pergunta ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- Tela de Resultado -->
+        <div id="mpResultado" style="display:none;">
+            <!-- Preenchido via JS -->
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
