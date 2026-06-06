@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Matemática - Quem é você?</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <h1>Bem-vindo! 🚀</h1>
+        
+        <!-- Step 1: Selecionar Turma -->
+        <div id="step-turma" class="step-container">
+            <h2>Qual é a sua turma?</h2>
+            <div class="grid-turmas" id="turmas-list">
+                <!-- Turmas renderizadas aqui -->
+            </div>
+            <button id="btn-visitante" class="btn-visitante">Entrar como visitante</button>
+        </div>
+
+        <!-- Step 2: Selecionar Aluno -->
+        <div id="step-aluno" class="step-container" style="display: none;">
+            <button id="btn-voltar" class="btn-voltar">⬅️ Voltar</button>
+            <h2 id="titulo-turma">Quem é você?</h2>
+            <div class="grid-alunos" id="alunos-list">
+                <!-- Alunos renderizados aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>
