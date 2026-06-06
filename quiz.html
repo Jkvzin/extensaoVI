@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Interativo - Quiz</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- Efeito de confete para quando acertar a resposta -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -25,49 +24,61 @@
     </header>
 
     <main>
-        <h1>Desafio Quiz! 🧠</h1>
-        <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
+        <!-- Tela de Seleção de Categoria -->
+        <div id="categorySelection">
+            <h1>Escolha seu Desafio! 🧠</h1>
+            <p>Qual operação você quer treinar hoje?</p>
+            <div class="category-grid" id="categoryGrid"></div>
 
-        <div class="quiz-container" id="quizContainer">
-            <!-- Indicador de Progresso -->
-            <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
-                Pergunta 1 de X
+            <div id="difficultySelection" style="display: none; margin-top: 30px;">
+                <h2 style="text-align: center;">Qual o nível? 🎯</h2>
+                <div class="difficulty-grid" id="difficultyGrid"></div>
+                <button class="back-link" id="backToCategoriesFromDiff" style="margin-top: 16px;">🔙 Escolher outra operação</button>
+            </div>
+        </div>
+
+        <!-- Tela do Quiz -->
+        <div id="quizScreen" style="display: none;">
+            <div id="categoryIndicator" style="text-align: center; margin-bottom: 10px;">
+                <span id="categoryBadge"></span>
             </div>
 
-            <!-- Pergunta -->
-            <div class="question-text" id="questionText">
-                Carregando pergunta...
-            </div>
+            <h1>Desafio Quiz! 🧠</h1>
+            <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
 
-            <!-- Botões de Opções -->
-            <div class="options-grid" id="optionsGrid">
-                <!-- Botões gerados via JS -->
-            </div>
+            <div class="quiz-container" id="quizContainer">
+                <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
+                    Pergunta 1 de X
+                </div>
 
-            <!-- Card de Resolução Passo a Passo (Escondido inicialmente) -->
-            <div class="resolution-card" id="resolutionCard">
-                <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
-                <p id="resolutionText">Aqui entra a resolução explicativa.</p>
-                <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
+                <div class="question-text" id="questionText">Carregando pergunta...</div>
+                <div class="options-grid" id="optionsGrid"></div>
+
+                <div class="resolution-card" id="resolutionCard">
+                    <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
+                    <p id="resolutionText">Aqui entra a resolução explicativa.</p>
+                    <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
+                </div>
+                
+                <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
+                    Excelente! Próxima Pergunta ➔
+                </button>
             </div>
             
-            <!-- Botão de Próxima quando acerta -->
-            <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
-                Excelente! Próxima Pergunta ➔
-            </button>
+            <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
+                <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
+                <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button class="next-btn" id="replayBtn" style="max-width: 250px;">Jogar Novamente 🔄</button>
+                    <button class="next-btn" id="backToCategoriesBtn" style="max-width: 250px; background-color: #6C5CE7;">Escolher Outra Categoria 🔙</button>
+                </div>
+            </div>
         </div>
-        
-        <!-- Tela Final -->
-        <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
-            <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
-            <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
-            <button class="next-btn" onclick="location.reload()" style="max-width: 300px; margin: 30px auto;">Jogar Novamente 🔄</button>
-        </div>
-
     </main>
 
-    <!-- Importa os dados primeiro, depois a lógica -->
     <script src="js/data.js"></script>
+    <script src="js/questaoDinamica.js"></script>
+    <script src="js/distratores.js"></script>
     <script src="js/quiz.js"></script>
     <script src="js/main.js"></script>
 </body>
