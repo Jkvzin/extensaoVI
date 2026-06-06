@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Interativo de Matemática - Conquistas e Loja</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/conquistas.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">🚀 Matemática CAIC</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="videos.html">Vídeos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="conquistas.html" class="active">🏆 Conquistas</a></li>
+            </ul>
+        </nav>
+        <div class="user-wallet">
+            <span class="coin-icon">🪙</span>
+            <span id="moedas-saldo" class="moedas-saldo">0</span> moedas
+        </div>
+    </header>
+
+    <main>
+        <h1>Galeria de Conquistas & Loja de Avatares</h1>
+        
+        <section class="secao-conquistas">
+            <h2>Suas Conquistas 🏅</h2>
+            <p>Jogue, assista vídeos e acerte quizzes para desbloquear badges incríveis!</p>
+            <div class="grid-badges" id="badges-container">
+                <!-- Badges renderizados aqui -->
+            </div>
+        </section>
+
+        <section class="secao-loja">
+            <h2>Loja de Avatares 🛍️</h2>
+            <p>Troque suas moedas por novos avatares e deixe seu perfil com a sua cara!</p>
+            <div class="grid-avatares" id="avatares-container">
+                <!-- Avatares renderizados aqui -->
+            </div>
+        </section>
+    </main>
+
+    <script src="js/conquistas.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
