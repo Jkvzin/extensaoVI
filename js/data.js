@@ -44,10 +44,10 @@ const JOGOS_DATA = [
     },
     {
         id: "jogo_2",
-        titulo: "Batalha Naval da Matemática",
-        icone: "🚢",
-        url: "#", 
-        corHover: "#FF6B6B"
+        titulo: "ASMD - ZType",
+        icone: "⌨️",
+        url: "https://lucas4nt0s.github.io/index.html", 
+        corHover: "#9c2424ff"
     },
     {
         id: "jogo_3",
