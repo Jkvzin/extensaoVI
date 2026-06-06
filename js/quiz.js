@@ -107,6 +107,24 @@ function showResults() {
     resultContainer.style.display = 'block';
     
     document.getElementById('finalScore').innerText = `Você acertou ${score} de ${QUIZ_DATA.length} perguntas.`;
+
+    // --- SISTEMA DE XP ---
+    var xpGanho = 0;
+    if (typeof XPSystem !== 'undefined') {
+        xpGanho = XPSystem.rewards.quizComplete;
+        if (score === QUIZ_DATA.length) {
+            xpGanho += XPSystem.rewards.quizPerfect;
+        }
+        XPSystem.addXP(xpGanho, 'quiz');
+        XPSystem.refresh();
+    }
+    // Mostra XP ganho
+    if (xpGanho > 0) {
+        var xpMsg = document.createElement('p');
+        xpMsg.style.cssText = 'font-size: 1.1rem; color: var(--secondary-color); margin-top: 8px; animation: pop 0.4s ease;';
+        xpMsg.textContent = '⭐ +' + xpGanho + ' XP';
+        resultContainer.appendChild(xpMsg);
+    }
     
     // Muito confete para comemorar o fim
     if (typeof confetti === 'function') {

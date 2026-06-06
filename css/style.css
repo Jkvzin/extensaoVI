@@ -320,6 +320,116 @@ p {
     filter: grayscale(0);
 }
 
+/* XP Bar (Header) */
+#xpBarContainer {
+    margin-left: auto;
+    min-width: 200px;
+}
+
+.xp-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 180px;
+}
+
+.xp-bar-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.xp-bar-level {
+    color: var(--secondary-color);
+}
+
+.xp-bar-title {
+    color: var(--primary-color);
+    font-size: 0.8rem;
+}
+
+.xp-bar-track {
+    width: 100%;
+    height: 10px;
+    background-color: #E2E8F0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 0;
+}
+
+/* Level-Up Overlay */
+.levelup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.levelup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.levelup-card {
+    background-color: white;
+    border-radius: var(--radius-large);
+    padding: 40px 50px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: levelUpBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 360px;
+}
+
+.levelup-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+}
+
+.levelup-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.levelup-level {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--secondary-color);
+    margin-bottom: 4px;
+}
+
+.levelup-rank {
+    font-size: 1.2rem;
+    color: #636E72;
+    font-weight: 600;
+}
+
+@keyframes levelUpBounce {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 /* Animations */
 @keyframes slideIn {
     from { opacity: 0; transform: translateY(-20px); }
