@@ -1,76 +1,92 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Interativo - Quiz</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Efeito de confete para quando acertar a resposta -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-</head>
-<body>
-
-    <header>
-        <div class="logo-container">
-            <span class="logo-text">🚀 Matemática CAIC</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="jogos.html">Jogos</a></li>
-                <li><a href="videos.html">Vídeos</a></li>
-                <li><a href="quiz.html" class="active">Quiz</a></li>
-            </ul>
-        </nav>
-        <div id="xpBarContainer"></div>
-    </header>
-
-    <main>
-        <h1>Desafio Quiz! 🧠</h1>
-        <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
-
-        <div class="quiz-container" id="quizContainer">
-            <!-- Indicador de Progresso -->
-            <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
-                Pergunta 1 de X
-            </div>
-
-            <!-- Pergunta -->
-            <div class="question-text" id="questionText">
-                Carregando pergunta...
-            </div>
-
-            <!-- Botões de Opções -->
-            <div class="options-grid" id="optionsGrid">
-                <!-- Botões gerados via JS -->
-            </div>
-
-            <!-- Card de Resolução Passo a Passo (Escondido inicialmente) -->
-            <div class="resolution-card" id="resolutionCard">
-                <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
-                <p id="resolutionText">Aqui entra a resolução explicativa.</p>
-                <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
-            </div>
-            
-            <!-- Botão de Próxima quando acerta -->
-            <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
-                Excelente! Próxima Pergunta ➔
-            </button>
-        </div>
-        
-        <!-- Tela Final -->
-        <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
-            <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
-            <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
-            <button class="next-btn" onclick="location.reload()" style="max-width: 300px; margin: 30px auto;">Jogar Novamente 🔄</button>
-        </div>
-
-    </main>
-
-    <!-- Importa os dados primeiro, depois a lógica -->
-    <script src="js/data.js"></script>
-    <script src="js/xp.js"></script>
-    <script src="js/quiz.js"></script>
-    <script src="js/main.js"></script>
-</body>
-</html>
+1|<!DOCTYPE html>
+2|<html lang="pt-BR">
+3|<head>
+4|    <meta charset="UTF-8">
+5|    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+6|    <title>Portal Interativo - Quiz</title>
+7|    <link rel="stylesheet" href="css/style.css">
+8|    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+9|</head>
+10|<body>
+11|
+12|    <header>
+13|        <div class="logo-container">
+14|            <span class="logo-text">🚀 Matemática CAIC</span>
+15|        </div>
+16|        <nav>
+17|            <ul>
+18|                <li><a href="index.html">Início</a></li>
+19|                <li><a href="jogos.html">Jogos</a></li>
+20|                <li><a href="videos.html">Vídeos</a></li>
+21|                <li><a href="quiz.html" class="active">Quiz</a></li>
+22|                <li><a href="dashboard.html" style="color: var(--primary-color);">👨‍🏫 Professor</a></li>
+23|            </ul>
+24|        </nav>
+25|        <div id="xpBarContainer"></div>
+26|    </header>
+27|
+28|    <main>
+29|        <!-- Tela de Seleção de Categoria -->
+30|        <div id="categorySelection">
+31|            <h1>Escolha seu Desafio! 🧠</h1>
+32|            <p>Qual operação você quer treinar hoje?</p>
+33|            <div class="category-grid" id="categoryGrid"></div>
+34|
+35|            <div id="difficultySelection" style="display: none; margin-top: 30px;">
+36|                <h2 style="text-align: center;">Qual o nível? 🎯</h2>
+37|                <div class="difficulty-grid" id="difficultyGrid"></div>
+38|                <button class="back-link" id="backToCategoriesFromDiff" style="margin-top: 16px;">🔙 Escolher outra operação</button>
+39|            </div>
+40|        </div>
+41|
+42|        <!-- Tela do Quiz -->
+43|        <div id="quizScreen" style="display: none;">
+44|            <div id="categoryIndicator" style="text-align: center; margin-bottom: 10px;">
+45|                <span id="categoryBadge"></span>
+46|            </div>
+47|
+48|            <h1>Desafio Quiz! 🧠</h1>
+49|            <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
+50|
+51|            <div class="quiz-container" id="quizContainer">
+52|                <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
+53|                    Pergunta 1 de X
+54|                </div>
+55|
+56|                <div class="question-text" id="questionText">Carregando pergunta...</div>
+57|                <div class="options-grid" id="optionsGrid"></div>
+58|
+59|                <div class="resolution-card" id="resolutionCard">
+60|                    <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
+61|                    <p id="resolutionText">Aqui entra a resolução explicativa.</p>
+62|                    <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
+63|                </div>
+64|                
+65|                <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
+66|                    Excelente! Próxima Pergunta ➔
+67|                </button>
+68|            </div>
+69|            
+70|            <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
+71|                <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
+72|                <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
+73|                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+74|                    <button class="next-btn" id="replayBtn" style="max-width: 250px;">Jogar Novamente 🔄</button>
+75|                    <button class="next-btn" id="backToCategoriesBtn" style="max-width: 250px; background-color: #6C5CE7;">Escolher Outra Categoria 🔙</button>
+76|                </div>
+77|            </div>
+78|        </div>
+79|    </main>
+80|
+81|    <script src="js/data.js"></script>
+82|<<<<<<< HEAD
+83|    <script src="js/xp.js"></script>
+84|=======
+85|    <script src="js/questaoDinamica.js"></script>
+86|    <script src="js/distratores.js"></script>
+87|>>>>>>> dev
+88|    <script src="js/quiz.js"></script>
+89|    <script src="js/main.js"></script>
+90|</body>
+91|</html>
+92|
