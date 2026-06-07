@@ -194,7 +194,7 @@ const AjudaModal = {
 // INICIALIZAÇÃO: Botão de Ajuda no Header
 // ==========================================
 function initAjuda() {
-    const header = document.querySelector('body > header');
+    var header = document.querySelector('body > header');
     if (!header) {
         console.warn('ajuda.js: header não encontrado.');
         return;
@@ -202,20 +202,47 @@ function initAjuda() {
 
     if (document.getElementById('btnAjuda')) return;
 
-    const btn = document.createElement('button');
+    // Container para os botões de ajuda
+    var btnContainer = document.createElement('div');
+    btnContainer.style.display = 'flex';
+    btnContainer.style.gap = '8px';
+    btnContainer.style.alignItems = 'center';
+
+    // Botão "Como Funciona"
+    var btn = document.createElement('button');
     btn.id = 'btnAjuda';
     btn.className = 'ajuda-trigger';
     btn.setAttribute('aria-label', 'Abrir guia de uso');
     btn.setAttribute('title', 'Como Funciona');
     btn.innerHTML = '<span class="ajuda-icon">?</span><span class="ajuda-label">Como Funciona</span>';
+    btn.addEventListener('click', function () { AjudaModal.abrir(); });
+    btnContainer.appendChild(btn);
 
-    btn.addEventListener('click', () => AjudaModal.abrir());
+    // Botão "Tour" (reiniciar tour guiado)
+    if (typeof TourGuide !== 'undefined' && TourGuide.reiniciar) {
+        var btnTour = document.createElement('button');
+        btnTour.id = 'btnTour';
+        btnTour.className = 'ajuda-trigger';
+        btnTour.style.backgroundColor = '#4ECDC4';
+        btnTour.style.color = '#FFFFFF';
+        btnTour.setAttribute('aria-label', 'Reiniciar tour guiado');
+        btnTour.setAttribute('title', 'Tour Guiado');
+        btnTour.innerHTML = '<span class="ajuda-icon" style="background-color:#FFFFFF;color:#4ECDC4;">🗺️</span><span class="ajuda-label">Tour</span>';
+        btnTour.addEventListener('click', function () { TourGuide.reiniciar(); });
+        btnTour.addEventListener('mouseenter', function () {
+            btnTour.style.backgroundColor = '#38B2AC';
+        });
+        btnTour.addEventListener('mouseleave', function () {
+            btnTour.style.backgroundColor = '#4ECDC4';
+        });
+        btnContainer.appendChild(btnTour);
+    }
 
-    const nav = header.querySelector('nav');
+    var nav = header.querySelector('nav');
     if (nav) {
-        header.insertBefore(btn, nav);
+        header.insertBefore(btnContainer, nav);
     } else {
-        header.appendChild(btn);
+        header.appendChild(btnContainer);
     }
 }
 
