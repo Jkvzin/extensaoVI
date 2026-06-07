@@ -12,7 +12,7 @@
 12|12|const SUPABASE_URL = ''; // To be filled in PR #8
 13|13|const SUPABASE_KEY = ''; // To be filled in PR #8 (Use APENAS a chave anon. NUNCA a service_role!)
 14|14|let supabase = null;
-15|15|if (SUPABASE_URL && SUPABASE_KEY) {
+15|15|if (SUPABASE_URL && SUPABASE_KEY && typeof window.supabase && SUPABASE_KEY) {
 16|16|    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 17|17|}
 18|18|
