@@ -272,6 +272,23 @@ function showResults() {
 
     document.getElementById('finalScore').innerText = mensagem;
 
+    // --- SISTEMA DE XP ---
+    var xpGanho = 0;
+    if (typeof XPSystem !== 'undefined') {
+        xpGanho = XPSystem.rewards.quizComplete;
+        if (score === filteredQuestions.length) {
+            xpGanho += XPSystem.rewards.quizPerfect;
+        }
+        XPSystem.addXP(xpGanho, 'quiz');
+        XPSystem.refresh();
+    }
+    if (xpGanho > 0) {
+        var xpMsg = document.createElement('p');
+        xpMsg.style.cssText = 'font-size: 1.1rem; color: var(--secondary-color); margin-top: 8px;';
+        xpMsg.textContent = '⭐ +' + xpGanho + ' XP';
+        resultContainer.appendChild(xpMsg);
+    }
+
     if (typeof confetti === 'function') {
         var duration = 3000;
         var end = Date.now() + duration;
