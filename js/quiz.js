@@ -223,14 +223,15 @@
 223|223|    if (isCorrect) {
 224|224|        clickedBtn.classList.add('correct');
 225|225|        score++;
-226|226|
-227|227|        if (typeof confetti === 'function') {
+        if (typeof AudioFeedback !== 'undefined') { AudioFeedback.playAcerto(); }
+        if (typeof confetti === 'function') {
 228|228|            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 229|229|        }
 230|230|        document.getElementById('successNextBtn').style.display = 'block';
 231|231|    } else {
 232|232|        clickedBtn.classList.add('wrong');
-233|233|        correctBtn.classList.add('correct');
+        if (typeof AudioFeedback !== 'undefined') { AudioFeedback.playErro(); }
+        correctBtn.classList.add('correct');
 234|234|        document.getElementById('resolutionText').innerText = question.resolucaoPassoAPasso;
 235|235|        document.getElementById('resolutionCard').classList.add('show');
 236|236|    }
@@ -256,30 +257,6 @@
 256|256|    document.getElementById('quizContainer').style.display = 'none';
 257|257|    var resultContainer = document.getElementById('quizResult');
 258|258|    resultContainer.style.display = 'block';
-259|259|<<<<<<< HEAD
-260|260|    
-261|261|    document.getElementById('finalScore').innerText = 'Você acertou ' + score + ' de ' + filteredQuestions.length + ' perguntas.';
-262|262|
-263|263|    // --- SISTEMA DE XP ---
-264|264|    var xpGanho = 0;
-265|265|    if (typeof XPSystem !== 'undefined') {
-266|266|        xpGanho = XPSystem.rewards.quizComplete;
-267|267|        if (score === filteredQuestions.length) {
-268|268|            xpGanho += XPSystem.rewards.quizPerfect;
-269|269|        }
-270|270|        XPSystem.addXP(xpGanho, 'quiz');
-271|271|        XPSystem.refresh();
-272|272|    }
-273|273|    // Mostra XP ganho
-274|274|    if (xpGanho > 0) {
-275|275|        var xpMsg = document.createElement('p');
-276|276|        xpMsg.style.cssText = 'font-size: 1.1rem; color: var(--secondary-color); margin-top: 8px; animation: pop 0.4s ease;';
-277|277|        xpMsg.textContent = '⭐ +' + xpGanho + ' XP';
-278|278|        resultContainer.appendChild(xpMsg);
-279|279|    }
-280|280|    
-281|281|    // Muito confete para comemorar o fim
-282|282|=======
 283|283|
 284|284|    var pct = Math.round((score / filteredQuestions.length) * 100);
 285|285|    var mensagem = 'Você acertou ' + score + ' de ' + filteredQuestions.length + ' perguntas (' + pct + '%).';
@@ -296,7 +273,27 @@
 296|296|
 297|297|    document.getElementById('finalScore').innerText = mensagem;
 298|298|
-299|299|>>>>>>> dev
+299|299|    // Feedback sonoro de conclusão
+299|299|    if (typeof AudioFeedback !== "undefined") { AudioFeedback.playConclusao(); }
+299|299|
+299|299|    // --- SISTEMA DE XP ---
+299|299|    var xpGanho = 0;
+299|299|    if (typeof XPSystem !== "undefined") {
+299|299|        xpGanho = XPSystem.rewards.quizComplete;
+299|299|        if (score === filteredQuestions.length) {
+299|299|            xpGanho += XPSystem.rewards.quizPerfect;
+299|299|        }
+299|299|        XPSystem.addXP(xpGanho, "quiz");
+299|299|        XPSystem.refresh();
+299|299|    }
+299|299|    if (xpGanho > 0) {
+299|299|        var xpMsg = document.createElement("p");
+299|299|        xpMsg.style.cssText = "font-size: 1.1rem; color: var(--secondary-color); margin-top: 8px; animation: pop 0.4s ease;";
+299|299|        xpMsg.textContent = "⭐ +" + xpGanho + " XP";
+299|299|        resultContainer.appendChild(xpMsg);
+299|299|    }
+299|299|
+299|299|    // Confete para comemorar
 300|300|    if (typeof confetti === 'function') {
 301|301|        var duration = 3000;
 302|302|        var end = Date.now() + duration;

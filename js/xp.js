@@ -182,6 +182,11 @@ var XPSystem = (function() {
     function showLevelUp(newLevel) {
         var levelInfo = getLevelInfo(newLevel);
 
+        // Feedback sonoro
+        if (typeof AudioFeedback !== 'undefined') {
+            AudioFeedback.playLevelUp();
+        }
+
         // Cria overlay
         var overlay = document.createElement('div');
         overlay.className = 'levelup-overlay';
