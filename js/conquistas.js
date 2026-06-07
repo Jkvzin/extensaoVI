@@ -21,7 +21,8 @@ const avataresLoja = [
 ];
 
 // Estado local mockado (Seria do backend/Supabase futuramente)
-let moedas = parseInt(localStorage.getItem('moedas')) || 300; // Começa com 300 para testar
+let storedMoedas = localStorage.getItem('moedas');
+let moedas = storedMoedas !== null ? parseInt(storedMoedas) : 300; // Começa com 300 para testar
 let badgesDesbloqueados = JSON.parse(localStorage.getItem('badgesDesbloqueados')) || ['b1', 'b2'];
 let avataresComprados = JSON.parse(localStorage.getItem('avataresComprados')) || ['a1', 'a2'];
 let avatarSelecionado = localStorage.getItem('avatarSelecionado') || 'a1';
