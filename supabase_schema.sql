@@ -1,14 +1,14 @@
 -- Tabela Turmas
-CREATE TABLE turmas (
+CREATE TABLE IF NOT EXISTS turmas (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     nome text NOT NULL,
     ano_letivo integer,
-    professor_id uuid REFERENCES auth.users NOT NULL,
+    professor_id uuid REFERENCES auth.users ON DELETE CASCADE NOT NULL,
     created_at timestamptz DEFAULT now()
 );
 
 -- Tabela Alunos
-CREATE TABLE alunos (
+CREATE TABLE IF NOT EXISTS alunos (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     nome text NOT NULL,
     turma_id uuid REFERENCES turmas(id) ON DELETE CASCADE,
@@ -17,7 +17,7 @@ CREATE TABLE alunos (
 );
 
 -- Tabela Progresso
-CREATE TABLE progresso (
+CREATE TABLE IF NOT EXISTS progresso (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     aluno_id uuid REFERENCES alunos(id) ON DELETE CASCADE,
     tipo_atividade text,
@@ -25,6 +25,11 @@ CREATE TABLE progresso (
     detalhes jsonb,
     created_at timestamptz DEFAULT now()
 );
+
+-- Índices para otimização de subqueries e RLS
+CREATE INDEX IF NOT EXISTS idx_turmas_professor_id ON turmas(professor_id);
+CREATE INDEX IF NOT EXISTS idx_alunos_turma_id ON alunos(turma_id);
+CREATE INDEX IF NOT EXISTS idx_progresso_aluno_id ON progresso(aluno_id);
 
 -- Configuração de Row Level Security (RLS)
 
@@ -72,9 +77,13 @@ USING (auth.uid() IN (SELECT professor_id FROM turmas WHERE id = turma_id));
 
 -- Políticas para Progresso
 -- Inserção pelo frontend (público) - qualquer aluno logado visualmente pode enviar progresso
+-- TODO: Restringir isso no futuro, atualmente permite spoofing se alguém descobrir o aluno_id
 CREATE POLICY "Alunos inserem progresso" 
 ON progresso FOR INSERT 
 WITH CHECK (true);
+
+-- Nota: Não há políticas de UPDATE/DELETE para progresso intencionalmente.
+-- O progresso é um log imutável de atividades. Apenas inserções são permitidas.
 
 -- Apenas o professor dono da turma do aluno pode ler o progresso
 CREATE POLICY "Professores leem progresso de suas turmas" 
