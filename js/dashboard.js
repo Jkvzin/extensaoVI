@@ -22,7 +22,7 @@ let chartEvolucao = null;
 
 // Initialize Supabase (Optional for now)
 const SUPABASE_URL = ''; // To be filled in PR #8
-const SUPABASE_KEY = ''; // To be filled in PR #8
+const SUPABASE_KEY = ''; // To be filled in PR #8 (Use APENAS a chave anon. NUNCA a service_role!)
 let supabase = null;
 if (SUPABASE_URL && SUPABASE_KEY) {
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -116,7 +116,7 @@ function setupModals() {
         const ano = document.getElementById('ano-letivo').value;
         
         MockDB.turmas.push({
-            id: Date.now().toString(),
+            id: crypto.randomUUID(),
             nome,
             ano_letivo: ano,
             created_at: new Date().toISOString()
@@ -137,7 +137,7 @@ function setupModals() {
         const nome = document.getElementById('nome-aluno').value;
         
         MockDB.alunos.push({
-            id: Date.now().toString(),
+            id: crypto.randomUUID(),
             nome,
             turma_id: currentTurmaId,
             avatar_url: ['👦', '👧', '👽', '🤖'][Math.floor(Math.random() * 4)]
@@ -160,8 +160,12 @@ function setupModals() {
 function checkAuth() {
     const savedUser = localStorage.getItem('profUser');
     if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        showDashboard();
+        try {
+            currentUser = JSON.parse(savedUser);
+            showDashboard();
+        } catch (e) {
+            showAuth();
+        }
     } else {
         showAuth();
     }
@@ -188,12 +192,17 @@ function renderTurmas() {
         card.className = 'card';
         card.innerHTML = `
             <div class="card-icon">🏫</div>
-            <h3 class="card-title">${turma.nome}</h3>
-            <p>${turma.ano_letivo}</p>
-            <p style="font-size: 0.9rem; color: #718096;">${alunosCount} alunos</p>
-            <button class="btn-secondary" style="margin-top: 15px;" onclick="abrirTurma('${turma.id}', '${turma.nome}')">Ver Alunos</button>
-            <button class="btn-secondary" style="margin-top: 10px; background-color: var(--primary-color);" onclick="excluirTurma('${turma.id}')">Excluir</button>
+            <h3 class="card-title"></h3>
+            <p class="turma-ano"></p>
+            <p style="font-size: 0.9rem; color: #718096;" class="turma-count"></p>
+            <button class="btn-secondary btn-ver-alunos" style="margin-top: 15px;">Ver Alunos</button>
+            <button class="btn-secondary btn-excluir" style="margin-top: 10px; background-color: var(--primary-color);">Excluir</button>
         `;
+        card.querySelector('.card-title').textContent = turma.nome;
+        card.querySelector('.turma-ano').textContent = turma.ano_letivo;
+        card.querySelector('.turma-count').textContent = alunosCount + ' alunos';
+        card.querySelector('.btn-ver-alunos').addEventListener('click', () => abrirTurma(turma.id, turma.nome));
+        card.querySelector('.btn-excluir').addEventListener('click', () => excluirTurma(turma.id));
         turmasList.appendChild(card);
     });
 }
@@ -227,12 +236,15 @@ function renderAlunos(turmaId) {
     alunos.forEach(aluno => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td style="font-size: 2rem;">${aluno.avatar_url}</td>
-            <td style="font-weight: bold;">${aluno.nome}</td>
+            <td style="font-size: 2rem;" class="aluno-avatar"></td>
+            <td style="font-weight: bold;" class="aluno-nome"></td>
             <td>
-                <button class="btn-secondary" style="padding: 6px 12px; background-color: var(--primary-color);" onclick="excluirAluno('${aluno.id}')">Remover</button>
+                <button class="btn-secondary btn-remover" style="padding: 6px 12px; background-color: var(--primary-color);">Remover</button>
             </td>
         `;
+        tr.querySelector('.aluno-avatar').textContent = aluno.avatar_url;
+        tr.querySelector('.aluno-nome').textContent = aluno.nome;
+        tr.querySelector('.btn-remover').addEventListener('click', () => excluirAluno(aluno.id));
         alunosList.appendChild(tr);
     });
 }
@@ -268,9 +280,10 @@ function updateMetrics() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>#${index + 1}</td>
-            <td>${aluno.avatar_url} ${aluno.nome}</td>
+            <td class="ranking-nome"></td>
             <td style="font-weight: bold; color: var(--secondary-color);">${1500 - (index * 200)} XP</td>
         `;
+        tr.querySelector('.ranking-nome').textContent = aluno.avatar_url + ' ' + aluno.nome;
         rankingList.appendChild(tr);
     });
     
@@ -278,7 +291,9 @@ function updateMetrics() {
 }
 
 function setupCharts() {
-    const ctxOps = document.getElementById('chart-operacoes').getContext('2d');
+    const canvasOps = document.getElementById('chart-operacoes');
+    if (!canvasOps) return;
+    const ctxOps = canvasOps.getContext('2d');
     chartOperacoes = new Chart(ctxOps, {
         type: 'bar',
         data: {
@@ -296,7 +311,9 @@ function setupCharts() {
         }
     });
 
-    const ctxEvolucao = document.getElementById('chart-evolucao').getContext('2d');
+    const canvasEvolucao = document.getElementById('chart-evolucao');
+    if (!canvasEvolucao) return;
+    const ctxEvolucao = canvasEvolucao.getContext('2d');
     chartEvolucao = new Chart(ctxEvolucao, {
         type: 'line',
         data: {
