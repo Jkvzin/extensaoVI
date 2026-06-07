@@ -1,92 +1,171 @@
-1|<!DOCTYPE html>
-2|<html lang="pt-BR">
-3|<head>
-4|    <meta charset="UTF-8">
-5|    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-6|    <title>Portal Interativo - Quiz</title>
-7|    <link rel="stylesheet" href="css/style.css">
-8|    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-9|</head>
-10|<body>
-11|
-12|    <header>
-13|        <div class="logo-container">
-14|            <span class="logo-text">🚀 Matemática CAIC</span>
-15|        </div>
-16|        <nav>
-17|            <ul>
-18|                <li><a href="index.html">Início</a></li>
-19|                <li><a href="jogos.html">Jogos</a></li>
-20|                <li><a href="videos.html">Vídeos</a></li>
-21|                <li><a href="quiz.html" class="active">Quiz</a></li>
-22|                <li><a href="dashboard.html" style="color: var(--primary-color);">👨‍🏫 Professor</a></li>
-23|            </ul>
-24|        </nav>
-25|        <div id="xpBarContainer"></div>
-26|    </header>
-27|
-28|    <main>
-29|        <!-- Tela de Seleção de Categoria -->
-30|        <div id="categorySelection">
-31|            <h1>Escolha seu Desafio! 🧠</h1>
-32|            <p>Qual operação você quer treinar hoje?</p>
-33|            <div class="category-grid" id="categoryGrid"></div>
-34|
-35|            <div id="difficultySelection" style="display: none; margin-top: 30px;">
-36|                <h2 style="text-align: center;">Qual o nível? 🎯</h2>
-37|                <div class="difficulty-grid" id="difficultyGrid"></div>
-38|                <button class="back-link" id="backToCategoriesFromDiff" style="margin-top: 16px;">🔙 Escolher outra operação</button>
-39|            </div>
-40|        </div>
-41|
-42|        <!-- Tela do Quiz -->
-43|        <div id="quizScreen" style="display: none;">
-44|            <div id="categoryIndicator" style="text-align: center; margin-bottom: 10px;">
-45|                <span id="categoryBadge"></span>
-46|            </div>
-47|
-48|            <h1>Desafio Quiz! 🧠</h1>
-49|            <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
-50|
-51|            <div class="quiz-container" id="quizContainer">
-52|                <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
-53|                    Pergunta 1 de X
-54|                </div>
-55|
-56|                <div class="question-text" id="questionText">Carregando pergunta...</div>
-57|                <div class="options-grid" id="optionsGrid"></div>
-58|
-59|                <div class="resolution-card" id="resolutionCard">
-60|                    <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
-61|                    <p id="resolutionText">Aqui entra a resolução explicativa.</p>
-62|                    <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
-63|                </div>
-64|                
-65|                <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
-66|                    Excelente! Próxima Pergunta ➔
-67|                </button>
-68|            </div>
-69|            
-70|            <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
-71|                <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
-72|                <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
-73|                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-74|                    <button class="next-btn" id="replayBtn" style="max-width: 250px;">Jogar Novamente 🔄</button>
-75|                    <button class="next-btn" id="backToCategoriesBtn" style="max-width: 250px; background-color: #6C5CE7;">Escolher Outra Categoria 🔙</button>
-76|                </div>
-77|            </div>
-78|        </div>
-79|    </main>
-80|
-81|    <script src="js/data.js"></script>
-82|<<<<<<< HEAD
-83|    <script src="js/xp.js"></script>
-84|=======
-85|    <script src="js/questaoDinamica.js"></script>
-86|    <script src="js/distratores.js"></script>
-87|>>>>>>> dev
-88|    <script src="js/quiz.js"></script>
-89|    <script src="js/main.js"></script>
-90|</body>
-91|</html>
-92|
+1|<<<<<<< HEAD
+2|1|<!DOCTYPE html>
+3|2|<html lang="pt-BR">
+4|3|<head>
+5|4|    <meta charset="UTF-8">
+6|5|    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+7|6|    <title>Portal Interativo - Quiz</title>
+8|7|    <link rel="stylesheet" href="css/style.css">
+9|8|    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+10|9|</head>
+11|10|<body>
+12|11|
+13|12|    <header>
+14|13|        <div class="logo-container">
+15|14|            <span class="logo-text">🚀 Matemática CAIC</span>
+16|15|        </div>
+17|16|        <nav>
+18|17|            <ul>
+19|18|                <li><a href="index.html">Início</a></li>
+20|19|                <li><a href="jogos.html">Jogos</a></li>
+21|20|                <li><a href="videos.html">Vídeos</a></li>
+22|21|                <li><a href="quiz.html" class="active">Quiz</a></li>
+23|22|                <li><a href="dashboard.html" style="color: var(--primary-color);">👨‍🏫 Professor</a></li>
+24|23|            </ul>
+25|24|        </nav>
+26|25|        <div id="xpBarContainer"></div>
+27|26|    </header>
+28|27|
+29|28|    <main>
+30|29|        <!-- Tela de Seleção de Categoria -->
+31|30|        <div id="categorySelection">
+32|31|            <h1>Escolha seu Desafio! 🧠</h1>
+33|32|            <p>Qual operação você quer treinar hoje?</p>
+34|33|            <div class="category-grid" id="categoryGrid"></div>
+35|34|
+36|35|            <div id="difficultySelection" style="display: none; margin-top: 30px;">
+37|36|                <h2 style="text-align: center;">Qual o nível? 🎯</h2>
+38|37|                <div class="difficulty-grid" id="difficultyGrid"></div>
+39|38|                <button class="back-link" id="backToCategoriesFromDiff" style="margin-top: 16px;">🔙 Escolher outra operação</button>
+40|39|            </div>
+41|40|        </div>
+42|41|
+43|42|        <!-- Tela do Quiz -->
+44|43|        <div id="quizScreen" style="display: none;">
+45|44|            <div id="categoryIndicator" style="text-align: center; margin-bottom: 10px;">
+46|45|                <span id="categoryBadge"></span>
+47|46|            </div>
+48|47|
+49|48|            <h1>Desafio Quiz! 🧠</h1>
+50|49|            <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
+51|50|
+52|51|            <div class="quiz-container" id="quizContainer">
+53|52|                <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
+54|53|                    Pergunta 1 de X
+55|54|                </div>
+56|55|
+57|56|                <div class="question-text" id="questionText">Carregando pergunta...</div>
+58|57|                <div class="options-grid" id="optionsGrid"></div>
+59|58|
+60|59|                <div class="resolution-card" id="resolutionCard">
+61|60|                    <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
+62|61|                    <p id="resolutionText">Aqui entra a resolução explicativa.</p>
+63|62|                    <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
+64|63|                </div>
+65|64|                
+66|65|                <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
+67|66|                    Excelente! Próxima Pergunta ➔
+68|67|                </button>
+69|68|            </div>
+70|69|            
+71|70|            <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
+72|71|                <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
+73|72|                <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
+74|73|                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+75|74|                    <button class="next-btn" id="replayBtn" style="max-width: 250px;">Jogar Novamente 🔄</button>
+76|75|                    <button class="next-btn" id="backToCategoriesBtn" style="max-width: 250px; background-color: #6C5CE7;">Escolher Outra Categoria 🔙</button>
+77|76|                </div>
+78|77|            </div>
+79|78|        </div>
+80|79|    </main>
+81|80|
+82|81|    <script src="js/data.js"></script>
+83|82|<<<<<<< HEAD
+84|83|    <script src="js/xp.js"></script>
+85|84|=======
+86|85|    <script src="js/questaoDinamica.js"></script>
+87|86|    <script src="js/distratores.js"></script>
+88|87|>>>>>>> dev
+89|88|    <script src="js/quiz.js"></script>
+90|89|    <script src="js/main.js"></script>
+91|90|</body>
+92|91|</html>
+93|92|
+94|=======
+95|<!DOCTYPE html>
+96|<html lang="pt-BR">
+97|<head>
+98|    <meta charset="UTF-8">
+99|    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+100|    <title>Portal Interativo - Quiz</title>
+101|    <link rel="stylesheet" href="css/style.css">
+102|    <!-- Efeito de confete para quando acertar a resposta -->
+103|    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+104|</head>
+105|<body>
+106|
+107|    <header>
+108|        <div class="logo-container">
+109|            <span class="logo-text">🚀 Matemática CAIC</span>
+110|        </div>
+111|        <nav>
+112|            <ul>
+113|                <li><a href="index.html">Início</a></li>
+114|                <li><a href="jogos.html">Jogos</a></li>
+115|                <li><a href="videos.html">Vídeos</a></li>
+116|                <li><a href="quiz.html" class="active">Quiz</a></li>
+117|                <li><a href="conquistas.html">🏆 Conquistas</a></li>
+118|            </ul>
+119|        </nav>
+120|    </header>
+121|
+122|    <main>
+123|        <h1>Desafio Quiz! 🧠</h1>
+124|        <p>Teste o que você aprendeu. Leia com calma e escolha a melhor resposta.</p>
+125|
+126|        <div class="quiz-container" id="quizContainer">
+127|            <!-- Indicador de Progresso -->
+128|            <div id="quizProgress" style="text-align: right; margin-bottom: 15px; font-weight: bold; color: var(--secondary-color);">
+129|                Pergunta 1 de X
+130|            </div>
+131|
+132|            <!-- Pergunta -->
+133|            <div class="question-text" id="questionText">
+134|                Carregando pergunta...
+135|            </div>
+136|
+137|            <!-- Botões de Opções -->
+138|            <div class="options-grid" id="optionsGrid">
+139|                <!-- Botões gerados via JS -->
+140|            </div>
+141|
+142|            <!-- Card de Resolução Passo a Passo (Escondido inicialmente) -->
+143|            <div class="resolution-card" id="resolutionCard">
+144|                <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
+145|                <p id="resolutionText">Aqui entra a resolução explicativa.</p>
+146|                <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
+147|            </div>
+148|            
+149|            <!-- Botão de Próxima quando acerta -->
+150|            <button class="next-btn" id="successNextBtn" style="display: none; background-color: var(--success-color);">
+151|                Excelente! Próxima Pergunta ➔
+152|            </button>
+153|        </div>
+154|        
+155|        <!-- Tela Final -->
+156|        <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
+157|            <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
+158|            <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
+159|            <button class="next-btn" onclick="location.reload()" style="max-width: 300px; margin: 30px auto;">Jogar Novamente 🔄</button>
+160|        </div>
+161|
+162|    </main>
+163|
+164|    <!-- Importa os dados primeiro, depois a lógica -->
+165|    <script src="js/data.js"></script>
+166|    <script src="js/quiz.js"></script>
+167|    <script src="js/main.js"></script>
+168|</body>
+169|</html>
+170|>>>>>>> fix/issue-5
+171|
