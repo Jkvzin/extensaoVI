@@ -13,21 +13,38 @@ const VIDEOS_DATA = [
     {
         id: "video_1",
         titulo: "Aprendendo a Somar",
-        topico: "Adição",
-        // Coloque apenas o link de "embed" do YouTube
-        youtubeUrl: "https://www.youtube.com/embed/5aLhA_6x9E0" 
+        topico: "Adicao",
+        youtubeUrl: "https://www.youtube.com/embed/5aLhA_6x9E0"
     },
     {
         id: "video_2",
-        titulo: "Tabuada do 2",
-        topico: "Multiplicação",
-        youtubeUrl: "https://www.youtube.com/embed/yVwL3P0_xM0"
+        titulo: "Aprendendo a Subtrair",
+        topico: "Subtracao",
+        youtubeUrl: "https://www.youtube.com/embed/yGTO5Rr_vMQ"
     },
     {
         id: "video_3",
-        titulo: "O que é Fração?",
-        topico: "Frações",
+        titulo: "Multiplicacao e Divisao",
+        topico: "Multiplicacao e Divisao",
+        youtubeUrl: "https://www.youtube.com/embed/_vutWGLAuqM"
+    },
+    {
+        id: "video_4",
+        titulo: "Tabuada do 2 ao 9",
+        topico: "Multiplicacao",
+        youtubeUrl: "https://www.youtube.com/embed/yVwL3P0_xM0"
+    },
+    {
+        id: "video_5",
+        titulo: "O que e Fracao?",
+        topico: "Fracoes",
         youtubeUrl: "https://www.youtube.com/embed/1v0T4j7b_f8"
+    },
+    {
+        id: "video_6",
+        titulo: "MMC e MDC - Minimo Multiplo Comum",
+        topico: "MMC e MDC",
+        youtubeUrl: "https://www.youtube.com/embed/3w4T2wY7nK0"
     }
 ];
 
@@ -41,20 +58,6 @@ const JOGOS_DATA = [
         icone: "🐍",
         url: "https://grouwber.github.io/trabalhoandre/",
         corHover: "#4ECDC4"
-    },
-    {
-        id: "jogo_2",
-        titulo: "Batalha Naval da Matemática",
-        icone: "🚢",
-        url: "#", 
-        corHover: "#FF6B6B"
-    },
-    {
-        id: "jogo_3",
-        titulo: "Quebra-Cabeça Geométrico",
-        icone: "🧩",
-        url: "#",
-        corHover: "#FFE66D"
     }
 ];
 
