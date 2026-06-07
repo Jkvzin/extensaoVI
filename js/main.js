@@ -43,15 +43,40 @@ document.addEventListener("DOMContentLoaded", () => {
             profileDiv.className = 'user-profile';
             profileDiv.style.display = 'flex';
             profileDiv.style.alignItems = 'center';
-            profileDiv.innerHTML = `
-                <span style="font-size: 1.5rem; margin-right: 10px;">${student.avatar_url}</span>
-                <span style="font-weight: bold; margin-right: 15px;">${student.nome}</span>
-                <a href="#" id="logout-student" style="font-size: 0.9rem; color: var(--primary-color); text-decoration: underline;">Trocar de aluno</a>
-            `;
+            const avatarSpan = document.createElement('span');
+            avatarSpan.style.fontSize = '1.5rem';
+            avatarSpan.style.marginRight = '10px';
+            avatarSpan.textContent = student.avatar_url;
+
+            const nameSpan = document.createElement('span');
+            nameSpan.style.fontWeight = 'bold';
+            nameSpan.style.marginRight = '15px';
+            nameSpan.textContent = student.nome;
+            
+            if (student.id === 'visitante') {
+                const visitBadge = document.createElement('span');
+                visitBadge.textContent = ' (Visitante)';
+                visitBadge.style.fontSize = '0.8rem';
+                visitBadge.style.color = 'var(--primary-color)';
+                visitBadge.style.fontWeight = 'normal';
+                nameSpan.appendChild(visitBadge);
+            }
+
+            const logoutLink = document.createElement('a');
+            logoutLink.href = '#';
+            logoutLink.id = 'logout-student';
+            logoutLink.style.fontSize = '0.9rem';
+            logoutLink.style.color = 'var(--primary-color)';
+            logoutLink.style.textDecoration = 'underline';
+            logoutLink.textContent = 'Trocar de aluno';
+            
+            profileDiv.appendChild(avatarSpan);
+            profileDiv.appendChild(nameSpan);
+            profileDiv.appendChild(logoutLink);
             
             header.appendChild(profileDiv);
 
-            document.getElementById('logout-student').addEventListener('click', (e) => {
+            logoutLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('currentStudent');
                 window.location.href = 'login.html';

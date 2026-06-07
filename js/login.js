@@ -1,18 +1,6 @@
 /* js/login.js */
 
-// Mock Database (Fallback while Supabase is not configured - Issue #8)
-const MockDB = {
-    turmas: [
-        { id: '1', nome: '3º Ano A', icone: '🏫' },
-        { id: '2', nome: '4º Ano B', icone: '🏫' }
-    ],
-    alunos: [
-        { id: '101', nome: 'Joãozinho', turma_id: '1', avatar_url: '👦' },
-        { id: '102', nome: 'Mariazinha', turma_id: '1', avatar_url: '👧' },
-        { id: '103', nome: 'Pedrinho', turma_id: '2', avatar_url: '👦' },
-        { id: '104', nome: 'Ana', turma_id: '2', avatar_url: '👧' }
-    ]
-};
+// MockDB agora é carregado de js/mock-data.js
 
 // Elements
 const stepTurma = document.getElementById('step-turma');
