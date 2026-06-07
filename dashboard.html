@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Matemática - Dashboard do Professor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <span class="logo-text">🚀 Matemática CAIC</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="videos.html">Vídeos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="dashboard.html" class="active">Professor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="app-container">
+        <!-- Auth View -->
+        <section id="auth-view" class="dashboard-section">
+            <div class="auth-card">
+                <h2>Acesso do Professor</h2>
+                <p>Faça login para gerenciar suas turmas e visualizar o desempenho.</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" required placeholder="professor@caic.com.br">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" required placeholder="******">
+                    </div>
+                    <button type="submit" class="btn-primary">Entrar</button>
+                    <p id="auth-error" class="error-msg"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Dashboard View -->
+        <section id="dashboard-view" class="dashboard-section" style="display: none;">
+            <div class="dashboard-header">
+                <h2>Painel de Controle</h2>
+                <button id="logout-btn" class="btn-secondary">Sair</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="turmas">Minhas Turmas</button>
+                <button class="tab-btn" data-tab="metricas">Métricas e Relatórios</button>
+            </div>
+
+            <!-- Turmas Tab -->
+            <div id="tab-turmas" class="tab-content active">
+                <div class="action-bar">
+                    <h3>Gerenciar Turmas</h3>
+                    <button id="btn-nova-turma" class="btn-primary">+ Nova Turma</button>
+                </div>
+                <div class="grid-container" id="turmas-list">
+                    <!-- Turmas renderizadas aqui -->
+                </div>
+
+                <div id="alunos-container" style="display: none; margin-top: 40px;">
+                    <div class="action-bar">
+                        <h3 id="turma-selecionada-nome">Turma</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="btn-voltar-turmas" class="btn-secondary">Voltar</button>
+                            <button id="btn-novo-aluno" class="btn-primary">+ Novo Aluno</button>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alunos-list">
+                            <!-- Alunos renderizados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Métricas Tab -->
+            <div id="tab-metricas" class="tab-content">
+                <div class="action-bar">
+                    <h3>Desempenho Geral</h3>
+                    <select id="filtro-turma">
+                        <option value="">Selecione uma turma</option>
+                    </select>
+                    <button id="btn-export-pdf" class="btn-secondary">Exportar PDF</button>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h4>Média de Acertos</h4>
+                        <p class="metric-value" id="metric-acertos">--%</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Quizzes Concluídos</h4>
+                        <p class="metric-value" id="metric-quizzes">--</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Taxa de Engajamento</h4>
+                        <p class="metric-value" id="metric-engajamento">--%</p>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h4>Desempenho por Operação</h4>
+                        <canvas id="chart-operacoes"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h4>Evolução Semanal</h4>
+                        <canvas id="chart-evolucao"></canvas>
+                    </div>
+                </div>
+                
+                <div class="ranking-container" style="margin-top: 30px;">
+                    <h4>Ranking da Turma</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Aluno</th>
+                                <th>Pontuação Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Nova Turma -->
+    <div id="modal-turma" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Nova Turma</h2>
+            <form id="form-turma">
+                <div class="form-group">
+                    <label>Nome da Turma</label>
+                    <input type="text" id="nome-turma" required placeholder="Ex: 3º Ano A">
+                </div>
+                <div class="form-group">
+                    <label>Ano Letivo</label>
+                    <input type="number" id="ano-letivo" required value="2026">
+                </div>
+                <button type="submit" class="btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Novo Aluno -->
+    <div id="modal-aluno" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Adicionar Aluno</h2>
+            <form id="form-aluno">
+                <div class="form-group">
+                    <label>Nome do Aluno</label>
+                    <input type="text" id="nome-aluno" required placeholder="Nome completo">
+                </div>
+                <button type="submit" class="btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
