@@ -1,18 +1,6 @@
 /* js/dashboard.js */
 
-// Mock Database (Fallback while Supabase is not configured)
-const MockDB = {
-    turmas: [
-        { id: '1', nome: '3º Ano A', ano_letivo: 2026, created_at: new Date().toISOString() },
-        { id: '2', nome: '4º Ano B', ano_letivo: 2026, created_at: new Date().toISOString() }
-    ],
-    alunos: [
-        { id: '101', nome: 'Joãozinho', turma_id: '1', avatar_url: '👦' },
-        { id: '102', nome: 'Mariazinha', turma_id: '1', avatar_url: '👧' },
-        { id: '103', nome: 'Pedrinho', turma_id: '2', avatar_url: '👦' }
-    ],
-    progresso: []
-};
+// MockDB agora é carregado de js/mock-data.js
 
 // State
 let currentUser = null;
