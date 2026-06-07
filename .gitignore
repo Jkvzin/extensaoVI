@@ -1,3 +1,28 @@
+# Environment
 .env
 .env.*
+
+# Dependencies
 node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
