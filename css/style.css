@@ -269,6 +269,47 @@ p {
     margin-bottom: 10px;
 }
 
+/* Botão TTS - Text-to-Speech */
+.tts-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.tts-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+}
+
+.tts-btn:active {
+    transform: scale(0.95);
+}
+
+.tts-btn.speaking {
+    animation: ttsPulse 1s ease-in-out infinite;
+    background-color: #E17055;
+}
+
+.tts-btn--small {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+}
+
+@keyframes ttsPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(225, 112, 85, 0.6); }
+    50% { box-shadow: 0 0 0 10px rgba(225, 112, 85, 0); }
+}
+
 .next-btn {
     margin-top: 24px;
     background-color: var(--secondary-color);
