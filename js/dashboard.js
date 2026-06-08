@@ -59,31 +59,42 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTabs();
     setupModals();
     setupCharts();
-});
 
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    // Mock Auth
-    if (email && password) {
-        currentUser = { email, id: 'prof-1' };
-        localStorage.setItem('profUser', JSON.stringify(currentUser));
-        showDashboard();
-    }
-});
+    // Login form
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        // Mock Auth
+        if (email && password) {
+            currentUser = { email, id: 'prof-1' };
+            localStorage.setItem('profUser', JSON.stringify(currentUser));
+            showDashboard();
+        }
+    });
 
-logoutBtn.addEventListener('click', () => {
-    currentUser = null;
-    localStorage.removeItem('profUser');
-    showAuth();
-});
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+        currentUser = null;
+        localStorage.removeItem('profUser');
+        showAuth();
+    });
 
-btnVoltarTurmas.addEventListener('click', () => {
-    currentTurmaId = null;
-    alunosContainer.style.display = 'none';
-    turmasList.style.display = 'grid';
+    // Voltar turmas
+    btnVoltarTurmas.addEventListener('click', () => {
+        currentTurmaId = null;
+        alunosContainer.style.display = 'none';
+        turmasList.style.display = 'grid';
+    });
+
+    // Filtro turma
+    filtroTurma.addEventListener('change', updateMetrics);
+
+    // Export PDF
+    document.getElementById('btn-export-pdf').addEventListener('click', () => {
+        alert("Exportação de PDF iniciada! (Simulação)");
+    });
 });
 
 // Setup Tabs
@@ -278,43 +289,51 @@ function updateMetrics() {
 }
 
 function setupCharts() {
-    const ctxOps = document.getElementById('chart-operacoes').getContext('2d');
-    chartOperacoes = new Chart(ctxOps, {
-        type: 'bar',
-        data: {
-            labels: ['Adição', 'Subtração', 'Multiplicação', 'Divisão'],
-            datasets: [{
-                label: 'Média de Acertos (%)',
-                data: [90, 85, 60, 45],
-                backgroundColor: ['#4ECDC4', '#4ECDC4', '#FF6B6B', '#FF6B6B'],
-                borderRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true, max: 100 } }
-        }
-    });
+    try {
+        const ctxOps = document.getElementById('chart-operacoes').getContext('2d');
+        chartOperacoes = new Chart(ctxOps, {
+            type: 'bar',
+            data: {
+                labels: ['Adição', 'Subtração', 'Multiplicação', 'Divisão'],
+                datasets: [{
+                    label: 'Média de Acertos (%)',
+                    data: [90, 85, 60, 45],
+                    backgroundColor: ['#4ECDC4', '#4ECDC4', '#FF6B6B', '#FF6B6B'],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, max: 100 } }
+            }
+        });
+    } catch (e) {
+        console.warn('Erro ao criar gráfico de operações:', e.message);
+    }
 
-    const ctxEvolucao = document.getElementById('chart-evolucao').getContext('2d');
-    chartEvolucao = new Chart(ctxEvolucao, {
-        type: 'line',
-        data: {
-            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-            datasets: [{
-                label: 'Pontuação Média',
-                data: [300, 450, 600, 850],
-                borderColor: '#FFE66D',
-                backgroundColor: 'rgba(255, 230, 109, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true } }
-        }
-    });
+    try {
+        const ctxEvolucao = document.getElementById('chart-evolucao').getContext('2d');
+        chartEvolucao = new Chart(ctxEvolucao, {
+            type: 'line',
+            data: {
+                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+                datasets: [{
+                    label: 'Pontuação Média',
+                    data: [300, 450, 600, 850],
+                    borderColor: '#FFE66D',
+                    backgroundColor: 'rgba(255, 230, 109, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    } catch (e) {
+        console.warn('Erro ao criar gráfico de evolução:', e.message);
+    }
 }
 
 function updateCharts() {
@@ -322,10 +341,3 @@ function updateCharts() {
     // chartOperacoes.data.datasets[0].data = newData;
     // chartOperacoes.update();
 }
-
-filtroTurma.addEventListener('change', updateMetrics);
-
-// Export PDF mock
-document.getElementById('btn-export-pdf').addEventListener('click', () => {
-    alert("Exportação de PDF iniciada! (Simulação)");
-});

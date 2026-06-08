@@ -11,7 +11,7 @@ var XPSystem = (function() {
 
     // --- DEFINIÇÃO DE NÍVEIS ---
     var LEVELS = [
-        { level: 1, xpRequired: 0,    title: 'Visitante' },
+        { level: 1, xpRequired: 0,    title: 'Iniciante' },
         { level: 2, xpRequired: 100,  title: 'Aprendiz' },
         { level: 3, xpRequired: 250,  title: 'Estudante' },
         { level: 4, xpRequired: 500,  title: 'Sabido' },

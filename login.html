@@ -10,9 +10,27 @@
 <body class="login-body">
     <div class="login-container">
         <h1>Bem-vindo! 🚀</h1>
-        
+
+        <!-- Step 0: Escolher tipo de usuário -->
+        <div id="step-tipo" class="step-container">
+            <h2>Quem é você?</h2>
+            <div class="login-tipo-grid">
+                <button class="card-selecao" id="btn-aluno">
+                    <span class="avatar">🧑‍🎓</span>
+                    <span>Sou Aluno</span>
+                    <span style="font-size: 0.9rem; font-weight: normal; color: #636E72;">Quero aprender matemática!</span>
+                </button>
+                <button class="card-selecao" id="btn-professor">
+                    <span class="avatar">👨‍🏫</span>
+                    <span>Sou Professor</span>
+                    <span style="font-size: 0.9rem; font-weight: normal; color: #636E72;">Gerenciar turmas e alunos</span>
+                </button>
+            </div>
+        </div>
+
         <!-- Step 1: Selecionar Turma -->
-        <div id="step-turma" class="step-container">
+        <div id="step-turma" class="step-container" style="display: none;">
+            <button id="btn-voltar-tipo" class="btn-voltar">⬅️ Voltar</button>
             <h2>Qual é a sua turma?</h2>
             <div class="grid-turmas" id="turmas-list">
                 <!-- Turmas renderizadas aqui -->
@@ -22,10 +40,24 @@
 
         <!-- Step 2: Selecionar Aluno -->
         <div id="step-aluno" class="step-container" style="display: none;">
-            <button id="btn-voltar" class="btn-voltar">⬅️ Voltar</button>
+            <button id="btn-voltar-turma" class="btn-voltar">⬅️ Voltar</button>
             <h2 id="titulo-turma">Quem é você?</h2>
             <div class="grid-alunos" id="alunos-list">
                 <!-- Alunos renderizados aqui -->
+            </div>
+        </div>
+
+        <!-- Step 3: Digitar Senha -->
+        <div id="step-senha" class="step-container" style="display: none;">
+            <button id="btn-voltar-aluno" class="btn-voltar">⬅️ Voltar</button>
+            <h2 id="titulo-senha">Qual é a sua senha?</h2>
+            <div class="senha-card">
+                <div class="avatar-grande" id="avatar-aluno-selecionado"></div>
+                <p id="nome-aluno-selecionado" style="font-size: 1.5rem; font-weight: 900; margin-bottom: 5px;"></p>
+                <p style="color: #636E72; margin-bottom: 20px;">Digite o código que o professor te deu</p>
+                <input type="password" id="input-senha" class="input-senha" placeholder="Ex: gato123" maxlength="20" autocomplete="off">
+                <p id="senha-erro" class="error-msg" style="display: none;"></p>
+                <button id="btn-entrar" class="btn-entrar">Entrar 🚀</button>
             </div>
         </div>
     </div>
