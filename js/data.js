@@ -12,39 +12,75 @@
 const VIDEOS_DATA = [
     {
         id: "video_1",
-        titulo: "Aprendendo a Somar",
+        titulo: "Aprendendo a Somar - Aula 1",
         topico: "Adicao",
-        youtubeUrl: "https://www.youtube.com/embed/5aLhA_6x9E0"
+        youtubeUrl: "https://www.youtube.com/embed/BnF_z176qyk"
     },
     {
         id: "video_2",
-        titulo: "Aprendendo a Subtrair",
-        topico: "Subtracao",
-        youtubeUrl: "https://www.youtube.com/embed/yGTO5Rr_vMQ"
+        titulo: "Aprendendo a Somar - Aula 2",
+        topico: "Adicao",
+        youtubeUrl: "https://www.youtube.com/embed/ZhvxctjdzY4"
     },
     {
         id: "video_3",
-        titulo: "Multiplicacao e Divisao",
-        topico: "Multiplicacao e Divisao",
-        youtubeUrl: "https://www.youtube.com/embed/_vutWGLAuqM"
+        titulo: "Aprendendo a Subtrair - Aula 1",
+        topico: "Subtracao",
+        youtubeUrl: "https://www.youtube.com/embed/3_WFdppEp_U"
     },
     {
         id: "video_4",
-        titulo: "Tabuada do 2 ao 9",
-        topico: "Multiplicacao",
-        youtubeUrl: "https://www.youtube.com/embed/yVwL3P0_xM0"
+        titulo: "Aprendendo a Subtrair - Aula 2",
+        topico: "Subtracao",
+        youtubeUrl: "https://www.youtube.com/embed/oSzh7TjIsjs"
     },
     {
         id: "video_5",
-        titulo: "O que e Fracao?",
-        topico: "Fracoes",
-        youtubeUrl: "https://www.youtube.com/embed/1v0T4j7b_f8"
+        titulo: "Aprendendo a Subtrair - Aula 3",
+        topico: "Subtracao",
+        youtubeUrl: "https://www.youtube.com/embed/8Q6FnKNq4OU"
     },
     {
         id: "video_6",
-        titulo: "MMC e MDC - Minimo Multiplo Comum",
-        topico: "MMC e MDC",
-        youtubeUrl: "https://www.youtube.com/embed/3w4T2wY7nK0"
+        titulo: "Aprendendo a Multiplicar - Aula 1",
+        topico: "Multiplicacao",
+        youtubeUrl: "https://www.youtube.com/embed/kBy586VyJGw"
+    },
+    {
+        id: "video_7",
+        titulo: "Aprendendo a Multiplicar - Aula 2",
+        topico: "Multiplicacao",
+        youtubeUrl: "https://www.youtube.com/embed/gvQ_qWQiGHE"
+    },
+    {
+        id: "video_8",
+        titulo: "Aprendendo a Multiplicar - Aula 3",
+        topico: "Multiplicacao",
+        youtubeUrl: "https://www.youtube.com/embed/BetgRvNQEC0"
+    },
+    {
+        id: "video_9",
+        titulo: "Aprendendo a Multiplicar - Aula 4",
+        topico: "Multiplicacao",
+        youtubeUrl: "https://www.youtube.com/embed/_IYxfahKDZE"
+    },
+    {
+        id: "video_10",
+        titulo: "Aprendendo a Dividir - Aula 1",
+        topico: "Divisao",
+        youtubeUrl: "https://www.youtube.com/embed/nmXZiVVLRkk"
+    },
+    {
+        id: "video_11",
+        titulo: "Aprendendo a Dividir - Aula 2",
+        topico: "Divisao",
+        youtubeUrl: "https://www.youtube.com/embed/ezsGCxF6pQI"
+    },
+    {
+        id: "video_12",
+        titulo: "Aprendendo a Dividir - Aula 3",
+        topico: "Divisao",
+        youtubeUrl: "https://www.youtube.com/embed/GpnfZHB3Rpw"
     }
 ];
 

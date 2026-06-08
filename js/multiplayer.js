@@ -247,7 +247,7 @@ const Multiplayer = {
             var botoes = container.querySelectorAll('.mp-split-option');
             botoes.forEach(function(btn) { btn.style.pointerEvents = 'none'; });
         });
-    }
+    },
 
     _limparFeedback() {
         [1, 2].forEach(player => {
