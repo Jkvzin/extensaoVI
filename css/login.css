@@ -160,3 +160,36 @@
     font-weight: 700;
     margin-top: 8px;
 }
+
+/* Form group para campos de login/admin */
+.form-group {
+    text-align: left;
+    margin-bottom: 4px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Ajustes para o painel admin */
+.step-container {
+    width: 100%;
+}
+
+#lista-professores .card-selecao {
+    cursor: default;
+}
+
+#lista-professores .card-selecao:hover {
+    transform: none;
+    border-color: #E2E8F0;
+    background-color: var(--bg-color);
+}
+
+/* Botão sair admin */
+#btn-admin-sair {
+    margin-bottom: 20px;
+}

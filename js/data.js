@@ -91,9 +91,110 @@ const JOGOS_DATA = [
     {
         id: "jogo_1",
         titulo: "Cobras e Escadas",
-        icone: "🐍",
+        icone: "\uD83D\uDC0D",
         url: "https://grouwber.github.io/trabalhoandre/",
-        corHover: "#4ECDC4"
+        corHover: "#4ECDC4",
+        descricao: "Jogo de tabuleiro educativo criado por alunos do CAIC",
+        categoria: "geral"
+    },
+    {
+        id: "jogo_2",
+        titulo: "Math Playground",
+        icone: "\uD83C\uDFAE",
+        url: "https://www.mathplayground.com/",
+        corHover: "#FF6B6B",
+        descricao: "Centenas de jogos de matemática, lógica e raciocínio",
+        categoria: "geral"
+    },
+    {
+        id: "jogo_3",
+        titulo: "Tabuada do Dino",
+        icone: "\uD83E\uDD96",
+        url: "https://www.multiplication.com/games/play/dino-dash",
+        corHover: "#95D5B2",
+        descricao: "Corrida de dinossauro respondendo multiplicações",
+        categoria: "multiplicacao"
+    },
+    {
+        id: "jogo_4",
+        titulo: "Hit the Button",
+        icone: "\uD83C\uDFAF",
+        url: "https://www.topmarks.co.uk/maths-games/hit-the-button",
+        corHover: "#FFE66D",
+        descricao: "Acerte o botão com a resposta certa — adição, subtração, multiplicação e divisão",
+        categoria: "geral"
+    },
+    {
+        id: "jogo_5",
+        titulo: "2048",
+        icone: "\uD83E\uDDF9",
+        url: "https://play2048.co/",
+        corHover: "#6C5CE7",
+        descricao: "Junte blocos de números iguais para chegar ao 2048",
+        categoria: "raciocinio"
+    },
+    {
+        id: "jogo_6",
+        titulo: "Sudoku Fácil",
+        icone: "\uD83D\uDD22",
+        url: "https://www.sudoku.com/kids/easy/",
+        corHover: "#00B894",
+        descricao: "Sudoku para crianças — complete a grade com números de 1 a 9",
+        categoria: "raciocinio"
+    },
+    {
+        id: "jogo_7",
+        titulo: "Jogo da Memória - Tabuada",
+        icone: "\uD83E\uDDE0",
+        url: "https://www.tabuadademultiplicar.com.br/jogos/memoria/",
+        corHover: "#F39C12",
+        descricao: "Encontre os pares: operação e resultado (site em português)",
+        categoria: "multiplicacao"
+    },
+    {
+        id: "jogo_8",
+        titulo: "Pizza Numérica",
+        icone: "\uD83C\uDF55",
+        url: "https://www.abcya.com/games/pizza_fractions",
+        corHover: "#E74C3C",
+        descricao: "Monte pizzas usando frações — aprenda frações de forma deliciosa",
+        categoria: "fracoes"
+    },
+    {
+        id: "jogo_9",
+        titulo: "Math vs Monsters",
+        icone: "\uD83D\uDC7E",
+        url: "https://www.mathplayground.com/math_vs_monsters.html",
+        corHover: "#8E44AD",
+        descricao: "Derrote monstros resolvendo contas de matemática",
+        categoria: "geral"
+    },
+    {
+        id: "jogo_10",
+        titulo: "Corrida Espacial",
+        icone: "\uD83D\uDE80",
+        url: "https://www.multiplication.com/games/play/multiplication-space-race",
+        corHover: "#3498DB",
+        descricao: "Corrida de naves espaciais respondendo multiplicações",
+        categoria: "multiplicacao"
+    },
+    {
+        id: "jogo_11",
+        titulo: "Fruit Splat - Adição",
+        icone: "\uD83C\uDF4E",
+        url: "https://www.sheppardsoftware.com/math/addition/fruit-splat-game/",
+        corHover: "#FF6B6B",
+        descricao: "Estoure as frutas com a soma correta — vários níveis de dificuldade",
+        categoria: "adicao"
+    },
+    {
+        id: "jogo_12",
+        titulo: "Fruit Splat - Subtração",
+        icone: "\uD83C\uDF4C",
+        url: "https://www.sheppardsoftware.com/math/subtraction/fruit-splat-game/",
+        corHover: "#4ECDC4",
+        descricao: "Estoure as frutas com o resultado correto da subtração",
+        categoria: "subtracao"
     }
 ];
 

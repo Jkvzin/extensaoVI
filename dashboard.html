@@ -181,6 +181,61 @@
         </div>
     </div>
 
+    <!-- Modal Detalhes do Aluno (Relatório Individual) -->
+    <div id="modal-detalhes-aluno" class="modal">
+        <div class="modal-content" style="max-width: 750px; max-height: 85vh; overflow-y: auto;">
+            <span class="close-modal">&times;</span>
+            <div id="detalhes-aluno-header" style="text-align: center; margin-bottom: 24px;">
+                <span id="detalhes-aluno-avatar" style="font-size: 4rem; display: block;"></span>
+                <h2 id="detalhes-aluno-nome" style="margin: 8px 0;"></h2>
+                <p id="detalhes-aluno-turma" style="color: #636E72;"></p>
+            </div>
+
+            <div class="metrics-grid" style="margin-bottom: 24px;">
+                <div class="metric-card">
+                    <h4>XP Total</h4>
+                    <p class="metric-value" id="det-xp">--</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Nível</h4>
+                    <p class="metric-value" id="det-nivel">--</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Quizzes Feitos</h4>
+                    <p class="metric-value" id="det-quizzes">--</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Média de Acertos</h4>
+                    <p class="metric-value" id="det-media">--%</p>
+                </div>
+            </div>
+
+            <div class="chart-card" style="margin-bottom: 24px;">
+                <h4>Evolução do Aluno</h4>
+                <canvas id="chart-aluno-evolucao" style="max-height: 250px;"></canvas>
+            </div>
+
+            <h4 style="margin-bottom: 12px;">Histórico de Quizzes</h4>
+            <div id="det-historico-container" style="max-height: 250px; overflow-y: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Acertos</th>
+                            <th>%</th>
+                            <th>XP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="det-historico-list">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/mock-data.js"></script>
+    <script src="js/xp.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html>

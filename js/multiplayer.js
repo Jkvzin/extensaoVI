@@ -285,10 +285,12 @@ const Multiplayer = {
     },
 
     _atualizarNomes() {
-        const n1 = document.getElementById('mpDisplayName1');
-        const n2 = document.getElementById('mpDisplayName2');
-        if (n1) n1.innerText = this.playerNames[1];
-        if (n2) n2.innerText = this.playerNames[2];
+        const ids = ['mpDisplayName1', 'mpDisplayName2', 'mpDisplayName1b', 'mpDisplayName2b'];
+        const nomes = [this.playerNames[1], this.playerNames[2], this.playerNames[1], this.playerNames[2]];
+        for (let i = 0; i < ids.length; i++) {
+            const el = document.getElementById(ids[i]);
+            if (el) el.innerText = nomes[i];
+        }
     },
 
     _esconderOverlay() {
@@ -356,6 +358,11 @@ const Multiplayer = {
                     confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FF6B6B', '#4ECDC4', '#FFE66D'] });
                     if (Date.now() < end) requestAnimationFrame(frame);
                 }());
+            }
+
+            // Adiciona XP se houver aluno logado
+            if (typeof XPSystem !== 'undefined' && winnerPlayer) {
+                XPSystem.addXP(XPSystem.rewards.multiplayerWin, 'multiplayer');
             }
         }
     },

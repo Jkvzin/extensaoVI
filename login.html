@@ -25,6 +25,64 @@
                     <span>Sou Professor</span>
                     <span style="font-size: 0.9rem; font-weight: normal; color: #636E72;">Gerenciar turmas e alunos</span>
                 </button>
+                <button class="card-selecao" id="btn-admin">
+                    <span class="avatar">👑</span>
+                    <span>Sou Diretor</span>
+                    <span style="font-size: 0.9rem; font-weight: normal; color: #636E72;">Administrar a escola</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step Professor/Admin: Login -->
+        <div id="step-prof-login" class="step-container" style="display: none;">
+            <button id="btn-voltar-prof" class="btn-voltar">⬅️ Voltar</button>
+            <h2 id="titulo-prof-login">Acesso do Professor</h2>
+            <div class="senha-card">
+                <div class="form-group" style="text-align: left; width: 100%; max-width: 350px;">
+                    <label for="prof-email" style="display: block; margin-bottom: 6px; font-weight: 700;">E-mail</label>
+                    <input type="email" id="prof-email" class="input-senha" placeholder="professor@caic.com.br" autocomplete="email">
+                </div>
+                <div class="form-group" style="text-align: left; width: 100%; max-width: 350px; margin-top: 16px;">
+                    <label for="prof-senha" style="display: block; margin-bottom: 6px; font-weight: 700;">Senha</label>
+                    <input type="password" id="prof-senha" class="input-senha" placeholder="******" autocomplete="current-password">
+                </div>
+                <p id="prof-erro" class="error-msg" style="display: none;"></p>
+                <button id="btn-prof-entrar" class="btn-entrar">Entrar 🚀</button>
+            </div>
+        </div>
+
+        <!-- Step Admin Dashboard (pós-login admin) -->
+        <div id="step-admin-panel" class="step-container" style="display: none;">
+            <button id="btn-admin-sair" class="btn-voltar">⬅️ Sair</button>
+            <h2>Painel do Diretor 👑</h2>
+            <p style="text-align: center; color: #636E72;">Gerencie os professores da escola</p>
+
+            <div style="margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px;">Cadastrar Novo Professor</h3>
+                <div class="senha-card" style="padding: 20px;">
+                    <div class="form-group" style="text-align: left; width: 100%; max-width: 350px;">
+                        <label for="novo-prof-nome" style="display: block; margin-bottom: 6px; font-weight: 700;">Nome</label>
+                        <input type="text" id="novo-prof-nome" class="input-senha" placeholder="Nome completo">
+                    </div>
+                    <div class="form-group" style="text-align: left; width: 100%; max-width: 350px; margin-top: 12px;">
+                        <label for="novo-prof-email" style="display: block; margin-bottom: 6px; font-weight: 700;">E-mail</label>
+                        <input type="email" id="novo-prof-email" class="input-senha" placeholder="professor@caic.com.br">
+                    </div>
+                    <div class="form-group" style="text-align: left; width: 100%; max-width: 350px; margin-top: 12px;">
+                        <label for="novo-prof-senha" style="display: block; margin-bottom: 6px; font-weight: 700;">Senha</label>
+                        <input type="password" id="novo-prof-senha" class="input-senha" placeholder="Senha para o professor">
+                    </div>
+                    <p id="cadastro-prof-erro" class="error-msg" style="display: none;"></p>
+                    <p id="cadastro-prof-ok" style="display: none; color: var(--success-color); font-weight: 700;"></p>
+                    <button id="btn-cadastrar-prof" class="btn-entrar" style="background-color: #6C5CE7; margin-top: 12px;">Cadastrar Professor ✅</button>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom: 12px;">Professores Cadastrados</h3>
+                <div id="lista-professores" style="display: grid; gap: 12px;">
+                    <p style="color: #636E72;">Nenhum professor cadastrado ainda.</p>
+                </div>
             </div>
         </div>
 

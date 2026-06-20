@@ -210,3 +210,51 @@
 .close-modal:hover {
     color: var(--primary-color);
 }
+
+/* ==========================================
+   ESTILOS DE IMPRESSÃO (Exportar PDF)
+   ========================================== */
+@media print {
+    body {
+        background: white !important;
+        font-size: 14px;
+    }
+    header, nav, .tabs, .action-bar, .btn-primary, .btn-secondary, 
+    #auth-view, #logout-btn, #btn-nova-turma, #btn-novo-aluno,
+    #btn-voltar-turmas, #btn-export-pdf, .close-modal, .modal,
+    #tab-turmas, #turmas-list, #alunos-container {
+        display: none !important;
+    }
+    #dashboard-view {
+        display: block !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    #tab-metricas {
+        display: block !important;
+    }
+    .metric-card {
+        break-inside: avoid;
+        border: 1px solid #ccc !important;
+        background: white !important;
+    }
+    .chart-card {
+        break-inside: avoid;
+        border: 1px solid #ccc !important;
+    }
+    .data-table th {
+        background: #eee !important;
+    }
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    .dashboard-header h2 {
+        font-size: 1.6rem;
+        color: black !important;
+    }
+    .dashboard-header {
+        border-bottom: 2px solid black !important;
+    }
+}

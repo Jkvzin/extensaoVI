@@ -75,10 +75,26 @@
                     <button class="next-btn" id="replayBtn" style="max-width: 250px;">Jogar Novamente 🔄</button>
                     <button class="next-btn" id="backToCategoriesBtn" style="max-width: 250px; background-color: #6C5CE7;">Escolher Outra Categoria 🔙</button>
                 </div>
+
+                <!-- Seção de Revisão de Erros -->
+                <div id="revisaoErros" style="display: none; margin-top: 40px; text-align: left;">
+                    <hr style="border: none; border-top: 2px dashed #E2E8F0; margin: 30px 0;">
+                    <h2 style="text-align: center; color: var(--primary-color); font-size: 1.8rem;">📝 Revisão do que você errou</h2>
+                    <p style="text-align: center; color: #636E72; margin-bottom: 24px;">Veja com calma as questões que você não acertou e aprenda com os erros!</p>
+                    <div id="revisaoErrosList">
+                        <!-- Preenchido via JS -->
+                    </div>
+                    <div style="text-align: center; margin-top: 24px;">
+                        <button class="next-btn" id="refazerErrosBtn" style="max-width: 320px; background-color: var(--primary-color);">
+                            🔄 Refazer Apenas as que Errei
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
+    <script src="js/mock-data.js"></script>
     <script src="js/data.js"></script>
     <script src="js/xp.js"></script>
     <script src="js/questaoDinamica.js"></script>

@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cardLink.href = jogo.url;
             cardLink.target = "_blank"; // Requisito: Abre numa nova aba
             cardLink.className = "card";
+            cardLink.style.textDecoration = "none";
             
             // Define a cor de hover customizada para este jogo
             cardLink.addEventListener('mouseenter', () => {
@@ -20,6 +21,20 @@ document.addEventListener("DOMContentLoaded", () => {
             cardLink.addEventListener('mouseleave', () => {
                 cardLink.style.borderColor = "transparent";
             });
+
+            // Tag de categoria
+            const tagCategoria = document.createElement("span");
+            tagCategoria.style.cssText = "display:inline-block;padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:700;background:#F0F0F0;color:#636E72;margin-bottom:8px;";
+            const nomesCategorias = {
+                "geral": "Geral",
+                "adicao": "Adição",
+                "subtracao": "Subtração",
+                "multiplicacao": "Multiplicação",
+                "divisao": "Divisão",
+                "fracoes": "Frações",
+                "raciocinio": "Raciocínio"
+            };
+            tagCategoria.innerText = nomesCategorias[jogo.categoria] || jogo.categoria;
 
             // Ícone do jogo
             const icone = document.createElement("div");
@@ -31,17 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
             titulo.className = "card-title";
             titulo.innerText = jogo.titulo;
 
-            // Dica de ação
-            const dica = document.createElement("p");
-            dica.style.fontSize = "1rem";
-            dica.style.color = "var(--text-color)";
-            dica.style.marginBottom = "0";
-            dica.innerText = "Clique para jogar";
+            // Descrição
+            const descricao = document.createElement("p");
+            descricao.style.cssText = "font-size:0.95rem;color:#636E72;margin:8px 0;text-align:center;line-height:1.4;";
+            descricao.innerText = jogo.descricao;
 
             // Monta o card
+            cardLink.appendChild(tagCategoria);
             cardLink.appendChild(icone);
             cardLink.appendChild(titulo);
-            cardLink.appendChild(dica);
+            cardLink.appendChild(descricao);
             
             container.appendChild(cardLink);
         });

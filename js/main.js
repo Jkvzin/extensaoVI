@@ -35,7 +35,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Render Profile
-        const student = JSON.parse(currentStudent);
+        var student;
+        try {
+            student = JSON.parse(currentStudent);
+        } catch (e) {
+            localStorage.removeItem('currentStudent');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Valida se o aluno ainda existe no banco (Issue #34)
+        if (student.id !== 'visitante' && typeof DB !== 'undefined') {
+            var alunoNoDB = DB.getAluno(student.id);
+            if (!alunoNoDB) {
+                // Aluno foi removido pelo professor — limpa e redireciona
+                localStorage.removeItem('currentStudent');
+                window.location.href = 'login.html';
+                return;
+            }
+            // Atualiza dados do localStorage com versão mais recente do DB
+            student = alunoNoDB;
+            localStorage.setItem('currentStudent', JSON.stringify(alunoNoDB));
+        }
+
         const header = document.querySelector('header');
         
         if (header) {
