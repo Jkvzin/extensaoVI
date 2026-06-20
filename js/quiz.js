@@ -531,3 +531,9 @@ function shuffleArray(arr) {
     }
     return arr;
 }
+
+function escaparHTML(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
