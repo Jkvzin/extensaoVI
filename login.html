@@ -40,11 +40,11 @@
             <h2 id="titulo-prof-login">Acesso do Professor</h2>
             <div class="form-group">
                 <label for="prof-email">E-mail</label>
-                <input type="email" id="prof-email" class="input-senha" placeholder="seu@email.com" style="text-align: left; letter-spacing: 0;">
+                <input type="email" id="prof-email" class="form-input" placeholder="seu@email.com">
             </div>
             <div class="form-group">
                 <label for="prof-senha">Senha</label>
-                <input type="password" id="prof-senha" class="input-senha" placeholder="********" style="text-align: left; letter-spacing: normal;">
+                <input type="password" id="prof-senha" class="form-input" placeholder="********">
             </div>
             <div id="prof-erro" class="error-msg" style="display: none;"></div>
             <button id="btn-prof-entrar" class="btn-entrar">Entrar</button>
@@ -54,26 +54,26 @@
         <div id="step-admin-panel" class="step-container" style="display: none;">
             <button id="btn-admin-sair" class="btn-voltar">⬅️ Sair</button>
             <h2>Painel do Diretor 👑</h2>
-            <div style="text-align: left; margin-bottom: 24px;">
-                <h3 style="margin-bottom: 12px;">Cadastrar Professor</h3>
+            <div class="admin-section">
+                <h3>Cadastrar Professor</h3>
                 <div class="form-group">
                     <label for="novo-prof-nome">Nome</label>
-                    <input type="text" id="novo-prof-nome" class="input-senha" placeholder="Nome completo" style="text-align: left; letter-spacing: 0;">
+                    <input type="text" id="novo-prof-nome" class="form-input" placeholder="Nome completo">
                 </div>
                 <div class="form-group">
                     <label for="novo-prof-email">E-mail</label>
-                    <input type="email" id="novo-prof-email" class="input-senha" placeholder="professor@caic.com.br" style="text-align: left; letter-spacing: 0;">
+                    <input type="email" id="novo-prof-email" class="form-input" placeholder="professor@caic.com.br">
                 </div>
                 <div class="form-group">
                     <label for="novo-prof-senha">Senha</label>
-                    <input type="password" id="novo-prof-senha" class="input-senha" placeholder="Mínimo 4 caracteres" style="text-align: left; letter-spacing: normal;">
+                    <input type="password" id="novo-prof-senha" class="form-input" placeholder="Mínimo 4 caracteres">
                 </div>
                 <div id="cadastro-prof-erro" class="error-msg" style="display: none;"></div>
                 <div id="cadastro-prof-ok" class="error-msg" style="display: none; color: var(--success-color);"></div>
-                <button id="btn-cadastrar-prof" class="btn-entrar" style="margin-top: 8px;">Cadastrar</button>
+                <button id="btn-cadastrar-prof" class="btn-entrar">Cadastrar</button>
             </div>
-            <hr style="border: 1px solid #E2E8F0; margin: 24px 0;">
-            <h3 style="margin-bottom: 12px;">Professores Cadastrados</h3>
+            <hr>
+            <h3>Professores Cadastrados</h3>
             <div id="lista-professores"></div>
         </div>
 
@@ -102,7 +102,7 @@
             <div class="senha-card">
                 <span id="avatar-aluno-selecionado" class="avatar-grande">👦</span>
                 <h2 id="titulo-senha">Olá!</h2>
-                <p id="nome-aluno-selecionado" style="font-size: 1.2rem; margin-bottom: 16px;"></p>
+                <p id="nome-aluno-selecionado"></p>
                 <input type="password" id="input-senha" class="input-senha" placeholder="Digite sua senha" autocomplete="off">
                 <div id="senha-erro" class="error-msg" style="display: none;"></div>
                 <button id="btn-entrar" class="btn-entrar">Entrar</button>
