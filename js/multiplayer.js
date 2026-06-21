@@ -429,6 +429,11 @@ const Multiplayer = {
 
             const p1Name = this.playerNames[1];
             const p2Name = this.playerNames[2];
+
+            // --- REGISTRO DE PROGRESSO E XP PARA AMBOS OS JOGADORES ---
+            this._salvarProgresso(p1Name, this.scores[1], this.totalQuestions);
+            this._salvarProgresso(p2Name, this.scores[2], this.totalQuestions);
+
             let vencedorHTML = '';
             let winnerPlayer = null;
 
@@ -463,6 +468,64 @@ const Multiplayer = {
                     if (Date.now() < end) requestAnimationFrame(frame);
                 }());
             }
+        }
+    },
+
+    /**
+     * Registra o progresso de um jogador no MockDB e concede XP.
+     * @param {string} nome - nome do jogador
+     * @param {number} acertos - questoes acertadas
+     * @param {number} total - total de questoes
+     */
+    _salvarProgresso(nome, acertos, total) {
+        var pct = Math.round((acertos / total) * 100);
+
+        // Tenta encontrar o aluno no MockDB pelo nome
+        var alunoId = null;
+        if (typeof MockDB !== 'undefined' && MockDB.alunos) {
+            for (var i = 0; i < MockDB.alunos.length; i++) {
+                if (MockDB.alunos[i].nome.toLowerCase() === nome.toLowerCase()) {
+                    alunoId = MockDB.alunos[i].id;
+                    break;
+                }
+            }
+            // Se nao encontrou, cria um id baseado no nome
+            if (!alunoId) {
+                alunoId = 'mp-' + nome.replace(/\s+/g, '-').toLowerCase();
+            }
+
+            // Registra no MockDB.progresso
+            var newId = typeof crypto !== 'undefined' && crypto.randomUUID
+                ? crypto.randomUUID()
+                : 'mp-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+
+            MockDB.progresso.push({
+                id: newId,
+                aluno_id: alunoId,
+                tipo_atividade: 'multiplayer',
+                pontuacao: acertos,
+                detalhes: {
+                    acertos: acertos,
+                    total: total,
+                    percentual: pct,
+                    nome_jogador: nome,
+                    timestamp: new Date().toISOString()
+                },
+                created_at: new Date().toISOString()
+            });
+        }
+
+        // Concede XP para ambos os jogadores
+        if (typeof XPSystem !== 'undefined') {
+            var xpGanho = 0;
+            if (pct >= 80) {
+                // Desempenho excelente — recompensa de vitoria
+                xpGanho = XPSystem.rewards.multiplayerWin || 20;
+            } else {
+                // Participacao — XP base
+                xpGanho = XPSystem.rewards.multiplayerParticipate || 10;
+            }
+            XPSystem.addXP(xpGanho, 'multiplayer');
         }
     },
 

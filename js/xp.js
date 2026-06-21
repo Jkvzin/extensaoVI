@@ -22,8 +22,10 @@ var XPSystem = (function() {
     // --- RECOMPENSAS DE XP ---
     var REWARDS = {
         quizComplete: 25,
-        quizPerfect: 25,  // bônus adicional
-        videoWatched: 15
+        quizPerfect: 25,  // bonus adicional
+        videoWatched: 15,
+        multiplayerWin: 20,
+        multiplayerParticipate: 10
     };
 
     // --- ESTADO ---
