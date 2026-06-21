@@ -55,11 +55,17 @@
                 </div>
 
                 <div class="question-text" id="questionText">Carregando pergunta...</div>
+                <button class="tts-btn" id="ttsQuestionBtn" title="Ouvir pergunta em voz alta">
+                    🔊 Ouvir Pergunta
+                </button>
                 <div class="options-grid" id="optionsGrid"></div>
 
                 <div class="resolution-card" id="resolutionCard">
                     <div class="resolution-title">Vamos tentar de novo juntos? 🤔</div>
                     <p id="resolutionText">Aqui entra a resolução explicativa.</p>
+                    <button class="tts-btn tts-btn--small" id="ttsResolutionBtn" title="Ouvir resolução em voz alta">
+                        🔊 Ouvir Resolução
+                    </button>
                     <button class="next-btn" id="nextQuestionBtn">Próxima Pergunta ➔</button>
                 </div>
                 
@@ -71,6 +77,9 @@
             <div class="quiz-container" id="quizResult" style="display: none; text-align: center;">
                 <h2 style="font-size: 2.5rem;">Parabéns, você completou o Quiz! 🏆</h2>
                 <p style="font-size: 1.5rem;" id="finalScore">Você acertou X de Y.</p>
+                <button class="tts-btn" id="ttsResultBtn" title="Ouvir resultado em voz alta" style="margin: 8px auto;">
+                    🔊 Ouvir Resultado
+                </button>
                 <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                     <button class="next-btn" id="replayBtn" style="max-width: 250px;">Jogar Novamente 🔄</button>
                     <button class="next-btn" id="backToCategoriesBtn" style="max-width: 250px; background-color: #6C5CE7;">Escolher Outra Categoria 🔙</button>
@@ -99,6 +108,11 @@
     <script src="js/xp.js"></script>
     <script src="js/questaoDinamica.js"></script>
     <script src="js/distratores.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/acessibilidade.js"></script>
+        <script src="js/tour.js"></script>
+        <script src="js/tour-config.js"></script>
+        <script src="js/tts.js"></script>
     <script src="js/quiz.js"></script>
     <script src="js/main.js"></script>
     <script src="js/ajuda.js"></script>

@@ -46,20 +46,32 @@
 
                     <div class="mp-setup-vs">VS</div>
 
-                    <div class="mp-setup-player mp-setup-p2">
-                        <label for="mpNome2">🔵 Jogador 2</label>
-                        <input type="text" id="mpNome2" placeholder="Nome do Jogador 2" maxlength="20">
-                        <div class="mp-setup-keys">
-                            <span class="mp-key-big mp-key-p2-bg">←</span>
-                            <span class="mp-key-big mp-key-p2-bg">↓</span>
-                            <span class="mp-key-big mp-key-p2-bg">→</span>
-                            <span class="mp-key-big mp-key-p2-bg">↑</span>
+                        <div class="mp-setup-player mp-setup-p2">
+                            <label for="mpNome2">🔵 Jogador 2</label>
+                            <input type="text" id="mpNome2" placeholder="Nome do Jogador 2" maxlength="20">
+                            <div class="mp-setup-keys">
+                                <span class="mp-key-big mp-key-p2-bg">←</span>
+                                <span class="mp-key-big mp-key-p2-bg">↓</span>
+                                <span class="mp-key-big mp-key-p2-bg">→</span>
+                                <span class="mp-key-big mp-key-p2-bg">↑</span>
+                            </div>
+                            <p>Use as <strong>setas do teclado</strong> para as opções A, B, C, D</p>
                         </div>
-                        <p>Use as <strong>setas do teclado</strong> para as opções A, B, C, D</p>
                     </div>
-                </div>
 
-                <button class="next-btn" id="mpStartBtn" style="font-size:1.4rem; padding:20px 48px; margin-top:20px;">
+                    <!-- Seleção de Categoria e Dificuldade -->
+                    <div id="mpCategorySelection" style="margin-top: 10px;">
+                        <h2 style="text-align:center; margin-bottom:8px;">Escolha a Operação 🧠</h2>
+                        <div class="category-grid" id="mpCategoryGrid"></div>
+
+                        <div id="mpDifficultySelection" style="display:none; margin-top:15px;">
+                            <h3 style="text-align:center;">Qual o nível? 🎯</h3>
+                            <div class="difficulty-grid" id="mpDifficultyGrid"></div>
+                            <button class="back-link" id="mpBackToCategories" style="margin-top:8px;">🔙 Escolher outra operação</button>
+                        </div>
+                    </div>
+
+                    <button class="next-btn" id="mpStartBtn" style="font-size:1.4rem; padding:20px 48px; margin-top:20px;">
                     🎮 COMEÇAR!
                 </button>
             </div>
@@ -136,7 +148,15 @@
     </main>
 
     <script src="js/data.js"></script>
+    <script src="js/mock-data.js"></script>
     <script src="js/xp.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/acessibilidade.js"></script>
+        <script src="js/tour.js"></script>
+        <script src="js/tour-config.js"></script>
+        <script src="js/questaoDinamica.js"></script>
+    <script src="js/distratores.js"></script>
     <script src="js/multiplayer.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

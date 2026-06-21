@@ -7,7 +7,6 @@ var currentQuestionIndex = 0;
 var score = 0;
 var isAnswered = false;
 var usandoDinamico = false;
-var erros = []; // { questionIndex, pergunta, opcoes, respostaCorretaIndex, escolhaAluno }
 
 // Instâncias globais
 var motorDinamico = null;
@@ -34,14 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var backBtn = document.getElementById('backToCategoriesBtn');
     var replayBtn = document.getElementById('replayBtn');
     var backFromDiff = document.getElementById('backToCategoriesFromDiff');
-    var refazerErrosBtn = document.getElementById('refazerErrosBtn');
 
     if (nextBtn) nextBtn.addEventListener('click', nextQuestion);
     if (successBtn) successBtn.addEventListener('click', nextQuestion);
     if (backBtn) backBtn.addEventListener('click', backToCategories);
     if (replayBtn) replayBtn.addEventListener('click', replayQuiz);
     if (backFromDiff) backFromDiff.addEventListener('click', backToCategories);
-    if (refazerErrosBtn) refazerErrosBtn.addEventListener('click', refazerErros);
 });
 
 // ==================== TELA DE CATEGORIAS ====================
@@ -176,7 +173,6 @@ function iniciarQuizScreen(cat, nivel) {
 function startQuiz(cat) {
     currentQuestionIndex = 0;
     score = 0;
-    erros = [];
     if (cat) {
         document.querySelector('#quizScreen h1').textContent = 'Desafio de ' + cat.nome + '! 🧠';
     }
@@ -185,6 +181,11 @@ function startQuiz(cat) {
 
 function loadQuestion() {
     isAnswered = false;
+
+    // Para TTS se estiver falando
+    if (typeof TTSReader !== 'undefined' && TTSReader.isSpeaking()) {
+        TTSReader.stop();
+    }
 
     if (filteredQuestions.length === 0) {
         document.getElementById('questionText').innerText = 'Nenhuma pergunta encontrada.';
@@ -197,6 +198,24 @@ function loadQuestion() {
         'Pergunta ' + (currentQuestionIndex + 1) + ' de ' + filteredQuestions.length;
 
     document.getElementById('questionText').innerText = question.pergunta;
+
+    // Botão TTS - Ouvir Pergunta
+    var ttsBtn = document.getElementById('ttsQuestionBtn');
+    if (ttsBtn) {
+        ttsBtn.onclick = function(e) {
+            e.stopPropagation();
+            if (TTSReader.isSpeaking()) {
+                TTSReader.stop();
+                ttsBtn.classList.remove('speaking');
+                return;
+            }
+            ttsBtn.classList.add('speaking');
+            TTSReader.speak(question.pergunta, {
+                rate: TTSReader.getSpeed(),
+                onEnd: function() { ttsBtn.classList.remove('speaking'); }
+            });
+        };
+    }
 
     document.getElementById('resolutionCard').classList.remove('show');
     document.getElementById('successNextBtn').style.display = 'none';
@@ -228,6 +247,9 @@ function checkAnswer(selectedIndex, clickedBtn) {
         clickedBtn.classList.add('correct');
         score++;
 
+        // Feedback sonoro de acerto
+        if (typeof AudioFeedback !== 'undefined') { AudioFeedback.playAcerto(); }
+
         if (typeof confetti === 'function') {
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
@@ -235,18 +257,30 @@ function checkAnswer(selectedIndex, clickedBtn) {
     } else {
         clickedBtn.classList.add('wrong');
         correctBtn.classList.add('correct');
+
+        // Feedback sonoro de erro
+        if (typeof AudioFeedback !== 'undefined') { AudioFeedback.playErro(); }
+
         document.getElementById('resolutionText').innerText = question.resolucaoPassoAPasso;
         document.getElementById('resolutionCard').classList.add('show');
 
-        // Registra o erro para revisão futura
-        erros.push({
-            questionIndex: currentQuestionIndex,
-            pergunta: question.pergunta,
-            opcoes: question.opcoes,
-            respostaCorretaIndex: question.respostaCorretaIndex,
-            escolhaAluno: selectedIndex,
-            resolucaoPassoAPasso: question.resolucaoPassoAPasso
-        });
+        // TTS para a resolução
+        var ttsResBtn = document.getElementById('ttsResolutionBtn');
+        if (ttsResBtn) {
+            ttsResBtn.onclick = function(e) {
+                e.stopPropagation();
+                if (TTSReader.isSpeaking()) {
+                    TTSReader.stop();
+                    ttsResBtn.classList.remove('speaking');
+                    return;
+                }
+                ttsResBtn.classList.add('speaking');
+                TTSReader.speak(question.resolucaoPassoAPasso, {
+                    rate: TTSReader.getSpeed(),
+                    onEnd: function() { ttsResBtn.classList.remove('speaking'); }
+                });
+            };
+        }
     }
 
     allBtns.forEach(function(btn) {
@@ -270,18 +304,18 @@ function showResults() {
     document.getElementById('quizContainer').style.display = 'none';
     var resultContainer = document.getElementById('quizResult');
     resultContainer.style.display = 'block';
-
+    
     var pct = Math.round((score / filteredQuestions.length) * 100);
-    var mensagem = 'Você acertou ' + score + ' de ' + filteredQuestions.length + ' perguntas (' + pct + '%).';
+    var mensagem = "Você acertou " + score + " de " + filteredQuestions.length + " perguntas (" + pct + "%).";
 
     if (pct === 100) {
-        mensagem = '🎉 Perfeito! ' + mensagem + ' Você é um gênio da ' + (currentCategory ? currentCategory.nome : 'matemática') + '!';
+        mensagem = "🎉 Perfeito! " + mensagem + " Você é um gênio da " + currentCategory.nome + "!";
     } else if (pct >= 75) {
-        mensagem = '👏 Muito bem! ' + mensagem + ' Continue praticando!';
+        mensagem = "👏 Muito bem! " + mensagem + " Continue praticando!";
     } else if (pct >= 50) {
-        mensagem = '👍 Bom trabalho! ' + mensagem + ' Dá pra melhorar!';
+        mensagem = "👍 Bom trabalho! " + mensagem + " Dá pra melhorar!";
     } else {
-        mensagem = '💪 ' + mensagem + ' Não desanime, tente de novo!';
+        mensagem = "💪 " + mensagem + " Não desanime, tente de novo!";
     }
 
     document.getElementById('finalScore').innerText = mensagem;
@@ -296,39 +330,35 @@ function showResults() {
         XPSystem.addXP(xpGanho, 'quiz');
         XPSystem.refresh();
     }
-
-    // --- REGISTRAR PROGRESSO NO DB ---
-    if (typeof DB !== 'undefined') {
-        try {
-            var raw = localStorage.getItem('currentStudent');
-            if (raw) {
-                var student = JSON.parse(raw);
-                DB.registrarProgresso({
-                    aluno_id: student.id,
-                    aluno_nome: student.nome,
-                    categoria: currentCategory ? currentCategory.nome : 'Quiz',
-                    acertos: score,
-                    total: filteredQuestions.length,
-                    pct: pct,
-                    xp_ganho: xpGanho,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        } catch (e) {}
-    }
+    // Mostra XP ganho
     if (xpGanho > 0) {
         var xpMsg = document.createElement('p');
-        xpMsg.style.cssText = 'font-size: 1.1rem; color: var(--secondary-color); margin-top: 8px;';
-        xpMsg.textContent = '⭐ +' + xpGanho + ' XP';
+        xpMsg.style.cssText = 'font-size: 1.1rem; color: var(--secondary-color); margin-top: 8px; animation: pop 0.4s ease;';
+        xpMsg.textContent = "⭐ +" + xpGanho + " XP";
         resultContainer.appendChild(xpMsg);
     }
 
-    // --- REVISÃO DE ERROS ---
-    if (erros.length > 0) {
-        renderRevisaoErros();
-        document.getElementById('revisaoErros').style.display = 'block';
-    } else {
-        document.getElementById('revisaoErros').style.display = 'none';
+    // Feedback sonoro de conclusao
+    if (typeof AudioFeedback !== 'undefined') {
+        AudioFeedback.playConclusao();
+    }
+
+    // TTS para o resultado
+    var ttsResultBtn = document.getElementById('ttsResultBtn');
+    if (ttsResultBtn) {
+        ttsResultBtn.onclick = function(e) {
+            e.stopPropagation();
+            if (TTSReader.isSpeaking()) {
+                TTSReader.stop();
+                ttsResultBtn.classList.remove('speaking');
+                return;
+            }
+            ttsResultBtn.classList.add('speaking');
+            TTSReader.speak(mensagem, {
+                rate: TTSReader.getSpeed(),
+                onEnd: function() { ttsResultBtn.classList.remove('speaking'); }
+            });
+        };
     }
 
     if (typeof confetti === 'function') {
@@ -340,73 +370,6 @@ function showResults() {
             if (Date.now() < end) { requestAnimationFrame(frame); }
         }());
     }
-}
-
-// ==================== REVISÃO DE ERROS ====================
-
-function renderRevisaoErros() {
-    var lista = document.getElementById('revisaoErrosList');
-    if (!lista) return;
-    lista.innerHTML = '';
-
-    erros.forEach(function(erro, idx) {
-        var escolhaText = erro.opcoes[erro.escolhaAluno];
-        var corretaText = erro.opcoes[erro.respostaCorretaIndex];
-
-        var card = document.createElement('div');
-        card.style.cssText = 'background: #FFF5F5; border: 2px solid #FFCCCC; border-radius: 16px; padding: 20px; margin-bottom: 16px;';
-
-        card.innerHTML = '' +
-            '<div style="display: flex; align-items: flex-start; gap: 12px;">' +
-                '<span style="font-size: 1.3rem; font-weight: 900; color: var(--primary-color); min-width: 28px;">' + (idx + 1) + '.</span>' +
-                '<div style="flex: 1;">' +
-                    '<p style="font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; text-align: left; color: var(--text-color);">' + escaparHTML(erro.pergunta) + '</p>' +
-                    '<div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">' +
-                        '<span style="background: #FFCCCC; color: #C62828; padding: 4px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;">❌ Você marcou: ' + escaparHTML(escolhaText) + '</span>' +
-                        '<span style="background: #C8E6C9; color: #2E7D32; padding: 4px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;">✅ Correto: ' + escaparHTML(corretaText) + '</span>' +
-                    '</div>' +
-                    '<details style="margin-top: 8px;">' +
-                        '<summary style="cursor: pointer; font-weight: 700; color: var(--secondary-color); font-size: 0.95rem;">📖 Ver explicação</summary>' +
-                        '<p style="margin-top: 8px; padding: 12px; background: #FFFDE7; border-radius: 8px; font-size: 0.95rem; color: #856404; text-align: left;">' + escaparHTML(erro.resolucaoPassoAPasso) + '</p>' +
-                    '</details>' +
-                '</div>' +
-            '</div>';
-
-        lista.appendChild(card);
-    });
-
-    // Scroll suave até a revisão
-    document.getElementById('revisaoErros').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function refazerErros() {
-    if (erros.length === 0) return;
-
-    // Salva os erros como as novas perguntas
-    var questoesParaRefazer = erros.map(function(erro) {
-        return {
-            pergunta: erro.pergunta,
-            opcoes: erro.opcoes,
-            respostaCorretaIndex: erro.respostaCorretaIndex,
-            resolucaoPassoAPasso: erro.resolucaoPassoAPasso
-        };
-    });
-
-    // Embaralha
-    shuffleArray(questoesParaRefazer);
-
-    // Configura o quiz para rodar só com os erros
-    filteredQuestions = questoesParaRefazer;
-    usandoDinamico = false;
-    currentNivel = null;
-    erros = [];
-
-    // Esconde resultado e mostra quiz
-    document.getElementById('quizResult').style.display = 'none';
-    document.getElementById('quizContainer').style.display = 'block';
-    document.getElementById('revisaoErros').style.display = 'none';
-
-    startQuiz(currentCategory);
 }
 
 // ==================== NAVEGAÇÃO ====================
@@ -462,35 +425,15 @@ function replayQuiz() {
 function gerarOpcoesBasicas(resposta, operacao) {
     var opcoesSet = {};
     opcoesSet[resposta] = true;
-
-    // Para respostas pequenas (<=5), usar apenas offsets positivos para não gerar negativos
-    if (resposta <= 5) {
-        var offset = 1;
-        while (Object.keys(opcoesSet).length < 4 && offset <= 20) {
-            var candidato = resposta + offset;
-            if (!opcoesSet[candidato]) {
-                opcoesSet[candidato] = true;
-            }
-            offset++;
+    var offsets = [1, -1, 2, -2, 3, -3, 4, -4, 5, -5];
+    var tentativas = 0;
+    while (Object.keys(opcoesSet).length < 4 && tentativas < offsets.length) {
+        var candidato = resposta + offsets[tentativas];
+        if (candidato > 0 && !opcoesSet[candidato]) {
+            opcoesSet[candidato] = true;
         }
-    } else {
-        var offsets = [1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 10, -10];
-        for (var t = 0; t < offsets.length; t++) {
-            var candidato = resposta + offsets[t];
-            if (candidato > 0 && !opcoesSet[candidato]) {
-                opcoesSet[candidato] = true;
-            }
-            if (Object.keys(opcoesSet).length >= 4) break;
-        }
-        // Fallback: se ainda não tem 4, continua com positivos
-        var fallbackOffset = 6;
-        while (Object.keys(opcoesSet).length < 4 && fallbackOffset <= 50) {
-            var c = resposta + fallbackOffset;
-            if (!opcoesSet[c]) opcoesSet[c] = true;
-            fallbackOffset++;
-        }
+        tentativas++;
     }
-
     var opcoes = Object.keys(opcoesSet).map(Number);
     opcoes = shuffleArray(opcoes);
     var corretoIndex = opcoes.indexOf(resposta);
@@ -530,10 +473,4 @@ function shuffleArray(arr) {
         arr[j] = temp;
     }
     return arr;
-}
-
-function escaparHTML(str) {
-    var div = document.createElement('div');
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
 }

@@ -8,6 +8,8 @@
  *   P2: ←→A, ↓→B, →→C, ↑→D
  * 
  * Primeiro keydown válido trava a rodada.
+ * 
+ * Usa QuestaoDinamica + DistratorEngine para gerar perguntas frescas a cada partida.
  */
 
 // ==========================================
@@ -30,6 +32,20 @@ const PLAYER_COLORS = {
 };
 
 const KEY_LABELS = ['A', 'B', 'C', 'D'];
+const TOTAL_ROUNDS = 5;
+
+// ==========================================
+// INSTÂNCIAS DO MOTOR DINÂMICO
+// ==========================================
+var mpMotorDinamico = null;
+var mpDistratorEngine = null;
+
+if (typeof QuestaoDinamica !== 'undefined') {
+    mpMotorDinamico = new QuestaoDinamica();
+}
+if (typeof DistratorEngine !== 'undefined') {
+    mpDistratorEngine = new DistratorEngine();
+}
 
 // ==========================================
 // ESTADO DO JOGO
@@ -42,14 +58,89 @@ const Multiplayer = {
     gameStarted: false,
     playerNames: { 1: 'Jogador 1', 2: 'Jogador 2' },
     lastWinner: null, // quem respondeu a última rodada
+    categoria: null,
+    nivel: null,
+    questoesGeradas: [],
 
     iniciar() {
-        if (typeof QUIZ_DATA === 'undefined' || QUIZ_DATA.length === 0) {
-            console.error('Multiplayer: Nenhuma pergunta encontrada. Verifique js/data.js.');
+        // Valida se o motor dinâmico está disponível
+        if (!mpMotorDinamico) {
+            console.error('Multiplayer: QuestaoDinamica não disponível.');
+            // Fallback: usa QUIZ_DATA estático
+            if (typeof QUIZ_DATA === 'undefined' || QUIZ_DATA.length === 0) {
+                console.error('Multiplayer: QUIZ_DATA também não encontrado.');
+                return;
+            }
+            this._iniciarEstatico();
             return;
         }
 
+        // Valida categoria e nível selecionados
+        if (!this.categoria) {
+            console.error('Multiplayer: categoria não selecionada.');
+            return;
+        }
+        if (!this.nivel) {
+            this.nivel = 'facil';
+        }
+
         // Lê nomes dos inputs
+        const nome1 = document.getElementById('mpNome1');
+        const nome2 = document.getElementById('mpNome2');
+        this.playerNames[1] = (nome1 && nome1.value.trim()) ? nome1.value.trim() : 'Jogador 1';
+        this.playerNames[2] = (nome2 && nome2.value.trim()) ? nome2.value.trim() : 'Jogador 2';
+
+        // Gera questões dinâmicas
+        var questoesCruas = mpMotorDinamico.gerarConjunto(this.categoria, this.nivel, TOTAL_ROUNDS);
+        this.questoesGeradas = [];
+
+        for (var i = 0; i < questoesCruas.length; i++) {
+            var q = questoesCruas[i];
+            var item = mpMotorDinamico.paraFormatoQuiz(q);
+
+            // Gera opções com DistratorEngine
+            if (mpDistratorEngine) {
+                var opcoesInfo = mpDistratorEngine.gerarOpcoes({
+                    resposta: q.resposta,
+                    operandos: q.operandos,
+                    operacao: q.operacao,
+                    nivel: this.nivel
+                });
+                item.opcoes = opcoesInfo.opcoes;
+                item.corretoIndex = opcoesInfo.corretoIndex;
+            } else {
+                // Fallback sem distratores: opções genéricas
+                var resp = q.resposta;
+                item.opcoes = [String(resp), String(resp + 1), String(resp - 1), String(resp + 2)];
+                item.corretoIndex = 0;
+            }
+
+            this.questoesGeradas.push(item);
+        }
+
+        this.currentQuestionIndex = 0;
+        this.scores = { 1: 0, 2: 0 };
+        this.totalQuestions = this.questoesGeradas.length;
+        this.gameStarted = true;
+        this.lastWinner = null;
+
+        this._esconderOverlay();
+        this._mostrarQuizArea();
+        this._atualizarNomes();
+        this._atualizarPlacar();
+        this._carregarPergunta();
+        this._ativarTeclado();
+    },
+
+    /**
+     * Fallback: usa QUIZ_DATA estático quando o motor dinâmico não está disponível.
+     */
+    _iniciarEstatico() {
+        if (typeof QUIZ_DATA === 'undefined' || QUIZ_DATA.length === 0) {
+            console.error('Multiplayer: QUIZ_DATA não encontrado. Verifique js/data.js.');
+            return;
+        }
+
         const nome1 = document.getElementById('mpNome1');
         const nome2 = document.getElementById('mpNome2');
         this.playerNames[1] = (nome1 && nome1.value.trim()) ? nome1.value.trim() : 'Jogador 1';
@@ -72,7 +163,14 @@ const Multiplayer = {
     _carregarPergunta() {
         this.roundLocked = false;
         this.lastWinner = null;
-        const question = QUIZ_DATA[this.currentQuestionIndex];
+
+        // Usa questões dinâmicas se disponíveis, senão fallback estático
+        var question;
+        if (this.questoesGeradas.length > 0) {
+            question = this.questoesGeradas[this.currentQuestionIndex];
+        } else {
+            question = QUIZ_DATA[this.currentQuestionIndex];
+        }
 
         // Atualiza round indicator
         const roundEl = document.getElementById('mpRound');
@@ -131,8 +229,17 @@ const Multiplayer = {
         e.preventDefault();
 
         const { player, optionIndex } = mapping;
-        const question = QUIZ_DATA[this.currentQuestionIndex];
-        const isCorrect = optionIndex === question.respostaCorretaIndex;
+
+        // Determina se acertou — usa corretoIndex (dinâmico) ou respostaCorretaIndex (estático)
+        var question;
+        if (this.questoesGeradas.length > 0) {
+            question = this.questoesGeradas[this.currentQuestionIndex];
+        } else {
+            question = QUIZ_DATA[this.currentQuestionIndex];
+        }
+
+        var correctIndex = (question.corretoIndex !== undefined) ? question.corretoIndex : question.respostaCorretaIndex;
+        const isCorrect = optionIndex === correctIndex;
 
         // TRAVA a rodada IMEDIATAMENTE
         this.roundLocked = true;
@@ -140,9 +247,9 @@ const Multiplayer = {
 
         if (isCorrect) {
             this.scores[player]++;
-            this._feedbackAcerto(player, optionIndex, question.respostaCorretaIndex);
+            this._feedbackAcerto(player, optionIndex, correctIndex);
         } else {
-            this._feedbackErro(player, optionIndex, question.respostaCorretaIndex);
+            this._feedbackErro(player, optionIndex, correctIndex);
         }
 
         this._atualizarPlacar();
@@ -241,11 +348,10 @@ const Multiplayer = {
     },
 
     _desabilitarOpcoes() {
-        [1, 2].forEach(function(player) {
-            var container = document.getElementById('mpOpcoes' + player);
+        [1, 2].forEach(player => {
+            const container = document.getElementById('mpOpcoes' + player);
             if (!container) return;
-            var botoes = container.querySelectorAll('.mp-split-option');
-            botoes.forEach(function(btn) { btn.style.pointerEvents = 'none'; });
+            // Botões já estão coloridos via _colorirOpcoes
         });
     },
 
@@ -285,12 +391,10 @@ const Multiplayer = {
     },
 
     _atualizarNomes() {
-        const ids = ['mpDisplayName1', 'mpDisplayName2', 'mpDisplayName1b', 'mpDisplayName2b'];
-        const nomes = [this.playerNames[1], this.playerNames[2], this.playerNames[1], this.playerNames[2]];
-        for (let i = 0; i < ids.length; i++) {
-            const el = document.getElementById(ids[i]);
-            if (el) el.innerText = nomes[i];
-        }
+        const n1 = document.getElementById('mpDisplayName1');
+        const n2 = document.getElementById('mpDisplayName2');
+        if (n1) n1.innerText = this.playerNames[1];
+        if (n2) n2.innerText = this.playerNames[2];
     },
 
     _esconderOverlay() {
@@ -325,6 +429,18 @@ const Multiplayer = {
 
             const p1Name = this.playerNames[1];
             const p2Name = this.playerNames[2];
+
+            // --- REGISTRO DE PROGRESSO E XP PARA AMBOS OS JOGADORES ---
+            this._salvarProgresso(p1Name, this.scores[1], this.totalQuestions);
+            this._salvarProgresso(p2Name, this.scores[2], this.totalQuestions);
+
+            // --- SISTEMA DE XP: ambos ganham XP base, vencedor ganha bonus ---
+            if (typeof XPSystem !== 'undefined') {
+                // XP base por participar — AMBOS os jogadores
+                XPSystem.addXP(XPSystem.rewards.multiplayerParticipate || 10, 'multiplayer');
+                XPSystem.addXP(XPSystem.rewards.multiplayerParticipate || 10, 'multiplayer');
+            }
+
             let vencedorHTML = '';
             let winnerPlayer = null;
 
@@ -336,6 +452,11 @@ const Multiplayer = {
                 winnerPlayer = 2;
             } else {
                 vencedorHTML = '<h2 style="color:#FFE66D">🤝 Empate!</h2>';
+            }
+
+            // Bonus de XP para o vencedor
+            if (winnerPlayer && typeof XPSystem !== 'undefined') {
+                XPSystem.addXP(XPSystem.rewards.multiplayerWin || 30, 'multiplayer');
             }
 
             resultado.innerHTML = '<div class="mp-result-card">' +
@@ -359,11 +480,51 @@ const Multiplayer = {
                     if (Date.now() < end) requestAnimationFrame(frame);
                 }());
             }
+        }
+    },
 
-            // Adiciona XP se houver aluno logado
-            if (typeof XPSystem !== 'undefined' && winnerPlayer) {
-                XPSystem.addXP(XPSystem.rewards.multiplayerWin, 'multiplayer');
+    /**
+     * Registra o progresso de um jogador no MockDB e concede XP.
+     * @param {string} nome - nome do jogador
+     * @param {number} acertos - questoes acertadas
+     * @param {number} total - total de questoes
+     */
+    _salvarProgresso(nome, acertos, total) {
+        var pct = Math.round((acertos / total) * 100);
+
+        // Tenta encontrar o aluno no MockDB pelo nome
+        var alunoId = null;
+        if (typeof MockDB !== 'undefined' && MockDB.alunos) {
+            for (var i = 0; i < MockDB.alunos.length; i++) {
+                if (MockDB.alunos[i].nome.toLowerCase() === nome.toLowerCase()) {
+                    alunoId = MockDB.alunos[i].id;
+                    break;
+                }
             }
+            // Se nao encontrou, cria um id baseado no nome
+            if (!alunoId) {
+                alunoId = 'mp-' + nome.replace(/\s+/g, '-').toLowerCase();
+            }
+
+            // Registra no MockDB.progresso
+            var newId = typeof crypto !== 'undefined' && crypto.randomUUID
+                ? crypto.randomUUID()
+                : 'mp-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+
+            MockDB.progresso.push({
+                id: newId,
+                aluno_id: alunoId,
+                tipo_atividade: 'multiplayer',
+                pontuacao: acertos,
+                detalhes: {
+                    acertos: acertos,
+                    total: total,
+                    percentual: pct,
+                    nome_jogador: nome,
+                    timestamp: new Date().toISOString()
+                },
+                created_at: new Date().toISOString()
+            });
         }
     },
 
@@ -381,12 +542,106 @@ const Multiplayer = {
 };
 
 // ==========================================
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO DA SELEÇÃO DE CATEGORIA
+// ==========================================
+function mpRenderCategoryCards() {
+    if (typeof CATEGORIAS_QUIZ === 'undefined') return;
+
+    var grid = document.getElementById('mpCategoryGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    CATEGORIAS_QUIZ.forEach(function(cat) {
+        var card = document.createElement('div');
+        card.className = 'category-card';
+        card.style.borderColor = cat.cor;
+        card.onclick = function() { mpSelectCategory(cat); };
+
+        card.innerHTML =
+            '<div class="category-card-icon">' + cat.icone + '</div>' +
+            '<div class="category-card-title" style="color: ' + cat.cor + ';">' + cat.nome + '</div>' +
+            '<div class="category-card-desc">' + cat.descricao + '</div>';
+
+        grid.appendChild(card);
+    });
+}
+
+function mpSelectCategory(cat) {
+    Multiplayer.categoria = cat.id;
+
+    if (mpMotorDinamico) {
+        mpShowDifficultySelection(cat);
+    } else {
+        // Sem motor dinâmico, vai direto (usará fallback estático)
+        Multiplayer.nivel = 'facil';
+        Multiplayer.iniciar();
+    }
+}
+
+function mpShowDifficultySelection(cat) {
+    document.getElementById('mpCategoryGrid').style.display = 'none';
+    document.querySelector('#mpCategorySelection h2').textContent = cat.icone + ' ' + cat.nome;
+
+    var diffDiv = document.getElementById('mpDifficultySelection');
+    diffDiv.style.display = 'block';
+
+    var diffGrid = document.getElementById('mpDifficultyGrid');
+    diffGrid.innerHTML = '';
+
+    var niveis = mpMotorDinamico.getNiveis();
+
+    niveis.forEach(function(nivel) {
+        var btn = document.createElement('button');
+        btn.className = 'difficulty-btn';
+        btn.style.borderColor = cat.cor;
+        btn.onclick = function() {
+            Multiplayer.nivel = nivel.id;
+            Multiplayer.iniciar();
+        };
+
+        btn.innerHTML =
+            '<span class="difficulty-btn-name">' + nivel.nome + '</span>' +
+            '<span class="difficulty-btn-range">Números de ' + nivel.range + '</span>';
+
+        diffGrid.appendChild(btn);
+    });
+}
+
+// ==========================================
+// DOM READY
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Renderiza categorias no overlay
+    mpRenderCategoryCards();
+
+    // Botão voltar para categorias
+    var backBtn = document.getElementById('mpBackToCategories');
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            document.getElementById('mpCategoryGrid').style.display = '';
+            document.querySelector('#mpCategorySelection h2').textContent = 'Escolha a Operação 🧠';
+            document.getElementById('mpDifficultySelection').style.display = 'none';
+            Multiplayer.categoria = null;
+            Multiplayer.nivel = null;
+        });
+    }
+
+    // Botão iniciar
     const startBtn = document.getElementById('mpStartBtn');
     if (startBtn) {
-        startBtn.addEventListener('click', () => Multiplayer.iniciar());
+        startBtn.addEventListener('click', () => {
+            if (!mpMotorDinamico) {
+                // Fallback para estático se motor não existe
+                Multiplayer._iniciarEstatico();
+                return;
+            }
+            // Se o motor existe mas categoria não foi selecionada, avisa
+            if (!Multiplayer.categoria) {
+                alert('Selecione uma categoria e um nível de dificuldade antes de começar! 🧠');
+            }
+            // Se categoria já foi selecionada mas dificuldade não (motor existe),
+            // também avisa (o fluxo normal é via mpShowDifficultySelection)
+        });
     }
 
     const nextBtn = document.getElementById('mpNextBtn');
