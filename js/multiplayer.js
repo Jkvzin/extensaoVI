@@ -434,6 +434,13 @@ const Multiplayer = {
             this._salvarProgresso(p1Name, this.scores[1], this.totalQuestions);
             this._salvarProgresso(p2Name, this.scores[2], this.totalQuestions);
 
+            // --- SISTEMA DE XP: ambos ganham XP base, vencedor ganha bonus ---
+            if (typeof XPSystem !== 'undefined') {
+                // XP base por participar — AMBOS os jogadores
+                XPSystem.addXP(XPSystem.rewards.multiplayerParticipate || 10, 'multiplayer');
+                XPSystem.addXP(XPSystem.rewards.multiplayerParticipate || 10, 'multiplayer');
+            }
+
             let vencedorHTML = '';
             let winnerPlayer = null;
 
@@ -445,6 +452,11 @@ const Multiplayer = {
                 winnerPlayer = 2;
             } else {
                 vencedorHTML = '<h2 style="color:#FFE66D">🤝 Empate!</h2>';
+            }
+
+            // Bonus de XP para o vencedor
+            if (winnerPlayer && typeof XPSystem !== 'undefined') {
+                XPSystem.addXP(XPSystem.rewards.multiplayerWin || 30, 'multiplayer');
             }
 
             resultado.innerHTML = '<div class="mp-result-card">' +
@@ -513,19 +525,6 @@ const Multiplayer = {
                 },
                 created_at: new Date().toISOString()
             });
-        }
-
-        // Concede XP para ambos os jogadores
-        if (typeof XPSystem !== 'undefined') {
-            var xpGanho = 0;
-            if (pct >= 80) {
-                // Desempenho excelente — recompensa de vitoria
-                xpGanho = XPSystem.rewards.multiplayerWin || 20;
-            } else {
-                // Participacao — XP base
-                xpGanho = XPSystem.rewards.multiplayerParticipate || 10;
-            }
-            XPSystem.addXP(xpGanho, 'multiplayer');
         }
     },
 

@@ -24,7 +24,7 @@ var XPSystem = (function() {
         quizComplete: 25,
         quizPerfect: 25,  // bonus adicional
         videoWatched: 15,
-        multiplayerWin: 20,
+        multiplayerWin: 30,
         multiplayerParticipate: 10
     };
 
