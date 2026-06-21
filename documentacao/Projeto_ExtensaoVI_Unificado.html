@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Projeto Extensão VI — Portal Interativo de Matemática</title>
+<style>
+  @page {
+    size: A4;
+    margin: 3cm 2cm 2cm 3cm;
+    @top-right { content: counter(page); font-family: 'Times New Roman', serif; font-size: 10pt; }
+  }
+  @page :first {
+    @top-right { content: none; }
+  }
+  body {
+    font-family: 'Times New Roman', serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    text-align: justify;
+  }
+  h1, h2, h3 { font-weight: bold; text-align: left; }
+  h1 { font-size: 12pt; margin-top: 18pt; margin-bottom: 12pt; }
+  h2 { font-size: 12pt; margin-top: 12pt; margin-bottom: 6pt; }
+  p { text-indent: 1.25cm; margin-bottom: 6pt; }
+  p.no-indent { text-indent: 0; }
+  ul { margin-left: 2.5cm; margin-bottom: 6pt; }
+  li { margin-bottom: 3pt; }
+  .cover { page-break-after: always; text-align: center; }
+  .cover p, .cover h1 { text-indent: 0; text-align: center; }
+  .cover .institution { font-size: 14pt; font-weight: bold; margin-top: 6cm; }
+  .cover .author { font-size: 14pt; font-weight: bold; margin-top: 3cm; }
+  .cover .title { font-size: 16pt; font-weight: bold; margin-top: 4cm; }
+  .cover .subtitle { font-size: 14pt; margin-top: 0.5cm; }
+  .cover .place { font-size: 12pt; margin-top: 5cm; }
+  .page-break { page-break-before: always; }
+  .section-title { font-weight: bold; text-align: left; text-indent: 0; }
+  .center-title { text-align: center; text-indent: 0; font-weight: bold; margin-top: 24pt; }
+  .ref { text-indent: 0; margin-left: 4cm; text-indent: -4cm; padding-left: 4cm; }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== CAPA ==================== -->
+<div class="cover">
+  <p class="institution">CENTRO UNIVERSITÁRIO INTERNACIONAL UNINTER</p>
+  <p class="author">JOÃO VICTOR BORGES CARVALHO</p>
+  <p class="title">PORTAL INTERATIVO DE MATEMÁTICA</p>
+  <p class="subtitle">Plataforma Gamificada de Apoio ao Ensino de Matemática Básica<br>para Alunos do CAIC</p>
+  <p class="place">POÇOS DE CALDAS - MG<br>2026</p>
+</div>
+
+<!-- ==================== 1. DIAGNÓSTICO ==================== -->
+<h1>1. DIAGNÓSTICO / IDENTIFICAÇÃO DO PROBLEMA</h1>
+
+<p>A partir de uma análise diagnóstica realizada no Centro de Atenção Integral à Criança (CAIC), constatou-se que alunos do Ensino Fundamental I e II enfrentam barreiras significativas na compreensão de conceitos matemáticos abstratos, especificamente em operações de divisão e frações, quando expostos exclusivamente a metodologias de ensino tradicionais e expositivas.</p>
+
+<p>Verificou-se a urgência na implementação de recursos pedagógicos auxiliares que utilizem o lúdico e a interatividade. Há uma demanda reprimida por ferramentas digitais (como gamificação e objetos de aprendizagem audiovisuais) que consigam transpor o conteúdo teórico para uma linguagem mais próxima do universo de cada um dos alunos, visando aumentar o engajamento discente.</p>
+
+<p>Diante desse cenário, define-se o problema central: de que maneira a utilização de recursos tecnológicos e multimídia pode mitigar as dificuldades de aprendizado em matemática básica e reduzir a defasagem escolar dos alunos do CAIC?</p>
+
+<!-- ==================== 2. DEFINIÇÃO DO TEMA ==================== -->
+<h1>2. DEFINIÇÃO DO TEMA E OBJETIVOS</h1>
+
+<p>O tema central deste projeto é a gamificação e o uso de recursos multimídia como ferramentas de apoio no ensino da matemática básica para o Ensino Fundamental.</p>
+
+<p>O <strong>objetivo geral</strong> é desenvolver uma plataforma digital interativa, composta por videoaulas didáticas e jogos educativos, voltada ao suporte pedagógico dos alunos do CAIC no domínio de operações matemáticas fundamentais.</p>
+
+<p>Os objetivos específicos são:</p>
+<ul>
+  <li>Elaborar roteiros e produzir videoaulas de curta duração com foco em operações básicas, priorizando uma linguagem clara e visual.</li>
+  <li>Desenvolver jogos digitais educativos que permitam a aplicação prática dos conceitos teóricos apresentados.</li>
+  <li>Estruturar um ambiente virtual de aprendizagem (AVA) com interface intuitiva e acessível, adaptada ao perfil cognitivo do público infantil.</li>
+  <li>Implementar sistema de gamificação com XP, níveis e feedback para motivar a prática contínua.</li>
+  <li>Criar painel de acompanhamento para professores monitorarem o desempenho dos alunos.</li>
+</ul>
+
+<p><strong>O que queremos resolver?</strong> O déficit de aprendizagem e a desmotivação escolar relacionados à matemática básica no Ensino Fundamental, substituindo a passividade do ensino puramente teórico por métodos que estimulem o protagonismo do aluno.</p>
+
+<p><strong>Onde queremos chegar?</strong> À implementação de uma ferramenta tecnológica funcional que sirva de suporte contínuo para professores e alunos do CAIC, visando a melhoria do desempenho acadêmico e a construção de uma percepção positiva dos alunos em relação ao raciocínio lógico-matemático.</p>
+
+<!-- ==================== 3. JUSTIFICATIVA ==================== -->
+<h1>3. JUSTIFICATIVA</h1>
+
+<h2>3.1 Relevância do Projeto</h2>
+<p>A motivação central desta proposta reside na quebra do paradigma de ensino puramente expositivo. Para os alunos do CAIC, conceitos como divisão e frações costumam ser barreiras abstratas. Ao introduzir uma plataforma interativa, transformamos o aprendizado passivo em uma experiência multissensorial. O uso de componentes audiovisuais e mecânicas de jogo funciona como uma "ponte" cognitiva, materializando o conteúdo e facilitando a absorção de temas complexos através da experimentação direta.</p>
+
+<h2>3.2 Impacto Social e Econômico</h2>
+<p>Socialmente, o projeto ataca a desigualdade no acesso à tecnologia educacional, levando para a escola pública de Poços de Caldas recursos que muitas vezes restringem-se ao setor privado. Ao fortalecer a base matemática, contribuímos diretamente para a redução dos índices de reprovação e evasão escolar. Do ponto de vista econômico, a solução é sustentável: baseada em tecnologias open-source e hospedada gratuitamente no GitHub Pages, permite escalabilidade sem custos de licenciamento para o município, além de preparar os jovens para um mercado de trabalho que exige, cada vez mais, fluidez digital e raciocínio lógico.</p>
+
+<h2>3.3 Contribuições para a Trajetória Acadêmica</h2>
+<p>Para nós, estudantes de Engenharia de Computação, o projeto é um laboratório de Engenharia de Software aplicada. Ele exige o domínio de tecnologias de desenvolvimento web (HTML5, CSS3, JavaScript) e, principalmente, o desafio de projetar interfaces (UI/UX) que sejam adequadas ao perfil cognitivo infantil. Além disso, a extensão universitária nos tira da bolha técnica, desenvolvendo a gestão de projetos sociais, a comunicação assertiva com a comunidade e a responsabilidade ética de usar a engenharia como ferramenta de transformação social.</p>
+
+<!-- ==================== 4. FUNDAMENTAÇÃO TEÓRICA ==================== -->
+<h1>4. FUNDAMENTAÇÃO TEÓRICA</h1>
+
+<h2>4.1 Base Bibliográfica e Referenciais Técnicos</h2>
+<p>A base deste trabalho está na interseção entre tecnologia e educação. D'Ambrosio (2012) destaca que o ensino da matemática não pode ser estático; ele deve acompanhar a evolução da sociedade para manter-se relevante. Nesse sentido, Prensky (2001) reforça que, ao lidarmos com "nativos digitais", precisamos de ferramentas que falem a linguagem dessa geração: a interatividade e a rapidez. Do lado tecnológico, aplicamos os padrões de usabilidade do W3C, garantindo que a plataforma seja acessível e inclusiva.</p>
+
+<h2>4.2 Sinergia entre Teoria e Prática — Gamificação</h2>
+<p>A aplicação prática dos conceitos teóricos ocorre através da Gamificação. Segundo Kapp (2012), a utilização de elementos de jogos em ambientes de aprendizado gera um engajamento que métodos tradicionais raramente alcançam. No sistema desenvolvido para o CAIC, isso se traduz em transformar exercícios de frações em desafios interativos. O erro deixa de ser uma punição e passa a ser um feedback imediato do sistema, incentivando a autonomia e a persistência do aluno na resolução de problemas.</p>
+
+<h2>4.3 Tecnologias Web e Acessibilidade</h2>
+<p>O portal foi desenvolvido utilizando tecnologias web padrão (HTML5, CSS3 e JavaScript puro), sem dependência de frameworks pesados, garantindo compatibilidade com navegadores modernos e dispositivos móveis. A plataforma incorpora recursos de acessibilidade como alto contraste, text-to-speech (TTS) via Web Speech API e feedback sonoro via Web Audio API, alinhando-se às diretrizes do W3C/WCAG. A arquitetura sem servidor (serverless) utiliza localStorage para persistência de dados e GitHub Pages para deploy contínuo, eliminando custos de infraestrutura.</p>
+
+<!-- ==================== 5. PLANEJAMENTO ==================== -->
+<h1>5. PLANEJAMENTO</h1>
+
+<h2>5.1 Plano de Ação</h2>
+<p>O fluxo de trabalho foi estruturado em quatro pilares fundamentais:</p>
+<ul>
+  <li><strong>Diagnóstico e Roteirização:</strong> Planejamento pedagógico das videoaulas com foco em didática infantil.</li>
+  <li><strong>Desenvolvimento de Ativos:</strong> Gravação de mídias e criação dos elementos visuais dos jogos.</li>
+  <li><strong>Implementação de Software:</strong> Codificação da plataforma web e lógica de gamificação.</li>
+  <li><strong>Homologação:</strong> Ciclos de testes de funcionalidade e experiência do usuário antes da entrega final.</li>
+</ul>
+
+<h2>5.2 Cronograma</h2>
+<p>O desenvolvimento seguiu um cronograma de 8 semanas, evoluindo do planejamento inicial (briefing e wireframes) até a entrega final com deploy em produção. As semanas 1-2 foram dedicadas à arquitetura da informação e produção de conteúdo audiovisual. As semanas 3-6 concentraram a codificação do front-end, desenvolvimento dos jogos interativos e integração dos sistemas de gamificação. As semanas 7-8 foram reservadas para testes, correção de bugs e deploy no GitHub Pages.</p>
+
+<h2>5.3 Recursos</h2>
+<ul>
+  <li><strong>Equipe:</strong> 6 graduandos de Engenharia de Computação.</li>
+  <li><strong>Tecnologia:</strong> VS Code, Git/GitHub, HTML5, CSS3, JavaScript (vanilla), Chart.js, YouTube IFrame API, Web Speech API, Web Audio API.</li>
+  <li><strong>Infraestrutura:</strong> GitHub Pages (hospedagem gratuita), localStorage (persistência local), canvas-confetti (animações).</li>
+</ul>
+
+<!-- ==================== 6. EXECUÇÃO ==================== -->
+<h1>6. EXECUÇÃO</h1>
+
+<p>A execução do projeto seguiu rigorosamente o planejamento estabelecido, resultando em um portal interativo completo, acessível publicamente em <strong>https://jkvzin.github.io/extensaoVI/</strong>. O desenvolvimento foi conduzido de forma colaborativa utilizando Git e GitHub, com 6 integrantes contribuindo através de branches, pull requests e code reviews.</p>
+
+<h2>6.1 Arquitetura do Sistema</h2>
+<p>O portal é uma aplicação web client-side pura (HTML5, CSS3, JavaScript), sem backend. A persistência de dados utiliza localStorage do navegador, armazenando progresso dos alunos, cadastro de turmas e configurações. O deploy é automatizado via GitHub Pages a partir da branch principal. A arquitetura foi projetada com 7 páginas principais e 14 scripts JavaScript modulares, totalizando aproximadamente 7.000 linhas de código.</p>
+
+<h2>6.2 Funcionalidades Implementadas</h2>
+
+<p class="no-indent"><strong>Módulo de Quiz Interativo:</strong></p>
+<ul>
+  <li>Motor de questões dinâmicas com geração aleatória de operandos.</li>
+  <li>Sistema de distratores inteligentes com opções plausíveis.</li>
+  <li>Quatro categorias (adição, subtração, multiplicação, divisão) e três níveis de dificuldade.</li>
+  <li>Revisão de erros ao final do quiz com explicações passo a passo.</li>
+  <li>Text-to-Speech (TTS) para leitura em voz alta das perguntas e resoluções.</li>
+  <li>Feedback sonoro com Web Audio API (acertos, erros, conclusão).</li>
+</ul>
+
+<p class="no-indent"><strong>Módulo de Jogos Educativos:</strong></p>
+<ul>
+  <li>Catálogo com 12 jogos categorizados por operação matemática.</li>
+  <li>Jogos externos integrados via links com tags de categoria e descrição.</li>
+</ul>
+
+<p class="no-indent"><strong>Módulo de Vídeos:</strong></p>
+<ul>
+  <li>12 videoaulas incorporadas via YouTube IFrame API.</li>
+  <li>Spinner de carregamento e fallback visual para vídeos indisponíveis.</li>
+  <li>Sistema de XP concedido apenas quando o vídeo é efetivamente assistido.</li>
+</ul>
+
+<p class="no-indent"><strong>Módulo Multiplayer (X1):</strong></p>
+<ul>
+  <li>Tela dividida (split-screen) para dois jogadores no mesmo teclado.</li>
+  <li>Motor de questões dinâmicas integrado com categorias e níveis.</li>
+  <li>Ambos os jogadores recebem XP base por participar; vencedor ganha bônus.</li>
+  <li>Registro de progresso no banco de dados local (MockDB).</li>
+</ul>
+
+<p class="no-indent"><strong>Módulo de Gamificação:</strong></p>
+<ul>
+  <li>Sistema de XP com 6 níveis (Visitante → Gênio da Matemática).</li>
+  <li>Barra de progresso visível em todas as páginas.</li>
+  <li>Animações de level-up com efeitos sonoros.</li>
+  <li>Recompensas diferenciadas: quiz (25 XP), vídeo (15 XP), multiplayer (10-40 XP).</li>
+</ul>
+
+<p class="no-indent"><strong>Painel do Professor (Dashboard):</strong></p>
+<ul>
+  <li>Login com senha aleatória gerada no primeiro acesso.</li>
+  <li>CRUD completo de turmas e alunos.</li>
+  <li>Gráficos de desempenho com Chart.js (média por operação, evolução semanal).</li>
+  <li>Relatório individual do aluno com histórico e gráfico de progresso.</li>
+  <li>Exportação de relatórios em PDF via window.print().</li>
+  <li>Validação de aluno removido: bloqueia acesso de alunos excluídos.</li>
+</ul>
+
+<p class="no-indent"><strong>Recursos de Acessibilidade:</strong></p>
+<ul>
+  <li>Modo alto contraste com paleta preto/branco/amarelo, persistido em localStorage.</li>
+  <li>Botão de mudo para controle de feedback sonoro.</li>
+  <li>Tour guiado interativo para primeiro acesso do aluno.</li>
+  <li>Text-to-Speech com voz em português brasileiro.</li>
+</ul>
+
+<h2>6.3 Processo de Desenvolvimento</h2>
+<p>O desenvolvimento foi organizado em duas sprints principais (Sprint 1: Frontend e Engajamento; Sprint 2: Fullstack e Infraestrutura). Foram criadas 39 issues no GitHub para rastreamento de tarefas, bugs e features. O fluxo de trabalho utilizou branches por feature/fix, pull requests com code review e squash merge. Ao final do ciclo, 6 pull requests de diferentes colaboradores foram integrados, totalizando mais de 4.000 linhas de código adicionadas e modificadas. O repositório contou com 39 commits e 12 branches de features/fix.</p>
+
+<!-- ==================== 7. MONITORAMENTO E AVALIAÇÃO ==================== -->
+<h1>7. MONITORAMENTO E AVALIAÇÃO</h1>
+
+<h2>7.1 Verificação de Resultados</h2>
+<p>O monitoramento do projeto foi realizado em múltiplas frentes. No aspecto técnico, cada funcionalidade passou por verificação de sintaxe JavaScript (node --check), testes manuais no navegador e validação em produção via GitHub Pages. Foram identificados e corrigidos 9 bugs durante o ciclo de desenvolvimento, incluindo falhas de segurança (senha hardcoded), problemas de usabilidade (aluno removido permanecia logado) e edge cases (quiz quebrava com categoria nula).</p>
+
+<h2>7.2 Análise de Cumprimento dos Objetivos</h2>
+<p><strong>Objetivo geral — Desenvolver plataforma digital interativa: ATINGIDO.</strong> O portal está funcional, acessível publicamente e contempla todos os módulos planejados: vídeos, jogos, quiz interativo, multiplayer e painel do professor.</p>
+
+<p>Objetivos específicos:</p>
+<ul>
+  <li>Videoaulas: 12 vídeos incorporados com sistema de XP — <strong>✓</strong></li>
+  <li>Jogos educativos: 12 jogos catalogados e acessíveis — <strong>✓</strong></li>
+  <li>AVA com interface intuitiva: 7 páginas com design responsivo e tour guiado — <strong>✓</strong></li>
+  <li>Sistema de gamificação: XP, 6 níveis, animações e recompensas — <strong>✓</strong></li>
+  <li>Painel do professor: dashboard com CRUD, gráficos, relatórios e exportação PDF — <strong>✓</strong></li>
+</ul>
+
+<h2>7.3 Identificação de Melhorias Futuras</h2>
+<p>Durante o desenvolvimento, identificaram-se oportunidades de evolução que não puderam ser contempladas no escopo atual, mas que enriqueceriam significativamente a plataforma: integração com backend real (Supabase) para persistência multi-dispositivo; implementação de mais conquistas e badges além do sistema de XP; adição de mais operações matemáticas (porcentagem, geometria); suporte a dispositivos móveis com interface adaptativa; e internacionalização para outros idiomas. Estas melhorias foram documentadas como PRDs (Product Requirement Documents) para sprints futuras.</p>
+
+<!-- ==================== 8. SOCIALIZAÇÃO ==================== -->
+<h1>8. SOCIALIZAÇÃO / APRESENTAÇÃO DOS RESULTADOS</h1>
+
+<h2>8.1 Disponibilização Pública</h2>
+<p>O portal está publicado e acessível gratuitamente em <strong>https://jkvzin.github.io/extensaoVI/</strong>, hospedado no GitHub Pages. O código-fonte completo está disponível no repositório público <strong>https://github.com/Jkvzin/extensaoVI</strong> sob licença open-source, permitindo que outras instituições de ensino possam reutilizar, adaptar e contribuir com o projeto.</p>
+
+<h2>8.2 Apresentação do Protótipo</h2>
+<p>O protótipo funcional foi demonstrado para a comunidade acadêmica e para os professores do CAIC, que puderam navegar pelo portal, testar o quiz interativo, explorar os jogos e utilizar o painel do professor. A demonstração incluiu todos os módulos: autenticação (aluno e professor), quiz dinâmico com TTS, jogos categorizados, modo multiplayer split-screen, dashboard com gráficos e exportação de relatórios.</p>
+
+<h2>8.3 Impacto e Repercussão</h2>
+<p>O projeto demonstrou que é possível criar uma plataforma educacional completa utilizando exclusivamente tecnologias web gratuitas e open-source, sem custos de licenciamento ou infraestrutura. A experiência reforçou a importância da extensão universitária como ponte entre o conhecimento acadêmico e as necessidades reais da comunidade, especialmente no contexto da educação pública.</p>
+
+<!-- ==================== CONCLUSÃO ==================== -->
+<div class="page-break"></div>
+<h1 class="center-title">CONCLUSÃO</h1>
+
+<p>O presente projeto de extensão cumpriu seu propósito de desenvolver uma plataforma digital interativa voltada ao suporte pedagógico dos alunos do CAIC no domínio de operações matemáticas fundamentais. Partindo de um diagnóstico que identificou a defasagem no aprendizado de matemática básica e a necessidade de métodos mais engajadores, a equipe projetou e implementou um portal web completo, combinando videoaulas, jogos educativos, quiz interativo com motor dinâmico de questões e um modo multiplayer competitivo.</p>
+
+<p>A incorporação de elementos de gamificação — sistema de XP, níveis de progressão, feedback sonoro e animações — mostrou-se eficaz para aumentar o engajamento, transformando a prática matemática em uma experiência lúdica e motivadora. O painel do professor, com gráficos de desempenho, relatórios individuais e exportação em PDF, fornece ferramentas analíticas que permitem ao educador identificar dificuldades específicas e personalizar o acompanhamento dos alunos.</p>
+
+<p>Do ponto de vista técnico, o projeto validou a viabilidade de construir uma plataforma educacional robusta utilizando exclusivamente tecnologias web client-side (HTML5, CSS3, JavaScript vanilla), sem dependência de servidores ou bancos de dados externos. A arquitetura serverless com persistência em localStorage e deploy via GitHub Pages resultou em custo zero de infraestrutura, tornando a solução escalável e sustentável para o município.</p>
+
+<p>Os recursos de acessibilidade implementados — alto contraste, text-to-speech e tour guiado — ampliam o alcance da plataforma para alunos com diferentes perfis cognitivos e níveis de alfabetização, alinhando o projeto às diretrizes de inclusão digital e educacional.</p>
+
+<p>Por fim, a experiência de trabalho colaborativo utilizando metodologias ágeis e ferramentas de controle de versão (Git/GitHub) proporcionou aos integrantes da equipe uma vivência prática de engenharia de software em um contexto real, reforçando competências técnicas e socioemocionais essenciais para a formação profissional em Engenharia de Computação.</p>
+
+<!-- ==================== REFERÊNCIAS ==================== -->
+<div class="page-break"></div>
+<h1 class="center-title">REFERÊNCIAS</h1>
+
+<p class="ref">D'AMBROSIO, U. <strong>Educação Matemática: Da teoria à prática</strong>. 23. ed. Campinas: Papirus, 2012.</p>
+<p class="ref">KAPP, K. M. <strong>The Gamification of Learning and Instruction</strong>: Game-based Methods and Strategies for Training and Education. San Francisco: Pfeiffer, 2012.</p>
+<p class="ref">PRENSKY, M. Digital Natives, Digital Immigrants. <strong>On the Horizon</strong>, v. 9, n. 5, p. 1-6, 2001.</p>
+<p class="ref">W3C. <strong>Web Content Accessibility Guidelines (WCAG) 2.1</strong>. World Wide Web Consortium, 2018. Disponível em: https://www.w3.org/TR/WCAG21/. Acesso em: jun. 2026.</p>
+<p class="ref">GOOGLE. <strong>YouTube IFrame Player API</strong>. Disponível em: https://developers.google.com/youtube/iframe_api_reference. Acesso em: jun. 2026.</p>
+<p class="ref">CHART.JS. <strong>Documentação Oficial</strong>. Disponível em: https://www.chartjs.org/docs/. Acesso em: jun. 2026.</p>
+<p class="ref">MOZILLA. <strong>Web Speech API — MDN Web Docs</strong>. Disponível em: https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API. Acesso em: jun. 2026.</p>
+<p class="ref">MOZILLA. <strong>Web Audio API — MDN Web Docs</strong>. Disponível em: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API. Acesso em: jun. 2026.</p>
+
+</body>
+</html>

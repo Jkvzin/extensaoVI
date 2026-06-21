@@ -224,17 +224,36 @@ acessibilidade, backend, bug, documentation, duplicate, enhancement, feature, fr
 
 ---
 
-## Status em 2026-06-21 (pós-sessão)
+## Status em 2026-06-21 (final)
 
 ### Issues: 0 abertas
 Todas as issues foram fechadas.
 
-### PRs abertos aguardando merge (6)
-| PR | Autor | Título |
-|----|-------|--------|
-| #40 | JoaoGarciaM | Multiplayer usa perguntas dinâmicas em vez de QUIZ_DATA estático |
-| #41 | JoaoGarciaM | Multiplayer registra progresso no DB |
-| #42 | JoaoGarciaM | Ambos jogadores ganham XP base no multiplayer |
-| #29 | GrouwBer | Text-to-Speech nos cards do quiz |
-| #28 | GrouwBer | Feedback sonoro nas interações |
-| #27 | GrouwBer | Tour guiado (balões de dica) |
+### PRs: 0 abertos (6 mergeados)
+| PR | Autor | Título | Status |
+|----|-------|--------|--------|
+| #40 | JoaoGarciaM | Multiplayer usa perguntas dinâmicas | Mergeado (squash) |
+| #41 | JoaoGarciaM | Multiplayer registra progresso no DB | Aplicado manual (stacked) |
+| #42 | JoaoGarciaM | Ambos jogadores ganham XP base | Aplicado manual (stacked) |
+| #29 | GrouwBer | Text-to-Speech nos cards do quiz | Mergeado (squash) |
+| #28 | GrouwBer | Feedback sonoro + alto contraste | Aplicado manual (conflitos) |
+| #27 | GrouwBer | Tour guiado (balões de dica) | Aplicado manual (conflitos) |
+
+### Novos arquivos JS criados
+`js/tts.js`, `js/audio.js`, `js/acessibilidade.js`, `js/tour.js`, `js/tour-config.js`
+
+### Documentação acadêmica
+- `documentacao/Projeto_ExtensaoVI_Unificado.docx` — Documento ABNT completo (etapas 1-8 + conclusão + referências)
+- `documentacao/Projeto_ExtensaoVI_Unificado.html` — Versão HTML com CSS de impressão ABNT
+- Etapas 6 (Execução), 7 (Monitoramento), 8 (Socialização) e Conclusão foram escritas com base no código real implementado
+
+### Commits do dia (dev)
+```
+7f29d7c feat: tour guiado com baloes de dica
+4e24c7e feat: feedback sonoro e modo alto contraste
+bbee879 feat: Text-to-Speech nos cards do quiz
+14aef19 feat: ambos jogadores ganham XP base no multiplayer
+ddcf982 fix: progresso multiplayer no DB + XP
+d952caa feat: multiplayer usa QuestaoDinamica + DistratorEngine
+f4089f4 feat: fallback visual e spinner para videos do YouTube
+```
