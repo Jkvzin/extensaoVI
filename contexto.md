@@ -172,19 +172,21 @@ Recompensas: quizComplete=25, quizPerfect=+25, videoWatched=15, multiplayerWin=3
 
 **Criadas e fechadas (6):** #31, #34, #35, #36, #37, #38
 
-**Criadas e abertas (4):**
-- #30 JoaoGarciaM — Multiplayer usa QUIZ_DATA estático
-- #32 JoaoGarciaM — Multiplayer não registra progresso no DB  
-- #33 JoaoGarciaM — Ambos jogadores devem ganhar XP base no multiplayer
-- #39 GrouwBer — Tratamento de erro/fallback para vídeos YouTube
+**Fechadas posteriormente (4):**
+- #30 JoaoGarciaM — Multiplayer usa QUIZ_DATA estático (fechada 2026-06-21, resolvida via PR #40)
+- #32 JoaoGarciaM — Multiplayer não registra progresso no DB (fechada 2026-06-21, resolvida via PR #41)
+- #33 JoaoGarciaM — Ambos jogadores devem ganhar XP base no multiplayer (fechada 2026-06-21, resolvida via PR #42)
+- #39 GrouwBer — Tratamento de erro/fallback para vídeos YouTube (fechada 2026-06-21, resolvida via commit f4089f4)
 
 **Issues originais do PRD (1-14):** todas já estavam fechadas antes desta sessão.
 
 ### Commits
 
 ```
-7e396db feat: revisão geral — 12 jogos, revisão de erros no quiz, relatório individual...
+f4089f4 feat: fallback visual e spinner para videos do YouTube (fix #39)
+741d23a docs: arquivo de contexto com arquitetura, progresso e bugs conhecidos
 ca04141 fix: adiciona escaparHTML() ausente no quiz.js (quebrava revisão de erros)
+7e396db feat: revisão geral — 12 jogos, revisão de erros no quiz, relatório individual...
 ```
 
 ---
@@ -219,3 +221,20 @@ acessibilidade, backend, bug, documentation, duplicate, enhancement, feature, fr
 - Código: variáveis e funções em português
 - Persistência: localStorage (não há backend real ainda)
 - GitHub Pages: deploy automático da branch main
+
+---
+
+## Status em 2026-06-21 (pós-sessão)
+
+### Issues: 0 abertas
+Todas as issues foram fechadas.
+
+### PRs abertos aguardando merge (6)
+| PR | Autor | Título |
+|----|-------|--------|
+| #40 | JoaoGarciaM | Multiplayer usa perguntas dinâmicas em vez de QUIZ_DATA estático |
+| #41 | JoaoGarciaM | Multiplayer registra progresso no DB |
+| #42 | JoaoGarciaM | Ambos jogadores ganham XP base no multiplayer |
+| #29 | GrouwBer | Text-to-Speech nos cards do quiz |
+| #28 | GrouwBer | Feedback sonoro nas interações |
+| #27 | GrouwBer | Tour guiado (balões de dica) |
