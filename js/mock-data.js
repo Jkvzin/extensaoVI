@@ -70,6 +70,8 @@ var DB = (function() {
                     }
                 }
                 _data = parsed;
+                // Migracao: garante que a senha do admin seja a fixa
+                _migrarSenhaAdmin();
             } else {
                 _data = _defaultData();
                 _save();
@@ -93,6 +95,17 @@ var DB = (function() {
         localStorage.removeItem(STORAGE_KEY);
         _data = null;
         _load();
+    }
+
+    // Migracao: força a senha do admin pra fixa (resolve cache antigo)
+    function _migrarSenhaAdmin() {
+        for (var i = 0; i < _data.usuarios.length; i++) {
+            if (_data.usuarios[i].role === 'admin') {
+                _data.usuarios[i].senha = 'diretorDoCaiC2026';
+                _save();
+                return;
+            }
+        }
     }
 
     // ==================== INICIALIZAÇÃO ====================
