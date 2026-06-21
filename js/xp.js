@@ -23,7 +23,9 @@ var XPSystem = (function() {
     var REWARDS = {
         quizComplete: 25,
         quizPerfect: 25,  // bônus adicional
-        videoWatched: 15
+        videoWatched: 15,
+        multiplayerWin: 30,
+        multiplayerParticipate: 10
     };
 
     // --- ESTADO ---
