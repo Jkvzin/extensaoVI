@@ -29,33 +29,51 @@ document.addEventListener("DOMContentLoaded", () => {
     // Auth Check
     if (!publicPages.includes(currentPath)) {
         const currentStudent = localStorage.getItem('currentStudent');
-        if (!currentStudent) {
+        const profUser = localStorage.getItem('profUser');
+
+        // Se nao tem aluno nem professor logado, redireciona para login
+        if (!currentStudent && !profUser) {
             window.location.href = 'login.html';
             return; // Stop execution
         }
 
         // Render Profile
         var student;
-        try {
-            student = JSON.parse(currentStudent);
-        } catch (e) {
-            localStorage.removeItem('currentStudent');
-            window.location.href = 'login.html';
-            return;
-        }
+        var isTeacher = false;
 
-        // Valida se o aluno ainda existe no banco (Issue #34)
-        if (student.id !== 'visitante' && typeof DB !== 'undefined') {
-            var alunoNoDB = DB.getAluno(student.id);
-            if (!alunoNoDB) {
-                // Aluno foi removido pelo professor — limpa e redireciona
+        if (currentStudent) {
+            try {
+                student = JSON.parse(currentStudent);
+            } catch (e) {
                 localStorage.removeItem('currentStudent');
                 window.location.href = 'login.html';
                 return;
             }
-            // Atualiza dados do localStorage com versão mais recente do DB
-            student = alunoNoDB;
-            localStorage.setItem('currentStudent', JSON.stringify(alunoNoDB));
+
+            // Valida se o aluno ainda existe no banco (Issue #34)
+            if (student.id !== 'visitante' && typeof DB !== 'undefined') {
+                var alunoNoDB = DB.getAluno(student.id);
+                if (!alunoNoDB) {
+                    // Aluno foi removido pelo professor — limpa e redireciona
+                    localStorage.removeItem('currentStudent');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                // Atualiza dados do localStorage com versao mais recente do DB
+                student = alunoNoDB;
+                localStorage.setItem('currentStudent', JSON.stringify(alunoNoDB));
+            }
+        } else {
+            // Professor navegando pelas paginas — cria perfil virtual
+            isTeacher = true;
+            try {
+                var teacher = JSON.parse(profUser);
+                student = { id: 'visitante', nome: teacher.nome, avatar_url: '👨‍🏫' };
+            } catch(e) {
+                localStorage.removeItem('profUser');
+                window.location.href = 'login.html';
+                return;
+            }
         }
 
         const header = document.querySelector('header');
@@ -75,7 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
             nameSpan.style.marginRight = '15px';
             nameSpan.textContent = student.nome;
             
-            if (student.id === 'visitante') {
+            if (isTeacher) {
+                const teacherBadge = document.createElement('span');
+                teacherBadge.textContent = ' (Professor)';
+                teacherBadge.style.fontSize = '0.8rem';
+                teacherBadge.style.color = 'var(--primary-color)';
+                teacherBadge.style.fontWeight = 'normal';
+                nameSpan.appendChild(teacherBadge);
+            } else if (student.id === 'visitante') {
                 const visitBadge = document.createElement('span');
                 visitBadge.textContent = ' (Visitante)';
                 visitBadge.style.fontSize = '0.8rem';
@@ -84,13 +109,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 nameSpan.appendChild(visitBadge);
             }
 
-            const logoutLink = document.createElement('a');
+            var logoutLink = document.createElement('a');
             logoutLink.href = '#';
-            logoutLink.id = 'logout-student';
             logoutLink.style.fontSize = '0.9rem';
             logoutLink.style.color = 'var(--primary-color)';
             logoutLink.style.textDecoration = 'underline';
-            logoutLink.textContent = 'Trocar de aluno';
+
+            if (isTeacher) {
+                logoutLink.id = 'logout-teacher';
+                logoutLink.textContent = 'Voltar ao painel';
+            } else {
+                logoutLink.id = 'logout-student';
+                logoutLink.textContent = 'Trocar de aluno';
+            }
             
             profileDiv.appendChild(avatarSpan);
             profileDiv.appendChild(nameSpan);
@@ -100,8 +131,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             logoutLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                localStorage.removeItem('currentStudent');
-                window.location.href = 'login.html';
+                if (isTeacher) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    localStorage.removeItem('currentStudent');
+                    window.location.href = 'login.html';
+                }
             });
         }
     }
