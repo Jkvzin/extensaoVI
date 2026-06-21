@@ -198,6 +198,11 @@ var XPSystem = (function() {
 
         document.body.appendChild(overlay);
 
+        // Som de subida de nivel
+        if (typeof AudioFeedback !== 'undefined') {
+            AudioFeedback.playLevelUp();
+        }
+
         // Força reflow para a animação
         overlay.offsetHeight;
         overlay.classList.add('show');

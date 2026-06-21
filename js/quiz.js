@@ -247,6 +247,9 @@ function checkAnswer(selectedIndex, clickedBtn) {
         clickedBtn.classList.add('correct');
         score++;
 
+        // Feedback sonoro de acerto
+        if (typeof AudioFeedback !== 'undefined') { AudioFeedback.playAcerto(); }
+
         if (typeof confetti === 'function') {
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
@@ -254,6 +257,10 @@ function checkAnswer(selectedIndex, clickedBtn) {
     } else {
         clickedBtn.classList.add('wrong');
         correctBtn.classList.add('correct');
+
+        // Feedback sonoro de erro
+        if (typeof AudioFeedback !== 'undefined') { AudioFeedback.playErro(); }
+
         document.getElementById('resolutionText').innerText = question.resolucaoPassoAPasso;
         document.getElementById('resolutionCard').classList.add('show');
 
@@ -331,9 +338,9 @@ function showResults() {
         resultContainer.appendChild(xpMsg);
     }
 
-    // Feedback sonoro
-    if (typeof playConclusao === 'function') {
-        playConclusao();
+    // Feedback sonoro de conclusao
+    if (typeof AudioFeedback !== 'undefined') {
+        AudioFeedback.playConclusao();
     }
 
     // TTS para o resultado

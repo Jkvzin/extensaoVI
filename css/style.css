@@ -1374,3 +1374,169 @@ p {
 
     .mp-overlay-card h1 { font-size: 1.4rem; }
 }
+
+/* ==========================================
+   ACESSIBILIDADE — Controles e Alto Contraste
+   ========================================== */
+
+.a11y-controls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 16px;
+}
+
+.a11y-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 2px solid #E2E8F0;
+    border-radius: 50%;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+    color: var(--text-color);
+    padding: 0;
+}
+
+.a11y-btn:hover {
+    border-color: var(--secondary-color);
+    background-color: #F0FDF9;
+    transform: scale(1.1);
+}
+
+.a11y-btn:focus-visible {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+.a11y-btn.a11y-active {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+}
+
+.a11y-icon {
+    line-height: 1;
+    pointer-events: none;
+}
+
+/* ==========================================
+   ALTO CONTRASTE — Modo de Acessibilidade
+   ========================================== */
+
+body.alto-contraste {
+    --bg-color: #FFFFFF;
+    --text-color: #000000;
+    --card-bg: #FFFFFF;
+    --primary-color: #CC0000;
+    --secondary-color: #006666;
+    --tertiary-color: #FFD700;
+    --success-color: #006600;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+body.alto-contraste header {
+    background-color: #FFFFFF;
+    border-bottom: 3px solid #000000;
+    box-shadow: none;
+}
+
+body.alto-contraste nav a {
+    color: #000000;
+    border: 2px solid #000000;
+    font-weight: 900;
+}
+
+body.alto-contraste nav a:hover,
+body.alto-contraste nav a.active {
+    background-color: #000000;
+    color: #FFD700;
+    box-shadow: none;
+}
+
+body.alto-contraste .card,
+body.alto-contraste .feature-card,
+body.alto-contraste .quiz-container,
+body.alto-contraste .category-card,
+body.alto-contraste .video-card {
+    background-color: #FFFFFF;
+    border: 3px solid #000000;
+    box-shadow: 4px 4px 0 #000000;
+}
+
+body.alto-contraste .card:hover,
+body.alto-contraste .category-card:hover {
+    box-shadow: 6px 6px 0 #000000;
+}
+
+body.alto-contraste .option-btn {
+    background-color: #FFFFFF;
+    border: 3px solid #000000;
+    color: #000000;
+    font-weight: 900;
+}
+
+body.alto-contraste .option-btn:hover {
+    background-color: #000000;
+    color: #FFD700;
+    border-color: #000000;
+}
+
+body.alto-contraste .option-btn.correct {
+    background-color: #006600;
+    border-color: #000000;
+    color: #FFFFFF;
+}
+
+body.alto-contraste .option-btn.wrong {
+    background-color: #CC0000;
+    border-color: #000000;
+    color: #FFFFFF;
+}
+
+body.alto-contraste .next-btn {
+    background-color: #000000;
+    color: #FFD700;
+    border: 3px solid #000000;
+    font-weight: 900;
+}
+
+body.alto-contraste .next-btn:hover {
+    background-color: #333333;
+}
+
+body.alto-contraste .difficulty-btn {
+    background-color: #FFFFFF;
+    border: 3px solid #000000;
+}
+
+body.alto-contraste .resolution-card {
+    background-color: #FFD700;
+    border-left: 8px solid #000000;
+}
+
+body.alto-contraste .resolution-title {
+    color: #000000;
+}
+
+body.alto-contraste .feedback-module {
+    background-color: #FFFFFF;
+    border: 3px solid #000000;
+    box-shadow: 4px 4px 0 #000000;
+}
+
+body.alto-contraste .video-info {
+    background-color: #FFFFFF;
+}
+
+body.alto-contraste .video-topic {
+    background-color: #FFD700;
+    border: 2px solid #000000;
+    color: #000000;
+}
