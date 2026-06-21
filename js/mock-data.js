@@ -314,6 +314,7 @@ var DB = (function() {
 
         // Util
         resetDB: resetDB,
-        _raw: function() { return _data; } // acesso direto (usar com cuidado)
+        _raw: function() { return _data; }, // acesso direto (usar com cuidado)
+        _save: function() { _save(); }      // forca salvamento (usado pelo Supabase Sync)
     };
 })();
