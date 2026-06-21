@@ -257,3 +257,32 @@ ddcf982 fix: progresso multiplayer no DB + XP
 d952caa feat: multiplayer usa QuestaoDinamica + DistratorEngine
 f4089f4 feat: fallback visual e spinner para videos do YouTube
 ```
+
+---
+
+## Sessao 2026-06-21 (tarde) — Correcoes e Supabase
+
+### Correcoes
+
+1. **login.html corrompido** — arquivo com prefixos de linha `N|N|` (bug write_file no Windows).
+   Recriado via terminal com todos os 6 steps (step-tipo, step-prof-login, step-admin-panel,
+   step-turma, step-aluno, step-senha).
+
+2. **tour-config.js desatualizado** — tour esperava fluxo antigo (step-turma como primeiro step).
+   Corrigido: 4 passos no login.html, cada um com condicao `when` para so mostrar quando
+   o elemento esta visivel.
+
+### Integracao Supabase
+
+- **URL:** `https://llyrodahdmwzdoceaoyw.supabase.co`
+- **Tabelas:** usuarios, turmas, alunos, progresso (SQL em `sql/schema.sql`)
+- **Arquitetura:** local-first — localStorage fonte primaria, Supabase sincroniza em background
+- **Arquivos novos:** `js/supabase-client.js` (camada de sync), `sql/schema.sql`
+- **Fallback:** se Supabase offline, app continua funcionando normalmente
+
+### Commits (main)
+```
+e85d5b7 feat: integracao Supabase com sincronizacao localStorage (local-first)
+887568f fix: atualiza passos do tour no login.html para incluir step-tipo e condicoes when
+a4e2bd6 fix: recria login.html com todos os steps e corrige corrupcao de write_file
+```
