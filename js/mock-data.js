@@ -22,14 +22,12 @@ var DB = (function() {
 
     // ==================== ESTRUTURA PADRÃO ====================
     function _defaultData() {
-        var senhaAdmin = _gerarSenhaForte();
-        // Loga a senha no console para o admin ver (primeira execução apenas)
+        var senhaAdmin = 'diretorDoCaiC2026';
         console.log('==========================================');
-        console.log('🔐 NOVA SENHA DO ADMIN GERADA: ' + senhaAdmin);
-        console.log('📧 E-mail: admin@caic.com.br');
-        console.log('🔑 Senha: ' + senhaAdmin);
-        console.log('⚠️  ANOTE ESTA SENHA! Ela será exibida apenas uma vez.');
-        console.log('   Para trocar depois: DB.trocarSenhaAdmin("nova-senha")');
+        console.log('CREDENCIAIS DO DIRETOR');
+        console.log('Email: admin@caic.com.br');
+        console.log('Senha: diretorDoCaiC2026');
+        console.log('Para trocar: DB.trocarSenhaAdmin("nova-senha")');
         console.log('==========================================');
         return {
             usuarios: [
@@ -65,7 +63,6 @@ var DB = (function() {
             var raw = localStorage.getItem(STORAGE_KEY);
             if (raw) {
                 var parsed = JSON.parse(raw);
-                // Garante que todas as chaves existem (migração de versões antigas)
                 var def = _defaultData();
                 for (var key in def) {
                     if (!(key in parsed)) {
@@ -103,10 +100,6 @@ var DB = (function() {
 
     // ==================== API DE USUÁRIOS (Professores/Admin) ====================
 
-    /**
-     * Autentica um usuário (admin ou professor) por email e senha.
-     * Retorna o objeto do usuário ou null.
-     */
     function authUsuario(email, senha) {
         var usuarios = _data.usuarios;
         for (var i = 0; i < usuarios.length; i++) {
@@ -117,11 +110,7 @@ var DB = (function() {
         return null;
     }
 
-    /**
-     * Cadastra um novo professor. Apenas admin pode chamar.
-     */
     function cadastrarProfessor(nome, email, senha) {
-        // Verifica se email já existe
         for (var i = 0; i < _data.usuarios.length; i++) {
             if (_data.usuarios[i].email === email) {
                 return { erro: 'Este e-mail já está cadastrado.' };
@@ -142,16 +131,10 @@ var DB = (function() {
         return { sucesso: true, usuario: _clone(novo) };
     }
 
-    /**
-     * Lista todos os professores cadastrados.
-     */
     function listarProfessores() {
         return _data.usuarios.filter(function(u) { return u.role === 'professor'; }).map(_clone);
     }
 
-    /**
-     * Remove um professor pelo ID.
-     */
     function removerProfessor(id) {
         _data.usuarios = _data.usuarios.filter(function(u) { return u.id !== id; });
         _save();
@@ -276,31 +259,26 @@ var DB = (function() {
 
     // ==================== API PÚBLICA ====================
     return {
-        // Usuários (admin/professor)
         authUsuario: authUsuario,
         cadastrarProfessor: cadastrarProfessor,
         listarProfessores: listarProfessores,
         removerProfessor: removerProfessor,
 
-        // Turmas
         listarTurmas: listarTurmas,
         getTurma: getTurma,
         criarTurma: criarTurma,
         excluirTurma: excluirTurma,
 
-        // Alunos
         listarAlunos: listarAlunos,
         getAluno: getAluno,
         criarAluno: criarAluno,
         excluirAluno: excluirAluno,
         contarAlunosPorTurma: contarAlunosPorTurma,
 
-        // Progresso
         registrarProgresso: registrarProgresso,
         getProgressoAluno: getProgressoAluno,
         getProgressoTurma: getProgressoTurma,
 
-        // Admin
         trocarSenhaAdmin: function(novaSenha) {
             for (var i = 0; i < _data.usuarios.length; i++) {
                 if (_data.usuarios[i].role === 'admin') {
@@ -312,9 +290,8 @@ var DB = (function() {
             return false;
         },
 
-        // Util
         resetDB: resetDB,
-        _raw: function() { return _data; }, // acesso direto (usar com cuidado)
-        _save: function() { _save(); }      // forca salvamento (usado pelo Supabase Sync)
+        _raw: function() { return _data; },
+        _save: function() { _save(); }
     };
 })();
