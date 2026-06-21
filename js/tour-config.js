@@ -26,10 +26,26 @@
                 text: 'Oi! Vamos te guiar rapidinho para você começar a aprender matemática de um jeito divertido. É só seguir os passos!'
             },
             {
+                target: '#step-tipo',
+                position: 'bottom',
+                title: '👥 Quem é Você?',
+                text: 'Primeiro, escolha como você quer entrar: Aluno(a), Professor(a) ou Diretor(a). Clique em "Sou Aluno(a)" para continuar o tour!',
+                when: function () {
+                    // So mostra este passo quando step-tipo estiver visivel
+                    var el = document.getElementById('step-tipo');
+                    return el && el.style.display !== 'none';
+                }
+            },
+            {
                 target: '#step-turma',
                 position: 'bottom',
                 title: '📚 Escolha sua Turma',
-                text: 'Aqui você escolhe a sua turma. Clique no nome da sua sala para continuar!'
+                text: 'Agora escolha a sua turma. Clique no nome da sua sala para continuar! Se preferir, pode clicar em "Entrar como visitante" para explorar sem salvar.',
+                when: function () {
+                    // So mostra este passo quando step-turma estiver visivel
+                    var el = document.getElementById('step-turma');
+                    return el && el.style.display !== 'none';
+                }
             },
             {
                 target: '#step-aluno',
