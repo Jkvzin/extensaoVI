@@ -34,22 +34,57 @@
         }
     }
 
+    // ==================== HELPERS DE MERGE ====================
+
+    /**
+     * Faz merge de arrays por ID: itens do Supabase substituem itens locais
+     * com mesmo ID, itens locais novos sao mantidos, itens removidos do
+     * Supabase sao mantidos localmente (local-first: nada se perde).
+     */
+    function _mergeById(localArray, remoteArray, idField) {
+        idField = idField || 'id';
+        var merged = {};
+        // Primeiro poe todos os locais
+        for (var i = 0; i < localArray.length; i++) {
+            merged[localArray[i][idField]] = localArray[i];
+        }
+        // Depois sobrescreve com os do Supabase (que tem prioridade)
+        for (var j = 0; j < remoteArray.length; j++) {
+            merged[remoteArray[j][idField]] = remoteArray[j];
+        }
+        // Converte de volta pra array
+        var result = [];
+        for (var key in merged) {
+            if (merged.hasOwnProperty(key)) {
+                result.push(merged[key]);
+            }
+        }
+        return result;
+    }
+
     // ==================== SYNC: PULL (Supabase -> localStorage) ====================
 
     async function _pullUsuarios() {
         if (!_client) return;
         try {
-            var { data, error } = await _client.from('usuarios').select('*');
-            if (error) throw error;
+            var result = await _client.from('usuarios').select('*');
+            if (result.error) {
+                // Tabela pode nao existir ainda — ignora silenciosamente
+                if (result.error.code !== '42P01') {
+                    console.warn('[Supabase] Pull usuarios:', result.error.message);
+                }
+                return;
+            }
+            var data = result.data;
             if (data && data.length > 0) {
                 var local = DB._raw();
-                // Mantem o admin local se o Supabase nao tiver
                 var adminLocal = local.usuarios.filter(function (u) { return u.role === 'admin'; });
-                var supabaseIds = data.map(function (u) { return u.id; });
-                // Remove admins que vieram do Supabase (mantem o local)
                 data = data.filter(function (u) { return u.role !== 'admin'; });
-                // Adiciona admin local
-                local.usuarios = adminLocal.concat(data);
+                // MERGE em vez de replace: preserva usuarios locais
+                local.usuarios = adminLocal.concat(_mergeById(
+                    local.usuarios.filter(function (u) { return u.role !== 'admin'; }),
+                    data
+                ));
                 DB._save();
                 console.log('[Supabase] Pull: ' + data.length + ' usuarios sincronizados.');
             }
@@ -61,11 +96,18 @@
     async function _pullTurmas() {
         if (!_client) return;
         try {
-            var { data, error } = await _client.from('turmas').select('*');
-            if (error) throw error;
+            var result = await _client.from('turmas').select('*');
+            if (result.error) {
+                if (result.error.code !== '42P01') {
+                    console.warn('[Supabase] Pull turmas:', result.error.message);
+                }
+                return;
+            }
+            var data = result.data;
             if (data && data.length > 0) {
                 var local = DB._raw();
-                local.turmas = data;
+                // MERGE: preserva turmas locais que nao estao no Supabase
+                local.turmas = _mergeById(local.turmas, data);
                 DB._save();
                 console.log('[Supabase] Pull: ' + data.length + ' turmas sincronizadas.');
             }
@@ -77,11 +119,18 @@
     async function _pullAlunos() {
         if (!_client) return;
         try {
-            var { data, error } = await _client.from('alunos').select('*');
-            if (error) throw error;
+            var result = await _client.from('alunos').select('*');
+            if (result.error) {
+                if (result.error.code !== '42P01') {
+                    console.warn('[Supabase] Pull alunos:', result.error.message);
+                }
+                return;
+            }
+            var data = result.data;
             if (data && data.length > 0) {
                 var local = DB._raw();
-                local.alunos = data;
+                // MERGE: preserva alunos locais
+                local.alunos = _mergeById(local.alunos, data);
                 DB._save();
                 console.log('[Supabase] Pull: ' + data.length + ' alunos sincronizados.');
             }
@@ -93,11 +142,18 @@
     async function _pullProgresso() {
         if (!_client) return;
         try {
-            var { data, error } = await _client.from('progresso').select('*');
-            if (error) throw error;
+            var result = await _client.from('progresso').select('*');
+            if (result.error) {
+                if (result.error.code !== '42P01') {
+                    console.warn('[Supabase] Pull progresso:', result.error.message);
+                }
+                return;
+            }
+            var data = result.data;
             if (data && data.length > 0) {
                 var local = DB._raw();
-                local.progresso = data;
+                // MERGE: preserva progresso local
+                local.progresso = _mergeById(local.progresso, data);
                 DB._save();
                 console.log('[Supabase] Pull: ' + data.length + ' registros de progresso.');
             }
@@ -113,8 +169,13 @@
         var usuarios = DB._raw().usuarios.filter(function (u) { return u.role === 'professor'; });
         for (var i = 0; i < usuarios.length; i++) {
             try {
-                await _client.from('usuarios').upsert(usuarios[i], { onConflict: 'id' });
-            } catch (e) {}
+                var res = await _client.from('usuarios').upsert(usuarios[i], { onConflict: 'id' });
+                if (res.error && res.error.code !== '42P01') {
+                    console.warn('[Supabase] Push usuario falhou:', res.error.message);
+                }
+            } catch (e) {
+                console.warn('[Supabase] Push usuario erro:', e.message);
+            }
         }
     }
 
@@ -123,8 +184,13 @@
         var turmas = DB._raw().turmas;
         for (var i = 0; i < turmas.length; i++) {
             try {
-                await _client.from('turmas').upsert(turmas[i], { onConflict: 'id' });
-            } catch (e) {}
+                var res = await _client.from('turmas').upsert(turmas[i], { onConflict: 'id' });
+                if (res.error && res.error.code !== '42P01') {
+                    console.warn('[Supabase] Push turma falhou:', res.error.message);
+                }
+            } catch (e) {
+                console.warn('[Supabase] Push turma erro:', e.message);
+            }
         }
     }
 
@@ -133,8 +199,13 @@
         var alunos = DB._raw().alunos;
         for (var i = 0; i < alunos.length; i++) {
             try {
-                await _client.from('alunos').upsert(alunos[i], { onConflict: 'id' });
-            } catch (e) {}
+                var res = await _client.from('alunos').upsert(alunos[i], { onConflict: 'id' });
+                if (res.error && res.error.code !== '42P01') {
+                    console.warn('[Supabase] Push aluno falhou:', res.error.message);
+                }
+            } catch (e) {
+                console.warn('[Supabase] Push aluno erro:', e.message);
+            }
         }
     }
 
@@ -143,8 +214,13 @@
         var progresso = DB._raw().progresso;
         for (var i = 0; i < progresso.length; i++) {
             try {
-                await _client.from('progresso').upsert(progresso[i], { onConflict: 'id' });
-            } catch (e) {}
+                var res = await _client.from('progresso').upsert(progresso[i], { onConflict: 'id' });
+                if (res.error && res.error.code !== '42P01') {
+                    console.warn('[Supabase] Push progresso falhou:', res.error.message);
+                }
+            } catch (e) {
+                console.warn('[Supabase] Push progresso erro:', e.message);
+            }
         }
     }
 
@@ -152,18 +228,23 @@
 
     async function syncPull() {
         if (!_client) return;
+        console.log('[Supabase] Iniciando pull...');
         await _pullUsuarios();
         await _pullTurmas();
         await _pullAlunos();
         await _pullProgresso();
         localStorage.setItem(SYNC_FLAG, Date.now().toString());
+        console.log('[Supabase] Pull concluido.');
     }
 
     async function syncPush() {
         if (!_client) return;
+        console.log('[Supabase] Iniciando push...');
         await _pushUsuarios();
         await _pushTurmas();
         await _pushAlunos();
+        await _pushProgresso();
+        console.log('[Supabase] Push concluido.');
     }
 
     // Chamado apos cada escrita no localStorage
@@ -171,7 +252,9 @@
     DB._save = function () {
         _originalSave();
         // Push em background (fire-and-forget)
-        syncPush().catch(function () {});
+        syncPush().catch(function (e) {
+            console.warn('[Supabase] Push em background falhou:', e.message);
+        });
     };
 
     // ==================== PUBLIC API ====================
@@ -188,10 +271,11 @@
     _init();
 
     if (_ready) {
-        // Primeiro pull do Supabase (se nunca sincronizou ou faz mais de 5 min)
+        // Pull inicial: sempre puxa do Supabase ao carregar a pagina
+        // se nunca sincronizou ou faz mais de 2 minutos
         var lastSync = localStorage.getItem(SYNC_FLAG);
         var agora = Date.now();
-        if (!lastSync || (agora - parseInt(lastSync)) > 300000) {
+        if (!lastSync || (agora - parseInt(lastSync)) > 120000) {
             syncPull().catch(function (e) {
                 console.warn('[Supabase] Pull inicial falhou:', e.message);
             });
