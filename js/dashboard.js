@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupTabs();
     setupModals();
     setupCharts();
+    setupVideoTab();
 
     // Login form
     loginForm.addEventListener('submit', function(e) {
@@ -660,4 +661,147 @@ function getWeekNumber(d) {
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+// ==================== GERENCIAMENTO DE VÍDEOS ====================
+
+var STORAGE_KEY_VIDEOS = 'matematica_caic_videos';
+
+function obterVideosCustomizados() {
+    try {
+        var raw = localStorage.getItem(STORAGE_KEY_VIDEOS);
+        if (raw) {
+            var videos = JSON.parse(raw);
+            if (Array.isArray(videos)) return videos;
+        }
+    } catch (e) {
+        console.warn('Erro ao carregar videos customizados:', e.message);
+    }
+    return [];
+}
+
+function salvarVideosCustomizados(videos) {
+    try {
+        localStorage.setItem(STORAGE_KEY_VIDEOS, JSON.stringify(videos));
+    } catch (e) {
+        console.error('Erro ao salvar videos customizados:', e.message);
+    }
+}
+
+function extrairYouTubeIDLocal(url) {
+    var match = url.match(/embed\/([a-zA-Z0-9_-]+)/);
+    if (match) return match[1];
+    match = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+    if (match) return match[1];
+    match = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+    if (match) return match[1];
+    return null;
+}
+
+function adicionarVideoCustomizado(link, topico, titulo) {
+    var videoId = extrairYouTubeIDLocal(link);
+    if (!videoId) return { erro: 'Link do YouTube inválido. Use um link como youtube.com/watch?v=... ou youtu.be/...' };
+
+    var videos = obterVideosCustomizados();
+    var id = 'custom_' + Date.now();
+    var novoVideo = {
+        id: id,
+        titulo: titulo || 'Vídeo sem título',
+        topico: topico,
+        youtubeUrl: 'https://www.youtube.com/embed/' + videoId
+    };
+    videos.push(novoVideo);
+    salvarVideosCustomizados(videos);
+    return { sucesso: true, video: novoVideo };
+}
+
+function removerVideoCustomizado(id) {
+    var videos = obterVideosCustomizados();
+    var novosVideos = videos.filter(function(v) { return v.id !== id; });
+    salvarVideosCustomizados(novosVideos);
+}
+
+function renderVideosCustomizados() {
+    var container = document.getElementById('videos-custom-list');
+    var countEl = document.getElementById('videos-count');
+    if (!container) return;
+
+    var videos = obterVideosCustomizados();
+    countEl.textContent = '(' + videos.length + ')';
+
+    if (videos.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#636E72; padding: 24px;">Nenhum vídeo adicionado ainda. Use o formulário acima para adicionar.</p>';
+        return;
+    }
+
+    container.innerHTML = '';
+    videos.forEach(function(video) {
+        var card = document.createElement('div');
+        card.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:16px;margin-bottom:8px;background:white;border:2px solid #DFE6E9;border-radius:12px;';
+        card.innerHTML = '' +
+            '<div style="flex:1;">' +
+            '<span style="display:inline-block;background:var(--secondary-color);color:white;padding:2px 10px;border-radius:50px;font-size:0.75rem;font-weight:700;margin-right:8px;">' + escaparHTML(video.topico) + '</span>' +
+            '<strong>' + escaparHTML(video.titulo) + '</strong>' +
+            '<div style="font-size:0.8rem;color:#636E72;margin-top:4px;">youtube.com/embed/' + escaparHTML(extrairYouTubeIDLocal(video.youtubeUrl)) + '</div>' +
+            '</div>' +
+            '<button class="btn-remover-video" data-id="' + video.id + '" style="padding:8px 16px;background:var(--primary-color);color:white;border:none;border-radius:50px;cursor:pointer;font-family:inherit;font-weight:700;white-space:nowrap;">Remover</button>';
+        container.appendChild(card);
+    });
+
+    container.querySelectorAll('.btn-remover-video').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja remover este vídeo?')) {
+                removerVideoCustomizado(this.dataset.id);
+                renderVideosCustomizados();
+            }
+        });
+    });
+}
+
+// Configurar formulario e tab de videos
+function setupVideoTab() {
+    // Listener da tab
+    var videosTabBtn = document.querySelector('[data-tab="videos"]');
+    if (videosTabBtn) {
+        videosTabBtn.addEventListener('click', function() {
+            renderVideosCustomizados();
+        });
+    }
+
+    // Configurar formulario
+    var formVideo = document.getElementById('form-video');
+    var errorEl = document.getElementById('video-form-error');
+    var successEl = document.getElementById('video-form-success');
+
+    if (!formVideo) return;
+
+    formVideo.addEventListener('submit', function(e) {
+        e.preventDefault();
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        var link = document.getElementById('video-link').value.trim();
+        var topico = document.getElementById('video-topico').value;
+        var titulo = document.getElementById('video-titulo').value.trim();
+
+        if (!link || !topico) {
+            errorEl.textContent = 'Preencha o link e o tópico.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        var resultado = adicionarVideoCustomizado(link, topico, titulo);
+        if (resultado.erro) {
+            errorEl.textContent = resultado.erro;
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        formVideo.reset();
+        successEl.textContent = 'Vídeo adicionado com sucesso!';
+        successEl.style.display = 'block';
+        setTimeout(function() { successEl.style.display = 'none'; }, 3000);
+
+        renderVideosCustomizados();
+    });
 }
