@@ -111,11 +111,13 @@ document.addEventListener('DOMContentLoaded', function() {
         style.textContent = '@media print { #print-header-temp { display: block !important; } } @media screen { #print-header-temp { display: none !important; } }';
         document.head.appendChild(style);
 
-        // Muda para tab métricas
+        // Muda para tab metricas
         tabBtns.forEach(function(b) { b.classList.remove('active'); });
         tabContents.forEach(function(c) { c.classList.remove('active'); });
-        document.querySelector('[data-tab="metricas"]').classList.add('active');
-        document.getElementById('tab-metricas').classList.add('active');
+        var metricasTabBtn = document.querySelector('[data-tab="metricas"]');
+        var metricasTabContent = document.getElementById('tab-metricas');
+        if (metricasTabBtn) metricasTabBtn.classList.add('active');
+        if (metricasTabContent) metricasTabContent.classList.add('active');
 
         setTimeout(function() {
             window.print();

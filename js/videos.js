@@ -293,7 +293,8 @@ function onVideoEnded(index, videoData) {
     // Atualiza indicador visual
     var indicator = document.getElementById('xpIndicator_' + index);
     if (indicator) {
-        indicator.textContent = '+ ' + XPSystem.rewards.videoWatched + ' XP';
+        var xpValor = (typeof XPSystem !== 'undefined') ? XPSystem.rewards.videoWatched : 0;
+        indicator.textContent = '+ ' + xpValor + ' XP';
         indicator.style.color = 'var(--success-color)';
         indicator.style.fontWeight = '700';
     }
