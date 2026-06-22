@@ -22,7 +22,7 @@ marcos/
 ├── index.html              # Home page (hero, cards, feedback)
 ├── login.html              # Tela de login (tipo → turma → aluno → senha)
 ├── quiz.html               # Quiz interativo (4 categorias, 3 níveis, dinâmico)
-├── jogos.html              # Jogos educativos (12 jogos com categorias)
+├── jogos.html              # Jogos educativos (4 jogos com categorias)
 ├── videos.html             # 12 vídeos do YouTube embed
 ├── multiplayer.html        # Modo X1 split-screen
 ├── dashboard.html          # Painel do professor (login, CRUD, métricas, relatórios)

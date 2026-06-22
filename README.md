@@ -7,7 +7,7 @@ Plataforma interativa para aprender matematica brincando. Jogos, videos, quizzes
 ## Funcionalidades
 
 - **Quiz Interativo** — Adicao, subtracao, multiplicacao e divisao com perguntas dinamicas
-- **Jogos Educativos** — 12 jogos categorizados por operacao matematica
+- **Jogos Educativos** — 4 jogos categorizados por operacao matematica
 - **Videos Explicativos** — Players do YouTube integrados com fallback de erro
 - **Modo X1 (Multiplayer Split-Screen)** — Dois jogadores no mesmo teclado
 - **Sistema de XP** — Niveis, conquistas e barra de progresso
