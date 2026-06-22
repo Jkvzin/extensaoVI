@@ -1,77 +1,115 @@
 /**
  * js/xp.js
- * Sistema de Experiência (XP) e Progressão de Nível
- * Salva o progresso no localStorage do navegador.
+ * Sistema de Experiencia (XP) e Progressao de Nivel
+ * Armazena XP por aluno em localStorage (multi-usuario).
+ * Barra de XP mostra o progresso do usuario logado atualmente.
  */
-
 var XPSystem = (function() {
     'use strict';
 
     var STORAGE_KEY = 'matematica_caic_xp';
 
-    // --- DEFINIÇÃO DE NÍVEIS ---
+    // --- DEFINICAO DE NIVEIS ---
     var LEVELS = [
         { level: 1, xpRequired: 0,    title: 'Visitante' },
         { level: 2, xpRequired: 100,  title: 'Aprendiz' },
         { level: 3, xpRequired: 250,  title: 'Estudante' },
         { level: 4, xpRequired: 500,  title: 'Sabido' },
         { level: 5, xpRequired: 1000, title: 'Mestre' },
-        { level: 6, xpRequired: 2000, title: 'Gênio da Matemática' }
+        { level: 6, xpRequired: 2000, title: 'Genio da Matematica' }
     ];
 
     // --- RECOMPENSAS DE XP ---
     var REWARDS = {
         quizComplete: 25,
-        quizPerfect: 25,  // bonus adicional
+        quizPerfect: 25,
         videoWatched: 15,
         multiplayerWin: 30,
         multiplayerParticipate: 10
     };
 
     // --- ESTADO ---
-    var _state = null;
+    // Formato: { users: { 'aluno-id': { xp, level, nome, avatar_url, turma_id } } }
+    var _data = null;
+    var _activeId = null;
     var _levelUpCallback = null;
 
-    // ==================== INICIALIZAÇÃO ====================
+    // ==================== INICIALIZACAO ====================
 
     function init() {
-        _state = loadState();
+        _data = loadAll();
+        _activeId = _getActiveStudentId();
         renderXPBar();
     }
 
-    function loadState() {
+    function loadAll() {
         try {
             var raw = localStorage.getItem(STORAGE_KEY);
             if (raw) {
                 var parsed = JSON.parse(raw);
-                if (typeof parsed.xp === 'number' && typeof parsed.level === 'number') {
+                // Migracao: se for o formato antigo { xp, level }, converte
+                if (typeof parsed.xp === 'number') {
+                    return { users: {} };
+                }
+                if (parsed && parsed.users && typeof parsed.users === 'object') {
                     return parsed;
                 }
             }
-        } catch (e) {
-            // localStorage corrompido ou indisponível
-        }
-        return { xp: 0, level: 1 };
+        } catch (e) { /* localStorage corrompido */ }
+        return { users: {} };
     }
 
-    function saveState() {
+    function saveAll() {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(_state));
-        } catch (e) {
-            // localStorage cheio ou indisponível
-        }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(_data));
+        } catch (e) { /* localStorage cheio */ }
     }
 
-    // ==================== XP E NÍVEL ====================
+    function _getActiveStudentId() {
+        try {
+            var raw = localStorage.getItem('currentStudent');
+            if (raw) {
+                var student = JSON.parse(raw);
+                if (student && student.id && student.id !== 'visitante') {
+                    return student.id;
+                }
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function _getActiveUser() {
+        if (!_data) { init(); }
+        if (!_activeId) return null;
+        if (!_data.users[_activeId]) {
+            // Busca info do aluno no DB
+            var nome = _activeId;
+            var avatar_url = '👤';
+            var turma_id = null;
+            if (typeof DB !== 'undefined') {
+                var aluno = DB.getAluno(_activeId);
+                if (aluno) {
+                    nome = aluno.nome;
+                    avatar_url = aluno.avatar_url;
+                    turma_id = aluno.turma_id;
+                }
+            }
+            _data.users[_activeId] = { xp: 0, level: 1, nome: nome, avatar_url: avatar_url, turma_id: turma_id };
+            saveAll();
+        }
+        return _data.users[_activeId];
+    }
+
+    // ==================== XP E NIVEL ====================
 
     function getCurrentLevel() {
-        if (!_state) { init(); }
-        return _state.level;
+        var user = _getActiveUser();
+        return user ? user.level : 1;
     }
 
     function getCurrentXP() {
-        if (!_state) { init(); }
-        return _state.xp;
+        var user = _getActiveUser();
+        return user ? user.xp : 0;
     }
 
     function getLevelInfo(level) {
@@ -81,73 +119,108 @@ var XPSystem = (function() {
         return LEVELS[LEVELS.length - 1];
     }
 
-    /**
-     * Adiciona XP e verifica se subiu de nível.
-     * @param {number} amount - quantidade de XP
-     * @param {string} source - 'quiz' | 'video' (para futura Issue #5)
-     */
     function addXP(amount, source) {
-        if (!_state) { init(); }
+        if (!_data) { init(); }
         if (amount <= 0) return;
 
-        var oldLevel = _state.level;
-        _state.xp += amount;
+        _activeId = _getActiveStudentId();
+        if (!_activeId || _activeId === 'visitante') return;
 
-        // Verifica nível
+        var user = _getActiveUser();
+        if (!user) return;
+
+        var oldLevel = user.level;
+        user.xp += amount;
+
         var newLevel = oldLevel;
         for (var i = LEVELS.length - 1; i >= 0; i--) {
-            if (_state.xp >= LEVELS[i].xpRequired) {
+            if (user.xp >= LEVELS[i].xpRequired) {
                 newLevel = LEVELS[i].level;
                 break;
             }
         }
 
-        _state.level = newLevel;
-        saveState();
+        user.level = newLevel;
+        saveAll();
         renderXPBar();
 
-        // Notifica subida de nível
         if (newLevel > oldLevel) {
             showLevelUp(newLevel);
         }
 
-        // Callback para Issue #5 (badges)
         if (_levelUpCallback) {
-            _levelUpCallback({ xp: _state.xp, level: newLevel, source: source, amount: amount });
+            _levelUpCallback({ xp: user.xp, level: newLevel, source: source, amount: amount });
         }
     }
 
-    /**
-     * Registra callback chamado sempre que XP é adicionado.
-     */
     function onXPChanged(callback) {
         _levelUpCallback = callback;
     }
 
     function xpForNextLevel() {
-        if (!_state) { init(); }
-        var next = getLevelInfo(_state.level + 1);
-        if (!next) return null; // nível máximo
+        var user = _getActiveUser();
+        if (!user) return null;
+        var next = getLevelInfo(user.level + 1);
+        if (!next) return null;
         return next.xpRequired;
     }
 
     function xpProgress() {
-        if (!_state) { init(); }
-        var currentInfo = getLevelInfo(_state.level);
+        var user = _getActiveUser();
+        if (!user) return 0;
+        var currentInfo = getLevelInfo(user.level);
         var nextXP = xpForNextLevel();
-        if (!nextXP) return 100; // nível máximo
-        var xpInLevel = _state.xp - currentInfo.xpRequired;
+        if (!nextXP) return 100;
+        var xpInLevel = user.xp - currentInfo.xpRequired;
         var xpNeeded = nextXP - currentInfo.xpRequired;
         return Math.min(100, Math.round((xpInLevel / xpNeeded) * 100));
     }
 
-    // ==================== RENDERIZAÇÃO DA BARRA ====================
+    // ==================== MULTI-USUARIO (DASHBOARD) ====================
+
+    function getAllData() {
+        if (!_data) { init(); }
+        return _data.users;
+    }
+
+    function getRanking() {
+        if (!_data) { init(); }
+        var users = [];
+        for (var id in _data.users) {
+            if (_data.users.hasOwnProperty(id)) {
+                users.push({
+                    id: id,
+                    xp: _data.users[id].xp || 0,
+                    level: _data.users[id].level || 1,
+                    nome: _data.users[id].nome || id,
+                    avatar_url: _data.users[id].avatar_url || '👤',
+                    turma_id: _data.users[id].turma_id || null
+                });
+            }
+        }
+        users.sort(function(a, b) { return b.xp - a.xp; });
+        return users;
+    }
+
+    function getRankingPorTurma(turmaId) {
+        return getRanking().filter(function(u) { return u.turma_id === turmaId; });
+    }
+
+    // ==================== RENDERIZACAO DA BARRA ====================
 
     function renderXPBar() {
         var containers = document.querySelectorAll('#xpBarContainer');
         if (containers.length === 0) return;
 
-        var level = getCurrentLevel();
+        var user = _getActiveUser();
+        if (!user) {
+            for (var i = 0; i < containers.length; i++) {
+                containers[i].innerHTML = '';
+            }
+            return;
+        }
+
+        var level = user.level;
         var levelInfo = getLevelInfo(level);
         var progress = xpProgress();
         var nextXP = xpForNextLevel();
@@ -156,11 +229,11 @@ var XPSystem = (function() {
 
         if (nextXP) {
             var currentInfo = getLevelInfo(level);
-            var xpInLevel = _state.xp - currentInfo.xpRequired;
+            var xpInLevel = user.xp - currentInfo.xpRequired;
             var xpNeeded = nextXP - currentInfo.xpRequired;
             xpText += xpInLevel + '/' + xpNeeded + ' XP';
         } else {
-            xpText += _state.xp + ' XP (Máximo!)';
+            xpText += user.xp + ' XP (Maximo!)';
         }
 
         var html = '' +
@@ -174,40 +247,36 @@ var XPSystem = (function() {
                 '</div>' +
             '</div>';
 
-        for (var i = 0; i < containers.length; i++) {
-            containers[i].innerHTML = html;
+        for (var j = 0; j < containers.length; j++) {
+            containers[j].innerHTML = html;
         }
     }
 
-    // ==================== ANIMAÇÃO DE LEVEL UP ====================
+    // ==================== ANIMACAO DE LEVEL UP ====================
 
     function showLevelUp(newLevel) {
         var levelInfo = getLevelInfo(newLevel);
 
-        // Cria overlay
         var overlay = document.createElement('div');
         overlay.className = 'levelup-overlay';
 
         overlay.innerHTML = '' +
             '<div class="levelup-card">' +
                 '<div class="levelup-icon">🎉</div>' +
-                '<div class="levelup-title">Subiu de Nível!</div>' +
-                '<div class="levelup-level">Nível ' + newLevel + '</div>' +
+                '<div class="levelup-title">Subiu de Nivel!</div>' +
+                '<div class="levelup-level">Nivel ' + newLevel + '</div>' +
                 '<div class="levelup-rank">' + levelInfo.title + '</div>' +
             '</div>';
 
         document.body.appendChild(overlay);
 
-        // Som de subida de nivel
         if (typeof AudioFeedback !== 'undefined') {
             AudioFeedback.playLevelUp();
         }
 
-        // Força reflow para a animação
         overlay.offsetHeight;
         overlay.classList.add('show');
 
-        // Remove após 3 segundos
         setTimeout(function() {
             overlay.classList.remove('show');
             setTimeout(function() {
@@ -218,9 +287,8 @@ var XPSystem = (function() {
         }, 2800);
     }
 
-    // ==================== API PÚBLICA ====================
+    // ==================== API PUBLICA ====================
 
-    // Inicializa quando o DOM estiver pronto
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
@@ -235,8 +303,10 @@ var XPSystem = (function() {
         getLevelInfo: getLevelInfo,
         onXPChanged: onXPChanged,
         rewards: REWARDS,
-        // Força re-render (útil após navegação SPA-like)
-        refresh: renderXPBar
+        refresh: renderXPBar,
+        getAllData: getAllData,
+        getRanking: getRanking,
+        getRankingPorTurma: getRankingPorTurma
     };
 
 })();
