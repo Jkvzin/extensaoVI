@@ -6,13 +6,47 @@ var videosAssistidos = {};
 // Flag para rastrear se o vídeo realmente começou a tocar
 var videoTocando = {};
 
+/**
+ * Retorna a lista completa de videos (padrao + customizados do professor).
+ */
+function obterTodosVideos() {
+    var videos = [];
+
+    // Videos padrao do sistema
+    if (typeof VIDEOS_DATA !== 'undefined') {
+        videos = VIDEOS_DATA.slice();
+    }
+
+    // Videos customizados adicionados pelo professor
+    try {
+        var customRaw = localStorage.getItem('matematica_caic_videos');
+        if (customRaw) {
+            var customVideos = JSON.parse(customRaw);
+            if (Array.isArray(customVideos)) {
+                videos = videos.concat(customVideos);
+            }
+        }
+    } catch (e) {
+        console.warn('Erro ao carregar videos customizados:', e.message);
+    }
+
+    return videos;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var container = document.getElementById('videosContainer');
 
-    if (container && typeof VIDEOS_DATA !== 'undefined') {
+    if (container) {
+        var todosVideos = obterTodosVideos();
+
+        if (todosVideos.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:#636E72;">Nenhum vídeo disponível no momento.</p>';
+            return;
+        }
+
         container.innerHTML = '';
 
-        VIDEOS_DATA.forEach(function(video, index) {
+        todosVideos.forEach(function(video, index) {
             var card = document.createElement('div');
             card.className = 'video-card';
 

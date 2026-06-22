@@ -212,6 +212,26 @@
 }
 
 /* ==========================================
+   ESTILOS DA TAB DE VÍDEOS
+   ========================================== */
+.video-form-card {
+    background-color: #F7FAFC;
+    padding: 24px;
+    border-radius: var(--radius-medium);
+    border: 2px solid #DFE6E9;
+}
+
+.video-form-card .form-group {
+    margin-bottom: 0;
+}
+
+#videos-custom-list .btn-remover-video:hover {
+    background-color: #e74c3c;
+    transform: translateY(-2px);
+    transition: all 0.2s;
+}
+
+/* ==========================================
    ESTILOS DE IMPRESSÃO (Exportar PDF)
    ========================================== */
 @media print {
