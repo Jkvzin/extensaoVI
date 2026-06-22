@@ -286,3 +286,79 @@ e85d5b7 feat: integracao Supabase com sincronizacao localStorage (local-first)
 887568f fix: atualiza passos do tour no login.html para incluir step-tipo e condicoes when
 a4e2bd6 fix: recria login.html com todos os steps e corrige corrupcao de write_file
 ```
+
+---
+
+## Sessao 2026-06-22 — Feature: Gerenciamento de Videos pelo Professor
+
+### Feature implementada
+
+**Professor pode adicionar e remover videos da pagina de videos.**
+
+- **videos.js**: Nova funcao `obterTodosVideos()` que mergeia `VIDEOS_DATA` (padrao) com videos customizados do localStorage (chave `matematica_caic_videos`)
+- **dashboard.html**: Nova tab "Videos" com formulario (link YouTube, topico via select com 8 opcoes, titulo opcional) e lista de videos adicionados com botao Remover
+- **dashboard.js**: 
+  - Funcoes CRUD: `obterVideosCustomizados()`, `salvarVideosCustomizados()`, `adicionarVideoCustomizado()`, `removerVideoCustomizado()`, `renderVideosCustomizados()`
+  - `extrairYouTubeIDLocal()` — replica da funcao do videos.js para extrair ID do YouTube de varios formatos de URL
+  - `setupVideoTab()` — configurada no DOMContentLoaded
+- **dashboard.css**: Estilos `.video-form-card` e `.btn-remover-video:hover`
+
+### Fluxo
+
+1. Professor faz login no dashboard
+2. Clica na tab "Videos"
+3. Preenche link do YouTube + topico (+ titulo opcional)
+4. Clica "Adicionar Video" → video salvo em localStorage
+5. Alunos veem o video na pagina videos.html (junto com os 12 padrao)
+6. Professor pode remover videos via botao "Remover" (com confirmacao)
+
+### Persistencia
+
+- Videos customizados em `localStorage['matematica_caic_videos']` (array JSON)
+- Compatível com o sistema local-first existente (localStorage primario, Supabase sync em background)
+
+### Commits (dev → merge main)
+
+```
+c208907 chore: forca redeploy GitHub Pages
+e9dca9d feat: professor pode adicionar e remover videos da pagina de videos
+```
+
+### Status do Deploy
+
+GitHub Pages atualizado em https://jkvzin.github.io/extensaoVI/ — branch main.
+
+---
+
+## Verificacao 2026-06-22 — Testes completos apos feature de videos
+
+### Resultado: TUDO OK — Zero problemas encontrados
+
+### Paginas testadas (sem erros JS no console)
+- login.html ✅
+- index.html ✅
+- quiz.html ✅
+- jogos.html ✅
+- videos.html ✅ (12 padrao + N customizados)
+- multiplayer.html ✅
+- dashboard.html ✅
+
+### Autenticacao
+- **Aluno sem login**: redirecionado para login.html ✅
+- **Aluno logado**: acessa paginas de aprendizado, NAO acessa dashboard (ve tela de login) ✅
+- **Professor logado**: acessa dashboard + navega entre paginas com perfil "Nome (Professor)" e link "Voltar ao painel" ✅
+- **Visitante**: acesso limitado, sem dashboard ✅
+
+### Dashboard — Tabs
+- **Minhas Turmas**: CRUD turmas/alunos funcionando ✅
+- **Metricas e Relatorios**: graficos Chart.js, metricas, ranking, filtro, exportar PDF ✅
+- **Videos**: formulario (link + topico + titulo), lista com remover, confirmacao ✅
+
+### Videos — Fluxo completo
+- Professor adiciona video → salvo em localStorage ✅
+- Aluno/visitante ve video na pagina videos.html ✅
+- Professor remove video → confirmacao → removido ✅
+- Videos padrao (12) sempre presentes ✅
+
+### Pendencia
+- css/style.css: z-index do header alterado para 600 (nao commitado) — correcao necessaria para multiplayer, nao afeta outras paginas
